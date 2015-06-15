@@ -26,7 +26,7 @@ public class Main {
 		server.start();
 		//client.start();
 		
-		System.out.println("Good");
+		System.out.println("Good Bad");
 		return;
 	}
 
