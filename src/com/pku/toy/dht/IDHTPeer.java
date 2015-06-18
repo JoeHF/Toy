@@ -5,7 +5,7 @@ import java.rmi.Remote;
 import java.rmi.RemoteException;  
 import java.util.List;    
     
-public interface IDhtPeer extends Remote
+public interface IDHTPeer extends Remote
 {  
 
 	public Double get( Long key ) throws RemoteException;

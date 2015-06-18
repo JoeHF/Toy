@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.TreeMap;
 
-public class DHTPeer implements IDhtPeer
+public class DHTPeer implements IDHTPeer
 {
 
 	private static long PRIME = 990001;
