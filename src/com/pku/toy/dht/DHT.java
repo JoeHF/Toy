@@ -1,6 +1,7 @@
 package com.pku.toy.dht;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -16,7 +17,7 @@ public class DHT implements Map<Long, Double>
 		// TODO Auto-generated constructor stub
 	}
 	
-	public void setDHT( int peerNum, long range )
+	public void setDHT( int peerNum, List<String> peerAddr,  long range)
 	{
 		long i,j;
 		
