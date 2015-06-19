@@ -1,5 +1,8 @@
 package com.pku.toy.dht;
 
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.HashMap;
 import java.util.List;
@@ -11,11 +14,14 @@ public class DHTPeer implements IDHTPeer
 	private static long PRIME = 990001;
 	
 	// Local address
-	public  String address;
+	public  String  address;
 	public  long    peerId;
 	
 	// DHT chord route table.
-	private TreeMap<Long, String> router;
+	private TreeMap<Long, String>    router;
+	
+	// RMI Remote DHTPeers
+	private HashMap<Long, IDHTPeer>  remoteDHTPeers;
 	
 	// Local HashMap.
 	private HashMap<Long, Double> localHashMap;
@@ -38,12 +44,43 @@ public class DHTPeer implements IDHTPeer
 		return;
 	}
 	
-	public void set( DHTPeer peer )
+	public void installLocalPeer( DHTPeer peer )
+	// install a local DHTPeer, fill RouteTable, create local RMI server.
 	{
 		this.address = peer.address;
 		this.peerId  = peer.peerId;
 		this.setRouter( peer.router );
 		localHashMap = new HashMap<Long, Double>();
+		
+		try 
+		{
+			Naming.rebind( this.address ,  this );
+		}
+		catch ( Exception e ) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void connectToOtherPeers()
+	// After all the peers are installed, DHT notice all peers to create RMI client object.
+	{
+		this.remoteDHTPeers = new HashMap<>();
+		for ( long key : this.router.keySet() )
+		{
+			String lookupString = router.get(key);
+			try 
+			{
+				IDHTPeer peer = (IDHTPeer)Naming.lookup( lookupString );
+				this.remoteDHTPeers.put( key, peer );
+			}
+            catch (Exception e) 
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 	}
 	
 
@@ -52,6 +89,11 @@ public class DHTPeer implements IDHTPeer
 	{
 		// TODO Auto-generated method stub
 		// If local peer contains key, return value; else, get value from other peers.
+		long id;
+		
+		id = this.getPeerIdByKey( key );
+		if ( id == this.peerId )
+			return localHashMap.get( key );
 		return null;
 	}
 

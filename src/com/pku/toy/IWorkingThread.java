@@ -10,4 +10,5 @@ import com.pku.toy.dht.DHTPeer;
 public interface IWorkingThread extends Remote
 {
 	public void setDHTPeer( DHTPeer peer ) throws RemoteException;
+	public void connectToOtherPeers() throws RemoteException;
 }

@@ -49,13 +49,24 @@ public class DHT implements Map<Long, Double>
 	    	try {
 				IWorkingThread thread = (IWorkingThread)Naming.lookup( val );
 				thread.setDHTPeer(peer);
-			} catch (MalformedURLException e) {
+			}
+	    	catch ( Exception e )
+	    	{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} catch (RemoteException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (NotBoundException e) {
+			}
+	    }
+	    for ( long key : router.keySet() )
+	    {
+	    	String val = router.get( key );
+	    	peer.address = val;
+	    	peer.peerId  = key;
+	    	try {
+				IWorkingThread thread = (IWorkingThread)Naming.lookup( val );
+                thread.connectToOtherPeers();
+			}
+	    	catch ( Exception e )
+	    	{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}

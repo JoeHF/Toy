@@ -21,8 +21,13 @@ public class WorkingThread {
 	
 	public void setDHTPeer( DHTPeer peer )
 	{
-		dhtPeer.set( peer );
+		dhtPeer.installLocalPeer(peer);
 	}
+	public void connectToOtherPeers()
+	{
+		dhtPeer.connectToOtherPeers();
+	}
+	
 	
 	//-----------------------jdc-----------------
 
