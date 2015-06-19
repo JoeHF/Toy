@@ -4,9 +4,7 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.TreeMap;
+import java.util.*;
 
 public class DHTPeer implements IDHTPeer
 {
@@ -90,57 +88,95 @@ public class DHTPeer implements IDHTPeer
 		// TODO Auto-generated method stub
 		// If local peer contains key, return value; else, get value from other peers.
 		long id;
+		double value;
 		
 		id = this.getPeerIdByKey( key );
 		if ( id == this.peerId )
 			return localHashMap.get( key );
-		return null;
+		value = remoteDHTPeers.get( id ).get( key );
+		return value;
 	}
 
 
 	@Override
-	public List<Double> getKeys(List<Long> keys) throws RemoteException 
+	public Map<Long,Double> getMaps(List<Long> keys) throws RemoteException 
 	{
 		// TODO Auto-generated method stub
-		// get operation in groups.
-		return null;
+		// Get operation in groups. Return a subMap containing all the keys, regardless of where the keys store.
+		
+		// get local maps
+		List<Long>  keyList = new ArrayList<Long>();
+		for ( long key : keys )
+			if ( this.getPeerIdByKey(key) == this.peerId )
+				keyList.add( key );
+		HashMap<Long, Double> ret = (HashMap<Long, Double>)this.getLocalMaps( keyList );
+		
+		// get remote maps
+		for ( long routerKey : this.router.keySet() )
+		{
+			if ( routerKey == this.peerId ) continue;
+			keyList.clear();
+			for ( long key : keys )
+				if ( this.getPeerIdByKey(key) == routerKey )
+					keyList.add( key );
+			HashMap<Long, Double> remoteMap = 
+					(HashMap<Long, Double>)remoteDHTPeers.get( routerKey ).getLocalMaps( keyList );
+			for ( long key : remoteMap.keySet() )
+				ret.put( key , remoteMap.get(key) );
+		}
+		return ret;
+	}
+	
+	@Override
+	public Map<Long,Double> getLocalMaps( List<Long> keys ) throws RemoteException
+	{
+		// TODO Auto-generated method stub
+		// ensure that keys are all in localHashMap
+		HashMap<Long,Double> ret = new HashMap<Long,Double>();
+		for ( long key : keys )
+		{
+			if ( localHashMap.containsKey(key) )
+				ret.put(key, localHashMap.get(key) );
+		}
+		return ret;
 	}
 
-
 	@Override
-	public void put(Long key) throws RemoteException 
+	public void put( Long key, Double value ) throws RemoteException
 	{
 		// TODO Auto-generated method stub
 		// If key lie in local ID range, change it.
-		
+		if ( this.getPeerIdByKey(key) == this.peerId )
+			this.localHashMap.put( new Long(key), new Double(value) );
 	}
 
 
 	@Override
-	public boolean containsKey() throws RemoteException 
+	public boolean containsKey( Long key ) throws RemoteException
 	{
 		// TODO Auto-generated method stub
 		// Judge if local peer contians key.
-		return false;
+		return ( localHashMap.containsKey(key) );
 	}
 
 
 	@Override
 	public void remove(Long key) throws RemoteException {
 		// TODO Auto-generated method stub
-		
+		localHashMap.remove(key);
 	}
 
 
 	@Override
 	public int size() throws RemoteException {
 		// TODO Auto-generated method stub
-		return 0;
+		return localHashMap.size();
 	}
 
 
 	@Override
-	public void writeCheckPoint(String FileName) throws RemoteException {
+	public void writeCheckPoint(String FileName) throws RemoteException 
+	{
 		// TODO Auto-generated method stub
 		
 	}
