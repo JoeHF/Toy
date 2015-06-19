@@ -1,10 +1,18 @@
 package com.pku.toy.dht;
 
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+
+import com.pku.toy.IWorkingThread;
+
+import ZZY.IPrime;
 
 public class DHT implements Map<Long, Double>
 {
@@ -20,13 +28,38 @@ public class DHT implements Map<Long, Double>
 	public void setDHT( int peerNum, List<String> peerAddr,  long range)
 	{
 		long i,j;
+		int k;
 		
-	    //??????  create DHTPeers and rebind them.
+	    //create DHT Route Table
+		//??????????????????????????---how to separate the key range, Master tell it? ---????????????????
 	    router = new TreeMap<>();
-	    j = range/peerNum;
-	    for ( i=1; i<peerNum; i++ )
-	    	router.put( j*i, "" );
-	    router.put( range ,  "" );
+	    j = range/peerAddr.size();
+	    for ( i=1; i<peerAddr.size(); i++ )
+	    	router.put( j*i, peerAddr.get((int) i-1) );
+	    router.put( range ,  peerAddr.get( peerAddr.size()-1 ) );
+	    
+	    // create a DHT peer, let working thread copy its TreeMap.
+	    DHTPeer peer = new DHTPeer();
+	    peer.setRouter( router );
+	    for ( long key : router.keySet() )
+	    {
+	    	String val = router.get( key );
+	    	peer.address = val;
+	    	peer.peerId  = key;
+	    	try {
+				IWorkingThread thread = (IWorkingThread)Naming.lookup( val );
+				thread.setDHTPeer(peer);
+			} catch (MalformedURLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NotBoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	    }
 	}
 
 	public static void main(String[] args) {

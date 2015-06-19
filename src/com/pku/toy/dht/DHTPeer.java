@@ -11,8 +11,8 @@ public class DHTPeer implements IDHTPeer
 	private static long PRIME = 990001;
 	
 	// Local address
-	private String address;
-	private long    peerId;
+	public  String address;
+	public  long    peerId;
 	
 	// DHT chord route table.
 	private TreeMap<Long, String> router;
@@ -20,10 +20,30 @@ public class DHTPeer implements IDHTPeer
 	// Local HashMap.
 	private HashMap<Long, Double> localHashMap;
 	
-	private  long getPeerId( Long key )
+	private  long getPeerIdByKey( Long key )
 	// Get the peerId that contain the key.
 	{
-		return 0;
+		for ( long k : router.keySet() )
+			if ( k >= key ) return k;
+		return -1;
+	}
+	
+	//--------------------------------zzy--------------
+	
+	public void setRouter(TreeMap<Long, String> router) 
+	{
+		this.router = new TreeMap<>();
+		for ( long key : router.keySet() )
+			this.router.put( key , router.get(key) );
+		return;
+	}
+	
+	public void set( DHTPeer peer )
+	{
+		this.address = peer.address;
+		this.peerId  = peer.peerId;
+		this.setRouter( peer.router );
+		localHashMap = new HashMap<Long, Double>();
 	}
 	
 

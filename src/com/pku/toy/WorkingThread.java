@@ -21,7 +21,7 @@ public class WorkingThread {
 	
 	public void setDHTPeer( DHTPeer peer )
 	{
-		
+		dhtPeer.set( peer );
 	}
 	
 	//-----------------------jdc-----------------
