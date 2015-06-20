@@ -78,10 +78,10 @@ public class TestStart {
 			System.out.println("end");
 			return;
 		} else {
-			/*
+			
 			Slave slave = new Slave();
-			slave.startEnv();*/
-			System.out.println("else end");
+			slave.startEnv();
+			System.out.println("slave start:" + slave.getAddress());
 		}
 		
 			
@@ -97,8 +97,8 @@ public class TestStart {
 			
 			CheckboxGroup group = new CheckboxGroup();
 			//Create the check boxes.
-			masterButton = new Checkbox("Master", true, group);	
-			slaveButton = new Checkbox("Slave", true, group);
+			masterButton = new Checkbox("Master", false, group);	
+			slaveButton = new Checkbox("Slave", false, group);
 			masterButton.addItemListener(this);
 			slaveButton.addItemListener(this);
 				
