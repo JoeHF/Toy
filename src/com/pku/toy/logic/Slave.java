@@ -14,11 +14,16 @@ public class Slave {
 	private List<WorkingThread> threads;
 	
 	public Slave() {
-		this.slaveActor = new SlaveActor(Constant.SLAVE_PORT, this);
+		
 	}
 	
-	public void startEnv() {
+	public void startActor() {
+		this.slaveActor = new SlaveActor(Constant.SLAVE_PORT, this);
 		this.slaveActor.run();
+	}
+	
+	public void stop() {
+		slaveActor.stop();
 	}
 	
 	public String getAddress() {

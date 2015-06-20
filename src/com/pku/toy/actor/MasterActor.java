@@ -23,7 +23,7 @@ public class MasterActor extends Thread {
 	private Master context;
 	private List<ISlave> slaveServices;
 	
-	public MasterActor(int _port, Master _context, List<SlaveModel> slaveModels) {
+	public MasterActor(int _port, Master _context) {
 		try {
 			ip = Address.GetIpAddress();
 		} catch (SocketException e) {
@@ -32,7 +32,9 @@ public class MasterActor extends Thread {
 		port = _port;
 		context = _context;
 		slaveServices = new ArrayList<>();
-		
+	}
+	
+	public void bindSlaveService(List<SlaveModel> slaveModels) {
 		try {
 			for (int i = 0; i < slaveModels.size(); i++) {
 				String lookupString = "rmi://" + slaveModels.get(i).getIp() + ":" + Constant.SLAVE_PORT + "/Slave";
@@ -62,6 +64,7 @@ public class MasterActor extends Thread {
 			IMaster masterActorService = new MasterImpl();
 			LocateRegistry.createRegistry(port);
 			Naming.rebind( "rmi://" + this.ip + ":" + port + "/Master", masterActorService);
+			System.out.println("master actor bind ip address:" + getIpAddress());
 		}
 		catch ( Exception e )
 		{

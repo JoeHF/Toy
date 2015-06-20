@@ -12,14 +12,25 @@ public class Master {
 	private MasterActor masterActor;
 	private int slaveNum;
 	private List<WorkingThread> threads;
+	private List<SlaveModel> slaveModels;
 	
-	public Master(List<SlaveModel> slaveModels) {
-		this.masterActor = new MasterActor(Constant.MASTER_PORT, this, slaveModels);
-		slaveNum = slaveModels.size();
+	public Master() {
+
 	}
 	
-	public void startEnv() {
+	public void startActor() {
+		this.masterActor = new MasterActor(Constant.MASTER_PORT, this);
 		this.masterActor.run();
+	}
+	
+	public void startEnv(List<SlaveModel> _slaveModels) {
+		slaveNum = _slaveModels.size();
+		slaveModels = _slaveModels;
+		masterActor.bindSlaveService(_slaveModels);
+	}
+	
+	public void stop() {
+		masterActor.stop();
 	}
 	
 	public String getAddress() {

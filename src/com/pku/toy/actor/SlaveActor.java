@@ -40,6 +40,7 @@ public class SlaveActor extends Thread {
 			ISlave slaveActorService = new SlaveImpl(this);
 			LocateRegistry.createRegistry(port);
 			Naming.rebind( "rmi://" + this.ip + ":" + port + "/Slave", slaveActorService);
+			System.out.println("slave actor bind ip address:" + getIpAddress());
 		}
 		catch ( Exception e )
 		{
