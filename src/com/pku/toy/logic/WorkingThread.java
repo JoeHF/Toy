@@ -1,7 +1,8 @@
-package com.pku.toy;
+package com.pku.toy.logic;
 
 import javax.swing.table.DefaultTableCellRenderer;
 
+import com.pku.toy.Constant;
 import com.pku.toy.Constant.WorkingThreadStatus;
 import com.pku.toy.dht.DHTPeer;
 

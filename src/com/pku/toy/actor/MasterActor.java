@@ -1,26 +1,57 @@
 package com.pku.toy.actor;
 
 import java.net.InetAddress;
+import java.net.SocketException;
 import java.rmi.Naming;
 import java.rmi.registry.LocateRegistry;
 import java.util.ArrayList;
 import java.util.List;
 
-import ZZY.IPrime;
-import ZZY.PrimeImpl;
+import util.Address;
 
-import com.pku.toy.Master;
-import com.pku.toy.model.WorkingThreadModel;
+import com.pku.toy.Constant;
+import com.pku.toy.logic.Master;
+import com.pku.toy.model.SlaveModel;
+import com.pku.toy.model.WorkingThreadData;
+import com.pku.toy.rmi.implement.MasterImpl;
+import com.pku.toy.rmi.inter.IMaster;
+import com.pku.toy.rmi.inter.ISlave;
 
 public class MasterActor extends Thread {
 	private String ip;
 	private int port;
 	private Master context;
+	private List<ISlave> slaveServices;
 	
-	public MasterActor(String _ip, int _port, Master _context) {
-		ip = _ip;
+	public MasterActor(int _port, Master _context, List<SlaveModel> slaveModels) {
+		try {
+			ip = Address.GetIpAddress();
+		} catch (SocketException e) {
+			e.printStackTrace();
+		}
 		port = _port;
 		context = _context;
+		slaveServices = new ArrayList<>();
+		
+		try {
+			for (int i = 0; i < slaveModels.size(); i++) {
+				String lookupString = "rmi://" + slaveModels.get(i).getIp() + ":" + Constant.SLAVE_PORT + "/Slave";
+				ISlave slaveService = (ISlave)Naming.lookup(lookupString);
+				slaveServices.add(slaveService);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void notifyStartReadFile() {
+		try {
+			for (int i = 0; i < slaveServices.size(); i++) {
+				slaveServices.get(i).notifyStartReadFile();
+			}	
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
@@ -28,12 +59,9 @@ public class MasterActor extends Thread {
 	{
 		try
 		{
-			IPrime primeService = new PrimeImpl();
-			LocateRegistry.createRegistry( 9090 );
-			InetAddress addr = InetAddress.getLocalHost();
-			String ip = addr.getHostAddress();
-			//String ip = "162.105.30.155";
-			Naming.rebind( "rmi://" + ip + ":9090/IPrime", primeService);
+			IMaster masterActorService = new MasterImpl();
+			LocateRegistry.createRegistry(port);
+			Naming.rebind( "rmi://" + this.ip + ":" + port + "/Master", masterActorService);
 		}
 		catch ( Exception e )
 		{
@@ -41,9 +69,23 @@ public class MasterActor extends Thread {
 		}
 	}
 	
-	public List<WorkingThreadModel> getWorkingEnvironment() {
-		List<WorkingThreadModel> workingThreadSituations = new ArrayList<>();
+	public List<WorkingThreadData> getWorkingThreadData() {
+		List<WorkingThreadData> workingThreadDatas = new ArrayList<>();
+		try {
+			for (int i = 0; i < slaveServices.size(); i++) {
+				if (slaveServices.get(i).getWorkingThreadDatas() != null) {
+					workingThreadDatas.addAll(slaveServices.get(i).getWorkingThreadDatas());	
+				}
+			}	
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
-		return workingThreadSituations;
+		return workingThreadDatas;
 	}
+	
+	public String getIpAddress() {
+		return this.ip;
+	}
+	
 }
