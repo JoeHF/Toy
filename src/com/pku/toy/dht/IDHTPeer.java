@@ -22,8 +22,8 @@ public interface IDHTPeer extends Remote
 	
 	public int size() throws RemoteException;
 
-	public void writeCheckPoint( String FileName ) throws RemoteException;
+	public void writeCheckPoint( String filePath ) throws RemoteException;
 
-	public void restoreFromCheckPoint( String fileName ) throws RemoteException;
+	public void restoreFromCheckPoint( String filePath ) throws RemoteException;
 	
 }

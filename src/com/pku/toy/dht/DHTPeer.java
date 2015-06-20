@@ -1,10 +1,20 @@
 package com.pku.toy.dht;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.*;
+
+import Dataset.SPair;
 
 public class DHTPeer implements IDHTPeer
 {
@@ -175,17 +185,55 @@ public class DHTPeer implements IDHTPeer
 
 
 	@Override
-	public void writeCheckPoint(String FileName) throws RemoteException 
+	public void writeCheckPoint( String filePath ) throws RemoteException 
 	{
 		// TODO Auto-generated method stub
-		
+		try 
+		{
+			File file = new File( filePath );
+			BufferedWriter writer = new BufferedWriter( 
+     		       new OutputStreamWriter( new FileOutputStream( file ), "UTF-8") );
+			writer.write( "" + this.peerId + "\n");
+			for ( long key : localHashMap.keySet() )
+				writer.write( "" + key + "\t" + localHashMap.get(key) + "\n" );
+			writer.flush();
+			writer.close();
+		} 
+		catch ( IOException e) 
+		{
+			// TODO: handle exception
+			e.printStackTrace();
+		}
 	}
 
 
 	@Override
-	public void restoreFromCheckPoint(String fileName) throws RemoteException {
+	public void restoreFromCheckPoint(String filePath) throws RemoteException 
+	{
 		// TODO Auto-generated method stub
-		
+		String line;
+		String[] map;
+		try
+		{
+			File file = new File( filePath );
+			BufferedReader reader = new BufferedReader( 
+     		       new InputStreamReader( new FileInputStream( file ), "UTF-8") );
+			line = reader.readLine();
+			this.peerId = Long.parseLong( line );
+			this.localHashMap = new HashMap<>();
+			while ( true )
+			{
+				line = reader.readLine();
+				if ( line==null ) break;
+				map = line.split( "\t" );
+				localHashMap.put( Long.parseLong(map[0]), Double.parseDouble(map[1]) );
+			}
+		}
+		catch ( IOException e) 
+		{
+			// TODO: handle exception
+			e.printStackTrace();
+		}
 	}
 	
 	//-------------------------------------------------------------------------------------------------------
