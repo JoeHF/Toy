@@ -1,8 +1,8 @@
+
 package com.pku.toy.logic;
 
 import javax.swing.table.DefaultTableCellRenderer;
 
-import com.pku.toy.Constant;
 import com.pku.toy.Constant.WorkingThreadStatus;
 import com.pku.toy.dht.DHTPeer;
 
@@ -22,8 +22,13 @@ public class WorkingThread {
 	
 	public void setDHTPeer( DHTPeer peer )
 	{
-		
+		dhtPeer.installLocalPeer(peer);
 	}
+	public void connectToOtherPeers()
+	{
+		dhtPeer.connectToOtherPeers();
+	}
+	
 	
 	//-----------------------jdc-----------------
 
