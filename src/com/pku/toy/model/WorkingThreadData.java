@@ -1,6 +1,8 @@
 package com.pku.toy.model;
 
-public class WorkingThreadData {
+import java.io.Serializable;
+
+public class WorkingThreadData implements Serializable {
 	private String ip;
 	private int threadNum;
 	private String lastContactTime;

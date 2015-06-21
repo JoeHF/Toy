@@ -17,6 +17,7 @@ public class SlaveImpl extends UnicastRemoteObject implements ISlave{
 	}
 
 	public void createWorkingThread(WorkingThreadData workingThreadData) throws RemoteException {
+		System.out.println("debug:slave impl create working thread");
 		slaveActor.createWorkingThread(workingThreadData);
 	}
 	

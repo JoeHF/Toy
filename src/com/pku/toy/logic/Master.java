@@ -39,6 +39,7 @@ public class Master {
 	}
 	
 	public void createWorkingThread(List<WorkingThreadData> workingThreadDatas) {
+		System.out.println("Master start create working thread");
 		masterActor.createWorkingThread(workingThreadDatas);
 	}
 	

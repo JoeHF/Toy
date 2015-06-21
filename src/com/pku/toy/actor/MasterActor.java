@@ -52,10 +52,11 @@ public class MasterActor extends Thread {
 		try {
 			for (int i = 0; i < workingThreadDatas.size(); i++) {
 				ISlave slaveService = slaveServices.get(workingThreadDatas.get(i).getIp());
+				System.out.println("debug:find slaveService:" + workingThreadDatas.get(i).getIp());
 				slaveService.createWorkingThread(workingThreadDatas.get(i));
 			}
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 	}
 	
