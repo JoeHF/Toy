@@ -13,6 +13,7 @@ import util.Address;
 
 import com.pku.toy.Constant;
 import com.pku.toy.logic.Master;
+import com.pku.toy.model.FileModel;
 import com.pku.toy.model.SlaveModel;
 import com.pku.toy.model.WorkingThreadData;
 import com.pku.toy.rmi.implement.MasterImpl;
@@ -52,7 +53,6 @@ public class MasterActor extends Thread {
 		try {
 			for (int i = 0; i < workingThreadDatas.size(); i++) {
 				ISlave slaveService = slaveServices.get(workingThreadDatas.get(i).getIp());
-				System.out.println("debug:find slaveService:" + workingThreadDatas.get(i).getIp());
 				slaveService.createWorkingThread(workingThreadDatas.get(i));
 			}
 		} catch (Exception e) {
@@ -60,11 +60,12 @@ public class MasterActor extends Thread {
 		}
 	}
 	
-	public void notifySlaveFetchFile() {
+	public void notifySlaveFetchFile(List<FileModel> fileModels) {
 		try {
-			for (int i = 0; i < slaveServices.size(); i++) {
-				slaveServices.get(i).receiveFetchFile();
-			}	
+			for (int i = 0; i < fileModels.size(); i++) {
+				ISlave slaveService = slaveServices.get(fileModels.get(i).getIp());
+				slaveService.receiveFetchFile(fileModels.get(i).getName());
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

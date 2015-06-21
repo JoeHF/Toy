@@ -9,6 +9,6 @@ import com.pku.toy.model.WorkingThreadData;
 public interface ISlave extends Remote {
 	public void notifyStartAll() throws RemoteException;
 	public List<WorkingThreadData> getWorkingThreadDatas() throws RemoteException;
-	public void receiveFetchFile() throws RemoteException;
+	public void receiveFetchFile(String fileName) throws RemoteException;
 	public void createWorkingThread(WorkingThreadData workingThreadData) throws RemoteException;
 }

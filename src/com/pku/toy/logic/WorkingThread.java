@@ -6,7 +6,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import com.pku.toy.dht.DHTPeer;
 import com.pku.toy.model.WorkingThreadData;
 
-public class WorkingThread {
+public class WorkingThread extends Thread {
 	
 	DHTPeer dhtPeer;
 	

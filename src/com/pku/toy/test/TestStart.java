@@ -32,6 +32,7 @@ import ZZY.IPrime;
 import com.pku.toy.Constant;
 import com.pku.toy.logic.Master;
 import com.pku.toy.logic.Slave;
+import com.pku.toy.model.FileModel;
 import com.pku.toy.model.SlaveModel;
 import com.pku.toy.model.WorkingThreadData;
 import com.pku.toy.rmi.inter.ISlave;
@@ -78,13 +79,18 @@ public class TestStart {
 		TextField slaveIp1;
 		TextField slaveIp2;
 		Button settingEnv;
-		Button test;
+		Button createWorkingThread;
+		Label file;
+		TextField filePath;
+		Label empty;
+		Button readFile;
 		
 		public JcheckBox() {
 			super(new BorderLayout());
 			
 			CheckboxGroup group = new CheckboxGroup();
 			//Create the check boxes.
+			empty = new Label();
 			masterCheckbox = new Checkbox("Master", false, group);	
 			slaveCheckbox = new Checkbox("Slave", false, group);
 			startActorButton = new Button("启动守护线程");
@@ -99,34 +105,39 @@ public class TestStart {
 			text1 = new Label("第一台主机ip");
 			text2 = new Label("第二台主机ip");
 			settingEnv = new Button("设置集群环境");
-			test = new Button("测试联机环境");
+			createWorkingThread = new Button("创建工作线程");
+			file = new Label("文件路径");
+			filePath = new TextField("graph.txt");
+			readFile = new Button("读入图文件");
 			
 			masterCheckbox.addItemListener(this);
 			slaveCheckbox.addItemListener(this);
 				
 			//Put the check boxes in a column in a panel
-			JPanel checkPanel1 = new JPanel(new GridLayout(2, 2));
+			JPanel checkPanel1 = new JPanel(new GridLayout(2, 2, 10, 10));
 			checkPanel1.add(masterCheckbox);
 			checkPanel1.add(slaveCheckbox);
 			checkPanel1.add(startActorButton);
 			startActorButton.addActionListener(this);
 			
-			JPanel checkPanel2 = new JPanel(new GridLayout(3, 2));
+			JPanel checkPanel2 = new JPanel(new GridLayout(5, 2, 10, 10));
 			checkPanel2.add(text1);
 			checkPanel2.add(text2);		
 			checkPanel2.add(slaveIp1);
 			checkPanel2.add(slaveIp2);
 			checkPanel2.add(settingEnv);
 			settingEnv.addActionListener(this);
-			
-			//JPanel checkPanel3 = new JPanel(new GridLayout(3, 2));
-			checkPanel2.add(test);
-			test.addActionListener(this);
+			checkPanel2.add(createWorkingThread);
+			createWorkingThread.addActionListener(this);
+			checkPanel2.add(file);
+			checkPanel2.add(empty);
+			checkPanel2.add(filePath);
+			checkPanel2.add(readFile);
+			readFile.addActionListener(this);
 			
 			add(checkPanel1, BorderLayout.NORTH);
 			add(checkPanel2, BorderLayout.SOUTH);
-			//add(checkPanel3, BorderLayout.EAST);
-			setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
+			setBorder(BorderFactory.createEmptyBorder(30,30,30,30));
 		}
 		
 		/** Listens to the check boxes. */
@@ -159,8 +170,10 @@ public class TestStart {
 				slaveModel.setIp(slaveIp2.getText());
 				slaveModels.add(slaveModel);
 				startEnv(slaveModels);
-			} else if (source == test) {
-				test();
+			} else if (source == createWorkingThread) {
+				createWorkingThread();
+			} else if (source == readFile) {
+				readFile(filePath.getText());
 			}
 		}
 	}
@@ -187,15 +200,26 @@ public class TestStart {
 		master.startEnv(slaveModels);
 	}
 	
-	public void test() {
-		Random random = new Random();
-		int idleNum = random.nextInt() % 4;
+	public void readFile(String filePath) {
+		List<FileModel> fileModels = new ArrayList<>();
+		for (int i = 0; i < Constant.THREAD_NUM; i++) {
+			if (!master.isIdleThread(i)) {
+				FileModel fileModel = new FileModel(ipList.get(i), "i");
+				fileModels.add(fileModel);
+			}
+		}
+		
+		master.readFile(fileModels);
+	}
+	
+	public void createWorkingThread() {
 		List<WorkingThreadData> workingThreadDatas = new ArrayList<>();
         for (int i = 0; i < Constant.THREAD_NUM; i++) {
-			if (i != idleNum) {
+			if (!master.isIdleThread(i)) {
 				WorkingThreadData workingThreadData = new WorkingThreadData(ipList.get(i), i, Constant.WORKING);
 				workingThreadDatas.add(workingThreadData);
 			} else {
+				System.out.println("idle thread number is:" + i);
 				WorkingThreadData workingThreadData = new WorkingThreadData(ipList.get(i), i, Constant.IDLE);
 				workingThreadDatas.add(workingThreadData);
 			}

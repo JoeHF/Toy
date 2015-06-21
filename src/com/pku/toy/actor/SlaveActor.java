@@ -35,8 +35,8 @@ public class SlaveActor extends Thread {
 		context.createWorkingThread(workingThreadData);
 	}
 	
-	public void startFetchFile() {
-		System.out.println("Slave Actor:receive start read file");
+	public void startFetchFile(String fileName) {
+		System.out.println("Slave Actor:receive start read file:" + fileName);
 	}
 	
 	public void run() {
