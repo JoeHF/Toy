@@ -44,6 +44,7 @@ public class TestStart {
 	private List<String> ipList = new ArrayList<>();
 	private String ip1 = "172.17.2.177";
 	private String ip2 = "172.17.2.233";
+	private String fileName;
 
 	public static void main( String[] args ) throws SocketException
 	{
@@ -173,6 +174,7 @@ public class TestStart {
 			} else if (source == createWorkingThread) {
 				createWorkingThread();
 			} else if (source == readFile) {
+				fileName = filePath.getText();
 				readFile(filePath.getText());
 			}
 		}
@@ -204,7 +206,7 @@ public class TestStart {
 		List<FileModel> fileModels = new ArrayList<>();
 		for (int i = 0; i < Constant.THREAD_NUM; i++) {
 			if (!master.isIdleThread(i)) {
-				FileModel fileModel = new FileModel(ipList.get(i), "i");
+				FileModel fileModel = new FileModel(ipList.get(i), fileName + "_part" + i);
 				fileModels.add(fileModel);
 			}
 		}
@@ -213,9 +215,12 @@ public class TestStart {
 	}
 	
 	public void createWorkingThread() {
+		Random random = new Random();
+		int idleNum = random.nextInt() % 4;
+		
 		List<WorkingThreadData> workingThreadDatas = new ArrayList<>();
         for (int i = 0; i < Constant.THREAD_NUM; i++) {
-			if (!master.isIdleThread(i)) {
+			if (i != idleNum) {
 				WorkingThreadData workingThreadData = new WorkingThreadData(ipList.get(i), i, Constant.WORKING);
 				workingThreadDatas.add(workingThreadData);
 			} else {
