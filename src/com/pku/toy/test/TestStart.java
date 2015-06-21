@@ -30,7 +30,6 @@ import util.Address;
 import ZZY.IPrime;
 
 import com.pku.toy.Constant;
-import com.pku.toy.Constant.WorkingThreadStatus;
 import com.pku.toy.logic.Master;
 import com.pku.toy.logic.Slave;
 import com.pku.toy.model.SlaveModel;
@@ -194,10 +193,10 @@ public class TestStart {
 		List<WorkingThreadData> workingThreadDatas = new ArrayList<>();
         for (int i = 0; i < Constant.THREAD_NUM; i++) {
 			if (i != idleNum) {
-				WorkingThreadData workingThreadData = new WorkingThreadData(ipList.get(i), i, WorkingThreadStatus.Working);
+				WorkingThreadData workingThreadData = new WorkingThreadData(ipList.get(i), i, Constant.WORKING);
 				workingThreadDatas.add(workingThreadData);
 			} else {
-				WorkingThreadData workingThreadData = new WorkingThreadData(ipList.get(i), i, WorkingThreadStatus.Idle);
+				WorkingThreadData workingThreadData = new WorkingThreadData(ipList.get(i), i, Constant.IDLE);
 				workingThreadDatas.add(workingThreadData);
 			}
 		}

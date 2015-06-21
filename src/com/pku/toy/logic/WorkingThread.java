@@ -3,7 +3,6 @@ package com.pku.toy.logic;
 
 import javax.swing.table.DefaultTableCellRenderer;
 
-import com.pku.toy.Constant.WorkingThreadStatus;
 import com.pku.toy.dht.DHTPeer;
 import com.pku.toy.model.WorkingThreadData;
 
@@ -13,7 +12,7 @@ public class WorkingThread {
 	
 	//-----------------------hf-----------------
 	private int id;
-	private WorkingThreadStatus status;
+	private String status;
 		
 	public WorkingThread(WorkingThreadData workingThreadData) {
 		 id = workingThreadData.getId();

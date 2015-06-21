@@ -5,10 +5,8 @@ public class Constant {
 	public static int SLAVE_PORT = 9001;
 	public static int MASTER_PORT = 9000;
 	
-	public static enum WorkingThreadStatus {
-		Idle,
-		Working
-	}
+	public static String IDLE = "idle";
+	public static String WORKING = "working";
 }
 
 

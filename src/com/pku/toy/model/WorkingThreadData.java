@@ -1,13 +1,12 @@
 package com.pku.toy.model;
-import com.pku.toy.Constant.WorkingThreadStatus;;
 
 public class WorkingThreadData {
 	private String ip;
 	private int threadNum;
 	private String lastContactTime;
-	private WorkingThreadStatus status;
+	private String status;
 	
-	public WorkingThreadData(String _ip, int _threadNum, WorkingThreadStatus _status) {
+	public WorkingThreadData(String _ip, int _threadNum, String _status) {
 		ip = _ip;
 		threadNum = _threadNum;
 		status = _status;
@@ -17,7 +16,7 @@ public class WorkingThreadData {
 		return this.threadNum;
 	}
 	
-	public WorkingThreadStatus getStatus() {
+	public String getStatus() {
 		return this.status;
 	}
 	
