@@ -5,7 +5,9 @@ import java.net.SocketException;
 import java.rmi.Naming;
 import java.rmi.registry.LocateRegistry;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import util.Address;
 
@@ -21,7 +23,7 @@ public class MasterActor extends Thread {
 	private String ip;
 	private int port;
 	private Master context;
-	private List<ISlave> slaveServices;
+	private Map<String, ISlave> slaveServices;
 	
 	public MasterActor(int _port, Master _context) {
 		try {
@@ -31,7 +33,7 @@ public class MasterActor extends Thread {
 		}
 		port = _port;
 		context = _context;
-		slaveServices = new ArrayList<>();
+		slaveServices = new HashMap();
 	}
 	
 	public void bindSlaveService(List<SlaveModel> slaveModels) {
@@ -39,17 +41,28 @@ public class MasterActor extends Thread {
 			for (int i = 0; i < slaveModels.size(); i++) {
 				String lookupString = "rmi://" + slaveModels.get(i).getIp() + ":" + Constant.SLAVE_PORT + "/Slave";
 				ISlave slaveService = (ISlave)Naming.lookup(lookupString);
-				slaveServices.add(slaveService);
+				slaveServices.put(slaveModels.get(i).getIp(), slaveService);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public void notifyStartReadFile() {
+	public void createWorkingThread(List<WorkingThreadData> workingThreadDatas) {
+		try {
+			for (int i = 0; i < workingThreadDatas.size(); i++) {
+				ISlave slaveService = slaveServices.get(workingThreadDatas.get(i).getIp());
+				slaveService.createWorkingThread(workingThreadDatas.get(i));
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+	}
+	
+	public void notifySlaveFetchFile() {
 		try {
 			for (int i = 0; i < slaveServices.size(); i++) {
-				slaveServices.get(i).notifyStartReadFile();
+				slaveServices.get(i).receiveFetchFile();
 			}	
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -61,7 +74,7 @@ public class MasterActor extends Thread {
 	{
 		try
 		{
-			IMaster masterActorService = new MasterImpl();
+			IMaster masterActorService = new MasterImpl(this);
 			LocateRegistry.createRegistry(port);
 			Naming.rebind( "rmi://" + this.ip + ":" + port + "/Master", masterActorService);
 			System.out.println("master actor bind ip address:" + getIpAddress());

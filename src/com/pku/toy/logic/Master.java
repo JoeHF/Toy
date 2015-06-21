@@ -5,6 +5,7 @@ import java.util.List;
 import com.pku.toy.Constant;
 import com.pku.toy.actor.MasterActor;
 import com.pku.toy.model.SlaveModel;
+import com.pku.toy.model.WorkingThreadData;
 
 public class Master {
 	
@@ -29,26 +30,17 @@ public class Master {
 		masterActor.bindSlaveService(_slaveModels);
 	}
 	
-	public void stop() {
-		masterActor.stop();
-	}
-	
 	public String getAddress() {
 		return masterActor.getIpAddress();
 	}
 	
-	public void startReadFile() {
-		masterActor.notifyStartReadFile();
+	public void readFile(String path) {
+		masterActor.notifySlaveFetchFile();
 	}
 	
-	private void wakeUpMasterActor() {
-		
+	public void createWorkingThread(List<WorkingThreadData> workingThreadDatas) {
+		masterActor.createWorkingThread(workingThreadDatas);
 	}
-	
-	private void wakeUpSlaves() {
-		
-	}
-	
 	
 	//---------zzy-----------------------
 	

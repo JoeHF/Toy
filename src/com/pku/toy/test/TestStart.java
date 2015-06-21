@@ -16,6 +16,7 @@ import java.net.SocketException;
 import java.rmi.Naming;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
@@ -29,15 +30,20 @@ import util.Address;
 import ZZY.IPrime;
 
 import com.pku.toy.Constant;
+import com.pku.toy.Constant.WorkingThreadStatus;
 import com.pku.toy.logic.Master;
 import com.pku.toy.logic.Slave;
 import com.pku.toy.model.SlaveModel;
+import com.pku.toy.model.WorkingThreadData;
 import com.pku.toy.rmi.inter.ISlave;
 
 public class TestStart {
 	public int ident = -1; //ident 0表示是启动slave ident1表示是启动master
 	private Master master;
 	private Slave slave;
+	private List<String> ipList = new ArrayList<>();
+	private String ip1 = "172.17.2.177";
+	private String ip2 = "172.17.2.233";
 
 	public static void main( String[] args ) throws SocketException
 	{
@@ -73,6 +79,7 @@ public class TestStart {
 		TextField slaveIp1;
 		TextField slaveIp2;
 		Button settingEnv;
+		Button test;
 		
 		public JcheckBox() {
 			super(new BorderLayout());
@@ -82,13 +89,18 @@ public class TestStart {
 			masterCheckbox = new Checkbox("Master", false, group);	
 			slaveCheckbox = new Checkbox("Slave", false, group);
 			startActorButton = new Button("启动守护线程");
-			slaveIp1 = new TextField("");
+			ipList.add(ip1);
+			ipList.add(ip1);
+			ipList.add(ip2);
+			ipList.add(ip2);
+			slaveIp1 = new TextField(ip1); //测试ip
 			slaveIp1.setEditable(true);
-			slaveIp2 = new TextField("");
+			slaveIp2 = new TextField(ip2); //测试ip
 			slaveIp2.setEditable(true);
 			text1 = new Label("第一台主机ip");
 			text2 = new Label("第二台主机ip");
 			settingEnv = new Button("设置集群环境");
+			test = new Button("测试联机环境");
 			
 			masterCheckbox.addItemListener(this);
 			slaveCheckbox.addItemListener(this);
@@ -108,8 +120,13 @@ public class TestStart {
 			checkPanel2.add(settingEnv);
 			settingEnv.addActionListener(this);
 			
+			//JPanel checkPanel3 = new JPanel(new GridLayout(3, 2));
+			checkPanel2.add(test);
+			test.addActionListener(this);
+			
 			add(checkPanel1, BorderLayout.NORTH);
 			add(checkPanel2, BorderLayout.SOUTH);
+			//add(checkPanel3, BorderLayout.EAST);
 			setBorder(BorderFactory.createEmptyBorder(20,20,20,20));
 		}
 		
@@ -143,7 +160,9 @@ public class TestStart {
 				slaveModel.setIp(slaveIp2.getText());
 				slaveModels.add(slaveModel);
 				startEnv(slaveModels);
-			}	
+			} else if (source == test) {
+				test();
+			}
 		}
 	}
 	
@@ -167,6 +186,23 @@ public class TestStart {
 	
 	public void startEnv(List<SlaveModel> slaveModels) {
 		master.startEnv(slaveModels);
+	}
+	
+	public void test() {
+		Random random = new Random();
+		int idleNum = random.nextInt() % 4;
+		List<WorkingThreadData> workingThreadDatas = new ArrayList<>();
+        for (int i = 0; i < Constant.THREAD_NUM; i++) {
+			if (i != idleNum) {
+				WorkingThreadData workingThreadData = new WorkingThreadData(ipList.get(i), i, WorkingThreadStatus.Working);
+				workingThreadDatas.add(workingThreadData);
+			} else {
+				WorkingThreadData workingThreadData = new WorkingThreadData(ipList.get(i), i, WorkingThreadStatus.Idle);
+				workingThreadDatas.add(workingThreadData);
+			}
+		}
+		
+		master.createWorkingThread(workingThreadDatas);
 	}
 	
 }

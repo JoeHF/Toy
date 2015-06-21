@@ -16,14 +16,13 @@ public class SlaveImpl extends UnicastRemoteObject implements ISlave{
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
-	public void notifyStartAll() throws RemoteException {
-		
+	public void createWorkingThread(WorkingThreadData workingThreadData) throws RemoteException {
+		slaveActor.createWorkingThread(workingThreadData);
 	}
 	
 	@Override
-	public void notifyStartReadFile() throws RemoteException {
-		slaveActor.receiveStartReadFile();
+	public void receiveFetchFile() throws RemoteException {
+		slaveActor.startFetchFile();
 	}
 
 	@Override
@@ -31,6 +30,12 @@ public class SlaveImpl extends UnicastRemoteObject implements ISlave{
 			throws RemoteException {
 		System.out.println("slaveimpl: slave get working thread datas");
 		return null;
+	}
+
+	@Override
+	public void notifyStartAll() throws RemoteException {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

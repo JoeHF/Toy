@@ -1,10 +1,12 @@
 package com.pku.toy.logic;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.pku.toy.Constant;
 import com.pku.toy.actor.MasterActor;
 import com.pku.toy.actor.SlaveActor;
+import com.pku.toy.model.WorkingThreadData;
 
 public class Slave {
 	
@@ -14,7 +16,8 @@ public class Slave {
 	private List<WorkingThread> threads;
 	
 	public Slave() {
-		
+		threadNum = 0;
+		threads = new ArrayList<>();
 	}
 	
 	public void startActor() {
@@ -22,8 +25,11 @@ public class Slave {
 		this.slaveActor.run();
 	}
 	
-	public void stop() {
-		slaveActor.stop();
+	public void createWorkingThread(WorkingThreadData workingThreadData) {
+		System.out.println("slave " + getAddress() + "thread num:" + workingThreadData.getId() + " create working thread:" + workingThreadData.getStatus());
+		WorkingThread thread = new WorkingThread(workingThreadData);
+		threads.add(thread);
+		threadNum++;
 	}
 	
 	public String getAddress() {
@@ -32,16 +38,7 @@ public class Slave {
 	
 	public void startReadFile() {
 		System.out.println("Slave: start read file");
-	}
-	
-	private void wakeUpMasterActor() {
-		
-	}
-	
-	private void wakeUpSlaves() {
-		
-	}
-	
+	}	
 	
 	//---------zzy-----------------------
 	

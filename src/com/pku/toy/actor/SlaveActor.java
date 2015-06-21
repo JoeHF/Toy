@@ -8,6 +8,7 @@ import util.Address;
 
 import com.pku.toy.logic.Slave;
 import com.pku.toy.logic.WorkingThread;
+import com.pku.toy.model.WorkingThreadData;
 import com.pku.toy.rmi.implement.SlaveImpl;
 import com.pku.toy.rmi.inter.ISlave;
 
@@ -30,7 +31,11 @@ public class SlaveActor extends Thread {
 		return this.ip;
 	}
 	
-	public void receiveStartReadFile() {
+	public void createWorkingThread(WorkingThreadData workingThreadData) {
+		context.createWorkingThread(workingThreadData);
+	}
+	
+	public void startFetchFile() {
 		System.out.println("Slave Actor:receive start read file");
 	}
 	
