@@ -95,10 +95,7 @@ public class TestStart {
 			masterCheckbox = new Checkbox("Master", false, group);	
 			slaveCheckbox = new Checkbox("Slave", false, group);
 			startActorButton = new Button("启动守护线程");
-			ipList.add(ip1);
-			ipList.add(ip1);
-			ipList.add(ip2);
-			ipList.add(ip2);
+			
 			slaveIp1 = new TextField(ip1); 
 			slaveIp1.setEditable(true);
 			slaveIp2 = new TextField(ip2); 
@@ -171,6 +168,10 @@ public class TestStart {
 				slaveModel.setIp(slaveIp2.getText());
 				slaveModels.add(slaveModel);
 				startEnv(slaveModels);
+				ipList.add(slaveIp1.getText());
+				ipList.add(slaveIp1.getText());
+				ipList.add(slaveIp2.getText());
+				ipList.add(slaveIp2.getText());
 			} else if (source == createWorkingThread) {
 				createWorkingThread();
 			} else if (source == readFile) {
@@ -216,7 +217,7 @@ public class TestStart {
 	
 	public void createWorkingThread() {
 		Random random = new Random();
-		int idleNum = random.nextInt() % 4;
+		int idleNum = Math.abs(random.nextInt()) % 4;
 		System.out.println("Idle thread num:" + idleNum);
 		
 		List<WorkingThreadData> workingThreadDatas = new ArrayList<>();
