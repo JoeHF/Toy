@@ -1,5 +1,6 @@
 package com.pku.toy.dht;
 
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
@@ -59,8 +60,10 @@ public class DHT implements Map<Long, Double>
 	    				targetModel = model;
 	    				break;
 	    			}
+	    		
+	    		peer.threadId = targetModel.threadId;
 				ISlave slave = (ISlave)Naming.lookup( targetModel.slaveService );
-				slave.setDHTPeer(peer, targetModel );
+				slave.setDHTPeer(peer);
 			}
 	    	catch ( Exception e )
 	    	{
@@ -82,7 +85,7 @@ public class DHT implements Map<Long, Double>
 	    				break;
 	    			}
 				ISlave slave = (ISlave)Naming.lookup( targetModel.slaveService );
-				slave.connectToOtherPeers( targetModel );
+				slave.connectToOtherPeers(targetModel.threadId);
 			}
 	    	catch ( Exception e )
 	    	{

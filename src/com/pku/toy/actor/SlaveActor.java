@@ -45,14 +45,14 @@ public class SlaveActor extends Thread {
 	}
 	
 
-	public void setDHTPeer(DHTPeer peer, PeerModel model ) {
+	public void setDHTPeer(DHTPeer peer) {
 		// TODO Auto-generated method stub
-		context.setDHTPeer( peer, model );
+		context.setDHTPeer(peer);
 	}
 
-	public void connectToOtherPeers( PeerModel model )  {
+	public void connectToOtherPeers(int threadId)  {
 		// TODO Auto-generated method stub
-		context.connectToOtherPeers( model );
+		context.connectToOtherPeers(threadId);
 	}
 	
 	public void run() {

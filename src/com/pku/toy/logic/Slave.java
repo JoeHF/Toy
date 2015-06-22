@@ -29,24 +29,29 @@ public class Slave {
 	}
 	
 	public void createWorkingThread(WorkingThreadData workingThreadData) {
-		System.out.println("slave " + getAddress() + "thread num:" + workingThreadData.getId() + " create working thread:" + workingThreadData.getStatus());
+		System.out.println("slave " + getAddress() + " thread num:" + workingThreadData.getId() + " create working thread:" + workingThreadData.getStatus());
 		WorkingThread thread = new WorkingThread(workingThreadData);
 		threads.add(thread);
 		threadNum++;
 	}
 	
-	public void setDHTPeer(DHTPeer peer, PeerModel model ) {
+	private void createDHTService() {
+		
+	}
+	
+	public void setDHTPeer(DHTPeer peer) {
+		System.out.println("Slave create dht peer:" + peer.address);
 		for ( int i = 0 ; i < threadNum ; i++) {
-			if (threads.get(i).getId() == model.threadId) {
+			if (threads.get(i).getId() == peer.threadId) {
 				threads.get(i).dhtPeer = new DHTPeer();
 				threads.get(i).dhtPeer.installLocalPeer(peer);
 			}
 		}
 	}
 	
-	public void connectToOtherPeers( PeerModel model )  {
+	public void connectToOtherPeers(int threadId)  {
 		for ( int i = 0 ; i < threadNum ; i++) {
-			if (threads.get(i).getId() == model.threadId) {
+			if (threads.get(i).getId() == threadId) {
 				threads.get(i).dhtPeer.connectToOtherPeers();
 			}
 		}

@@ -13,6 +13,6 @@ public interface ISlave extends Remote {
 	public List<WorkingThreadData> getWorkingThreadDatas() throws RemoteException;
 	public void receiveFetchFile(String fileName) throws RemoteException;
 	public void createWorkingThread(WorkingThreadData workingThreadData) throws RemoteException;
-	public void setDHTPeer( DHTPeer peer, PeerModel model ) throws RemoteException;
-	public void connectToOtherPeers( PeerModel model ) throws RemoteException;
+	public void setDHTPeer(DHTPeer peer) throws RemoteException;
+	public void connectToOtherPeers(int threadId) throws RemoteException;
 }

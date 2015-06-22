@@ -42,8 +42,8 @@ public class TestStart {
 	private Master master;
 	private Slave slave;
 	private List<String> ipList = new ArrayList<>();
-	private String ip1 = "162.105.30.224";
-	private String ip2 = "162.105.30.122";
+	private String ip1 = "172.17.2.175";
+	private String ip2 = "172.17.2.175";
 	private String fileName;
 
 	public static void main( String[] args ) throws SocketException
@@ -54,7 +54,7 @@ public class TestStart {
 	public class MyRunnable implements Runnable {
 		public void run() {
 			//Create and set up the window.
-	        JFrame frame = new JFrame("鐜閰嶇疆");
+	        JFrame frame = new JFrame("初始化");
 	        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	 
 	        //Create and set up the content pane.
@@ -94,22 +94,22 @@ public class TestStart {
 			empty = new Label();
 			masterCheckbox = new Checkbox("Master", false, group);	
 			slaveCheckbox = new Checkbox("Slave", false, group);
-			startActorButton = new Button("鍚姩瀹堟姢绾跨▼");
+			startActorButton = new Button("启动守护线程");
 			ipList.add(ip1);
 			ipList.add(ip1);
 			ipList.add(ip2);
 			ipList.add(ip2);
-			slaveIp1 = new TextField(ip1); //娴嬭瘯ip
+			slaveIp1 = new TextField(ip1); 
 			slaveIp1.setEditable(true);
-			slaveIp2 = new TextField(ip2); //娴嬭瘯ip
+			slaveIp2 = new TextField(ip2); 
 			slaveIp2.setEditable(true);
-			text1 = new Label("绗竴鍙颁富鏈篿p");
-			text2 = new Label("绗簩鍙颁富鏈篿p");
-			settingEnv = new Button("璁剧疆闆嗙兢鐜");
-			createWorkingThread = new Button("鍒涘缓宸ヤ綔绾跨▼");
-			file = new Label("鏂囦欢璺緞");
+			text1 = new Label("第一台主机ip");
+			text2 = new Label("第二台主机ip");
+			settingEnv = new Button("初始化集群环境");
+			createWorkingThread = new Button("创建工作线程");
+			file = new Label("图文件名");
 			filePath = new TextField("graph.txt");
-			readFile = new Button("璇诲叆鍥炬枃浠�");
+			readFile = new Button("读入图文件");
 			
 			masterCheckbox.addItemListener(this);
 			slaveCheckbox.addItemListener(this);
@@ -217,6 +217,7 @@ public class TestStart {
 	public void createWorkingThread() {
 		Random random = new Random();
 		int idleNum = random.nextInt() % 4;
+		System.out.println("Idle thread num:" + idleNum);
 		
 		List<WorkingThreadData> workingThreadDatas = new ArrayList<>();
         for (int i = 0; i < Constant.THREAD_NUM; i++) {

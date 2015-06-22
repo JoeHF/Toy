@@ -6,7 +6,7 @@ import java.rmi.RemoteException;
 import java.util.*;
 
 
-public class DHTPeer implements IDHTPeer
+public class DHTPeer implements IDHTPeer, Serializable
 {
 
 	private static long PRIME = 990001;
@@ -14,6 +14,7 @@ public class DHTPeer implements IDHTPeer
 	// Local address
 	public String address;
 	public long    peerId;
+	public int threadId;
 	
 	// DHT chord route table.
 	private TreeMap<Long, String>    router;

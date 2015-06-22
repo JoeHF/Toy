@@ -41,15 +41,15 @@ public class SlaveImpl extends UnicastRemoteObject implements ISlave{
 	}
 
 	@Override
-	public void setDHTPeer(DHTPeer peer, PeerModel model) throws RemoteException {
+	public void setDHTPeer(DHTPeer peer) throws RemoteException {
 		// TODO Auto-generated method stub
-		slaveActor.setDHTPeer( peer, model );
+		slaveActor.setDHTPeer(peer);
 	}
 
 	@Override
-	public void connectToOtherPeers( PeerModel model ) throws RemoteException {
+	public void connectToOtherPeers(int threadId) throws RemoteException {
 		// TODO Auto-generated method stub
-		slaveActor.connectToOtherPeers( model );
+		slaveActor.connectToOtherPeers(threadId);
 	}
 	
 

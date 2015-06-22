@@ -8,7 +8,9 @@ import java.util.Set;
 
 import com.pku.toy.Constant;
 import com.pku.toy.actor.MasterActor;
+import com.pku.toy.dht.DHT;
 import com.pku.toy.model.FileModel;
+import com.pku.toy.model.PeerModel;
 import com.pku.toy.model.SlaveModel;
 import com.pku.toy.model.WorkingThreadData;
 
@@ -20,6 +22,7 @@ public class Master {
 	private List<WorkingThreadData> threads;
 	private List<SlaveModel> slaveModels;
 	private Set<Integer> idleThreadNumber = new HashSet<Integer>();
+	private DHT dht;
 	
 	public Master() {
 		
@@ -58,6 +61,25 @@ public class Master {
 		threads = workingThreadDatas;
 		System.out.println("Master start create working thread");
 		masterActor.createWorkingThread(workingThreadDatas);
+		
+		createDHTService();   //create dht service
+	}
+	
+	private void createDHTService() {
+		List<PeerModel> peerModels = new ArrayList<>();
+		for (int i = 0; i < threads.size(); i++) {
+			if (threads.get(i).getStatus().equals(Constant.WORKING)) {
+				PeerModel peer = new PeerModel();
+				System.out.println("Master create dht peer service:" + "rmi://" + threads.get(i).getIp() + ":" + Constant.PEER_PORT + "/DHTService" + threads.get(i).getId());
+				peer.peerAddress = "rmi://" + threads.get(i).getIp() + ":" + Constant.PEER_PORT + "/DHTService" + threads.get(i).getId();
+				peer.slaveService = "rmi://" + threads.get(i).getIp() + ":" + Constant.SLAVE_PORT + "/Slave";
+				peer.threadId = threads.get(i).getId();
+				peerModels.add(peer);	
+			}
+		}
+		
+		dht = new DHT();
+		dht.setDHT(peerModels, 1000);
 	}
 	
 	//---------zzy-----------------------
