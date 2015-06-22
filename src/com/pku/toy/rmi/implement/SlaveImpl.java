@@ -5,6 +5,8 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
 
 import com.pku.toy.actor.SlaveActor;
+import com.pku.toy.dht.DHTPeer;
+import com.pku.toy.model.PeerModel;
 import com.pku.toy.model.WorkingThreadData;
 import com.pku.toy.rmi.inter.ISlave;
 
@@ -37,5 +39,18 @@ public class SlaveImpl extends UnicastRemoteObject implements ISlave{
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void setDHTPeer(DHTPeer peer, PeerModel model) throws RemoteException {
+		// TODO Auto-generated method stub
+		slaveActor.setDHTPeer( peer, model );
+	}
+
+	@Override
+	public void connectToOtherPeers( PeerModel model ) throws RemoteException {
+		// TODO Auto-generated method stub
+		slaveActor.connectToOtherPeers( model );
+	}
+	
 
 }

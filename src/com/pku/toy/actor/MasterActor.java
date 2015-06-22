@@ -42,6 +42,7 @@ public class MasterActor extends Thread {
 			for (int i = 0; i < slaveModels.size(); i++) {
 				String lookupString = "rmi://" + slaveModels.get(i).getIp() + ":" + Constant.SLAVE_PORT + "/Slave";
 				ISlave slaveService = (ISlave)Naming.lookup(lookupString);
+				System.out.println("bind slave service:" + slaveModels.get(i).getIp());
 				slaveServices.put(slaveModels.get(i).getIp(), slaveService);
 			}
 		} catch (Exception e) {

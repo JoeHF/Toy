@@ -21,15 +21,6 @@ public class WorkingThread extends Thread {
 	
 	//-----------------------zzy------------------
 	
-	public void setDHTPeer( DHTPeer peer )
-	{
-		dhtPeer.installLocalPeer(peer);
-	}
-	public void connectToOtherPeers()
-	{
-		dhtPeer.connectToOtherPeers();
-	}
-	
 	
 	//-----------------------jdc-----------------
 

@@ -10,7 +10,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-import com.pku.toy.IWorkingThread;
+import javax.management.modelmbean.ModelMBean;
+
+import com.pku.toy.model.PeerModel;
+import com.pku.toy.rmi.inter.ISlave;
+
 import ZZY.IPrime;
 
 public class DHT implements Map<Long, Double>
@@ -24,9 +28,10 @@ public class DHT implements Map<Long, Double>
 		// TODO Auto-generated constructor stub
 	}
 	
-	public void setDHT( int peerNum, List<String> peerAddr,  long range)
+	public void setDHT( List<PeerModel> peerAddr, long range)
 	{
-		long i,j;
+		long i,j,slaveId;
+		int  x;
 		int k;
 		
 	    //create DHT Route Table
@@ -34,20 +39,28 @@ public class DHT implements Map<Long, Double>
 	    router = new TreeMap<>();
 	    j = range/peerAddr.size();
 	    for ( i=1; i<peerAddr.size(); i++ )
-	    	router.put( j*i, peerAddr.get((int) i-1) );
-	    router.put( range ,  peerAddr.get( peerAddr.size()-1 ) );
+	    	router.put( j*i, peerAddr.get((int) i-1).peerAddress );
+	    router.put( range ,  peerAddr.get( peerAddr.size()-1 ).peerAddress );
 	    
 	    // create a DHT peer, let working thread copy its TreeMap.
 	    DHTPeer peer = new DHTPeer();
 	    peer.setRouter( router );
+
 	    for ( long key : router.keySet() )
 	    {
 	    	String val = router.get( key );
 	    	peer.address = val;
 	    	peer.peerId  = key;
 	    	try {
-				IWorkingThread thread = (IWorkingThread)Naming.lookup( val );
-				thread.setDHTPeer(peer);
+	    		PeerModel targetModel = null;
+	    		for ( PeerModel model : peerAddr )
+	    			if ( model.peerAddress.equals( val ) )
+	    			{
+	    				targetModel = model;
+	    				break;
+	    			}
+				ISlave slave = (ISlave)Naming.lookup( targetModel.slaveService );
+				slave.setDHTPeer(peer, targetModel );
 			}
 	    	catch ( Exception e )
 	    	{
@@ -61,8 +74,15 @@ public class DHT implements Map<Long, Double>
 	    	peer.address = val;
 	    	peer.peerId  = key;
 	    	try {
-				IWorkingThread thread = (IWorkingThread)Naming.lookup( val );
-                thread.connectToOtherPeers();
+	    		PeerModel targetModel = null;
+	    		for ( PeerModel model : peerAddr )
+	    			if ( model.peerAddress.equals( val ) )
+	    			{
+	    				targetModel = model;
+	    				break;
+	    			}
+				ISlave slave = (ISlave)Naming.lookup( targetModel.slaveService );
+				slave.connectToOtherPeers( targetModel );
 			}
 	    	catch ( Exception e )
 	    	{

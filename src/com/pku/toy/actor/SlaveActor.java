@@ -2,12 +2,15 @@ package com.pku.toy.actor;
 
 import java.net.SocketException;
 import java.rmi.Naming;
+import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 
 import util.Address;
 
+import com.pku.toy.dht.DHTPeer;
 import com.pku.toy.logic.Slave;
 import com.pku.toy.logic.WorkingThread;
+import com.pku.toy.model.PeerModel;
 import com.pku.toy.model.WorkingThreadData;
 import com.pku.toy.rmi.implement.SlaveImpl;
 import com.pku.toy.rmi.inter.ISlave;
@@ -36,8 +39,20 @@ public class SlaveActor extends Thread {
 		context.createWorkingThread(workingThreadData);
 	}
 	
+	
 	public void startFetchFile(String fileName) {
 		System.out.println("Slave Actor:receive start read file:" + fileName);
+	}
+	
+
+	public void setDHTPeer(DHTPeer peer, PeerModel model ) {
+		// TODO Auto-generated method stub
+		context.setDHTPeer( peer, model );
+	}
+
+	public void connectToOtherPeers( PeerModel model )  {
+		// TODO Auto-generated method stub
+		context.connectToOtherPeers( model );
 	}
 	
 	public void run() {
@@ -53,5 +68,7 @@ public class SlaveActor extends Thread {
 			e.printStackTrace();
 		}
 	}
+	
+	
 
 }

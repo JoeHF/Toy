@@ -6,6 +6,8 @@ import java.util.List;
 import com.pku.toy.Constant;
 import com.pku.toy.actor.MasterActor;
 import com.pku.toy.actor.SlaveActor;
+import com.pku.toy.dht.DHTPeer;
+import com.pku.toy.model.PeerModel;
 import com.pku.toy.model.WorkingThreadData;
 
 public class Slave {
@@ -31,6 +33,23 @@ public class Slave {
 		WorkingThread thread = new WorkingThread(workingThreadData);
 		threads.add(thread);
 		threadNum++;
+	}
+	
+	public void setDHTPeer(DHTPeer peer, PeerModel model ) {
+		for ( int i = 0 ; i < threadNum ; i++) {
+			if (threads.get(i).getId() == model.threadId) {
+				threads.get(i).dhtPeer = new DHTPeer();
+				threads.get(i).dhtPeer.installLocalPeer(peer);
+			}
+		}
+	}
+	
+	public void connectToOtherPeers( PeerModel model )  {
+		for ( int i = 0 ; i < threadNum ; i++) {
+			if (threads.get(i).getId() == model.threadId) {
+				threads.get(i).dhtPeer.connectToOtherPeers();
+			}
+		}
 	}
 	
 	public String getAddress() {
