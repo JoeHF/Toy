@@ -20,6 +20,7 @@ public class SlaveActor extends Thread {
 	public SlaveActor(int _port, Slave _context) {
 		try {
 			ip = Address.GetIpAddress();
+			System.setProperty("java.rmi.server.hostname", ip);
 		} catch (SocketException e) {
 			e.printStackTrace();
 		}
