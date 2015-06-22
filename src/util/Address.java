@@ -18,7 +18,6 @@ public class Address {
 		    {
 		        InetAddress i = (InetAddress) ee.nextElement();
 		        String[] temp = i.getHostAddress().split("\\.");
-		        
 		        if (temp.length == 4 && (!temp[0].equalsIgnoreCase("127"))) {
 					ip = i.getHostAddress();
 				}
