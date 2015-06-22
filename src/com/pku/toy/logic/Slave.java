@@ -21,6 +21,7 @@ public class Slave {
 	}
 	
 	public void startActor() {
+		
 		this.slaveActor = new SlaveActor(Constant.SLAVE_PORT, this);
 		this.slaveActor.run();
 	}
