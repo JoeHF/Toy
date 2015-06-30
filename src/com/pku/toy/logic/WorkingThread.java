@@ -3,8 +3,26 @@ package com.pku.toy.logic;
 
 import javax.swing.table.DefaultTableCellRenderer;
 
+import org.omg.CORBA.PUBLIC_MEMBER;
+
 import com.pku.toy.dht.DHTPeer;
 import com.pku.toy.model.WorkingThreadData;
+
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.ObjectOutputStream.PutField;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.PrimitiveIterator.OfDouble;
+
 
 public class WorkingThread extends Thread {
 	
@@ -23,5 +41,58 @@ public class WorkingThread extends Thread {
 	
 	
 	//-----------------------jdc-----------------
-
+    private HashMap<Long, Long> globalDegree;
+    public void readDegree() {
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader("Degree.txt"));
+			String line;
+			String[] s;
+			this.globalDegree = new HashMap<Long, Long>();
+			while(true) {
+				line = reader.readLine();
+				if(line == null) break;
+				s = line.split("\t");
+				globalDegree.put(Long.parseLong(s[0]), Long.parseLong(s[1]));
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+    //d:damping factor N:point sum
+	public void updatePageRank(double d, Long N){
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader("Neighbors.txt"));
+			String line;
+			String[] s;
+			String lastKey = "";
+		    List<Long> neighbors = new ArrayList<Long>(); 
+			while(true) {
+				line = reader.readLine();
+				if(line == null) break;
+				s = line.split("\t");
+				if (lastKey.equals("") || s[0].equals(lastKey)) {
+					neighbors.add(Long.parseLong(s[1]));
+					lastKey = s[0];
+				}
+				else {
+					lastKey = s[0];
+					Map<Long, Double> neighborPageRank = dhtPeer.getMaps(neighbors);
+					double sum = 0;
+					for(Iterator<Long> iter = neighbors.iterator(); iter.hasNext();) {
+						Long key = iter.next();
+						sum += 1.0*neighborPageRank.get(key)/globalDegree.get(key);
+					} 	
+					dhtPeer.put(Long.parseLong(lastKey), sum*d+(1-d)*1.0/N);
+					neighbors.clear();
+					sum = 0;
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	
 }
