@@ -46,6 +46,7 @@ public class MasterActor extends Thread {
 				ISlave slaveService = (ISlave)Naming.lookup(lookupString);
 				System.out.println("bind slave service:" + slaveModels.get(i).getIp());
 				slaveServices.put(slaveModels.get(i).getIp(), slaveService);
+				slaveService.notifyBindMaster(ip);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -116,6 +117,10 @@ public class MasterActor extends Thread {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void receiveCalOneStepDone(int threadId) {
+		context.receiveOneStepDone(threadId);
 	}
 	
 	public String getIpAddress() {

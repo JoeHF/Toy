@@ -38,10 +38,12 @@ public class WorkingThread extends Thread {
 	
 	private int calculateStep = 0;
 	private int semephone = 0;
+	private Slave context;
 		
-	public WorkingThread(WorkingThreadData workingThreadData) {
+	public WorkingThread(WorkingThreadData workingThreadData, Slave _context) {
 		 id = workingThreadData.getId();
 		 status = workingThreadData.getStatus();
+		 context = _context;
 	}
 	
 	public void startNewStep(int step) {
@@ -63,7 +65,14 @@ public class WorkingThread extends Thread {
 				}	
 			}
 			
-			System.out.println("working thread " + id + ": done calculation");		
+			System.out.println("working thread " + id + ": done calculation");	
+			try {
+				sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			context.notifyCalOneStepDone(id);
 		}
 	}
 	

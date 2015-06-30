@@ -30,13 +30,14 @@ public class Slave {
 	
 	public void createWorkingThread(WorkingThreadData workingThreadData) {
 		System.out.println("slave " + getAddress() + " thread num:" + workingThreadData.getId() + " create working thread:" + workingThreadData.getStatus());
-		WorkingThread thread = new WorkingThread(workingThreadData);
+		WorkingThread thread = new WorkingThread(workingThreadData, this);
 		threads.add(thread);
 		threadNum++;
+		thread.start();
 	}
 	
-	private void createDHTService() {
-		
+	public void notifyCalOneStepDone(int threadId) {
+		slaveActor.notifyCalOneStepDone(threadId);
 	}
 	
 	public void setDHTPeer(DHTPeer peer) {

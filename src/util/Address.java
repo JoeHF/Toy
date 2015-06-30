@@ -19,12 +19,13 @@ public class Address {
 		        InetAddress i = (InetAddress) ee.nextElement();
 		        String[] temp = i.getHostAddress().split("\\.");
 		        
-		        System.out.println(i.getHostAddress());
+		        //System.out.println(i.getHostAddress());
 		        if (temp.length == 4 && (temp[0].equalsIgnoreCase("162") || temp[0].equalsIgnoreCase("172"))) {
 					ip = i.getHostAddress();
 				}
 		    }
 		}
+		System.out.println("Util get ip address:" + ip);
 		
 		return ip;
 	}

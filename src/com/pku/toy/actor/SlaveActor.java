@@ -1,24 +1,29 @@
 package com.pku.toy.actor;
 
+import java.net.MalformedURLException;
 import java.net.SocketException;
 import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 
 import util.Address;
 
+import com.pku.toy.Constant;
 import com.pku.toy.dht.DHTPeer;
 import com.pku.toy.logic.Slave;
 import com.pku.toy.logic.WorkingThread;
 import com.pku.toy.model.PeerModel;
 import com.pku.toy.model.WorkingThreadData;
 import com.pku.toy.rmi.implement.SlaveImpl;
+import com.pku.toy.rmi.inter.IMaster;
 import com.pku.toy.rmi.inter.ISlave;
 
 public class SlaveActor extends Thread {
 	private String ip;
 	private int port;
 	private Slave context;
+	private IMaster masterService;
 	
 	public SlaveActor(int _port, Slave _context) {
 		try {
@@ -39,11 +44,30 @@ public class SlaveActor extends Thread {
 		context.createWorkingThread(workingThreadData);
 	}
 	
+	public void receiveBindMaster(String ip) {
+		
+		try {
+			String lookupString = "rmi://" + ip + ":" + Constant.MASTER_PORT + "/Master";
+			masterService = (IMaster)Naming.lookup(lookupString);
+			System.out.println("Slave actor bind master service:" + ip);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+	}
+	
+	public void notifyCalOneStepDone(int threadId) {
+		try {
+			masterService.notifyMasterOneStepDone(threadId);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 	public void startFetchFile(String fileName) {
 		System.out.println("Slave Actor:receive start read file:" + fileName);
 	}
-	
 
 	public void setDHTPeer(DHTPeer peer) {
 		// TODO Auto-generated method stub
@@ -72,7 +96,4 @@ public class SlaveActor extends Thread {
 			e.printStackTrace();
 		}
 	}
-	
-	
-
 }

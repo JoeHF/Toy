@@ -60,6 +60,13 @@ public class SlaveImpl extends UnicastRemoteObject implements ISlave{
 		slaveActor.receiveStartCalculation(step);
 		
 	}
+
+	@Override
+	public void notifyBindMaster(String ip) throws RemoteException {
+		// TODO Auto-generated method stub
+		slaveActor.receiveBindMaster(ip);
+		
+	}
 	
 
 }

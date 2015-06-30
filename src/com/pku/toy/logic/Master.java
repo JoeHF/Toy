@@ -24,12 +24,15 @@ import com.pku.toy.model.WorkingThreadData;
 public class Master {
 	
 	//-----------------hf------------------
+	private Object object1 = new Object();
+	private Object object2 = new Object();
 	private MasterActor masterActor;
 	private int slaveNum;
 	private List<WorkingThreadData> threads;
 	private List<SlaveModel> slaveModels;
 	private Set<Integer> idleThreadNumber = new HashSet<Integer>();
 	private DHT dht;
+	private int workThreadDoneNum = 0;
 	
 	public Master() {
 		
@@ -89,6 +92,18 @@ public class Master {
 		dht.setDHT(peerModels, 1000);
 	}
 	
+	public void receiveOneStepDone(int threadId) {
+		synchronized (object1) {
+			System.out.println("Master receive threadId " + threadId + " done");
+			workThreadDoneNum++;
+			if (workThreadDoneNum == 3) {
+				synchronized (object2) {
+					object2.notify();
+				}
+			}
+		}
+	}
+	
 	public void startCalculate(int totalStep) {
 		MyRunnerThread myRunnerThread = new MyRunnerThread(totalStep);
 		myRunnerThread.start();
@@ -104,7 +119,10 @@ public class Master {
 			for (int i = 0; i < stepNum; i++) {
 				masterActor.notifyWorkingThreadCalculation(i);
 				try {
-					sleep(10000);
+					synchronized (object2) {
+						object2.wait();
+						System.out.println("Master receive all thread done");
+					}
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

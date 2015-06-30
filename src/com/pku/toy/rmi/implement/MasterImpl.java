@@ -14,12 +14,16 @@ public class MasterImpl extends UnicastRemoteObject implements IMaster {
 	private MasterActor masterActor;
 	public MasterImpl(MasterActor masterActor) throws RemoteException {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	
 	public Map<Integer, Integer> getGraphData(String file) throws RemoteException {
 		Map<Integer, Integer> graph = new HashMap<Integer, Integer>();
 		
 		return graph;
+	}
+
+	@Override
+	public void notifyMasterOneStepDone(int threadId) throws RemoteException {
+		masterActor.receiveCalOneStepDone(threadId);
 	}
 }
