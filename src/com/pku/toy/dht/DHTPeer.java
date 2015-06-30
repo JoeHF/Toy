@@ -9,6 +9,7 @@ import java.util.*;
 public class DHTPeer implements IDHTPeer, Serializable
 {
 
+	
 	private static long PRIME = 990001;
 	
 	// Local address
@@ -33,7 +34,28 @@ public class DHTPeer implements IDHTPeer, Serializable
 		return -1;
 	}
 	
+	private void displayPeer()
+	{
+		System.out.println("=======================================");
+		System.out.println("PeerId: " + peerId +  "\nAddress: " + address + "\nThreadId: " + threadId);
+		System.out.print("Router: ");
+		for( Long key : router.keySet() )
+			System.out.println("" + key + "-->" + router.get(key) );
+		System.out.print("remoteDHTPeers: ");
+		for( Long key : remoteDHTPeers.keySet() )
+			System.out.println("" + key + "-->" + remoteDHTPeers.get(key) );
+		System.out.print("localHashMap: ");
+		for( Long key : localHashMap.keySet() )
+			System.out.println("" + key + "-->" + localHashMap.get(key) );
+		System.out.println("=======================================\n");
+	}
+	
 	//--------------------------------zzy--------------
+	@Override
+	public String toString()
+	{
+		return "" + peerId + "---" + address;
+	}
 	
 	public void setRouter(TreeMap<Long, String> router) 
 	{

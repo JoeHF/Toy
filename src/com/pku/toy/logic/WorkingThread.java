@@ -26,6 +26,8 @@ import java.util.PrimitiveIterator.OfDouble;
 
 public class WorkingThread extends Thread {
 	
+	public static double DampingFactor = 0.85;
+	
 	DHTPeer dhtPeer;
 	
 	//-----------------------hf-----------------
@@ -60,7 +62,7 @@ public class WorkingThread extends Thread {
 	}
 	
     //d:damping factor N:point sum
-	public void updatePageRank(double d, Long N){
+	public void updatePageRank( Long N ){
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader("Neighbors.txt"));
 			String line;
@@ -76,16 +78,14 @@ public class WorkingThread extends Thread {
 					lastKey = s[0];
 				}
 				else {
-					lastKey = s[0];
 					Map<Long, Double> neighborPageRank = dhtPeer.getMaps(neighbors);
 					double sum = 0;
 					for(Iterator<Long> iter = neighbors.iterator(); iter.hasNext();) {
 						Long key = iter.next();
 						sum += 1.0*neighborPageRank.get(key)/globalDegree.get(key);
 					} 	
-					dhtPeer.put(Long.parseLong(lastKey), sum*d+(1-d)*1.0/N);
-					neighbors.clear();
-					sum = 0;
+					dhtPeer.put(Long.parseLong(lastKey), sum*DampingFactor+(1-DampingFactor)*1.0/N);
+					lastKey = s[0];
 				}
 			}
 		} catch (IOException e) {
