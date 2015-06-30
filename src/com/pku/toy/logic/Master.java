@@ -161,6 +161,8 @@ public class Master {
 			// TODO: handle exception
 			e.printStackTrace();
 		}
+		
+		return range;
 	}
 	
 	//----------jdc-----------------------

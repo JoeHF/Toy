@@ -54,7 +54,7 @@ public class TestStart {
 	public class MyRunnable implements Runnable {
 		public void run() {
 			//Create and set up the window.
-	        JFrame frame = new JFrame("初始化");
+	        JFrame frame = new JFrame("Pagerank");
 	        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	 
 	        //Create and set up the content pane.
@@ -120,7 +120,7 @@ public class TestStart {
 			checkPanel1.add(startActorButton);
 			startActorButton.addActionListener(this);
 			
-			JPanel checkPanel2 = new JPanel(new GridLayout(5, 2, 10, 10));
+			JPanel checkPanel2 = new JPanel(new GridLayout(6, 2, 10, 10));
 			checkPanel2.add(text1);
 			checkPanel2.add(text2);		
 			checkPanel2.add(slaveIp1);
