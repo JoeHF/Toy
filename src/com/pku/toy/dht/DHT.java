@@ -5,6 +5,7 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +30,19 @@ public class DHT implements Map<Long, Double>
 		// TODO Auto-generated constructor stub
 	}
 	
-	public void setDHT( List<PeerModel> peerAddr, long range)
+	public List<Long> separateKeyRange( long range, int peerNum )
+	{
+		List<Long>  ret = new ArrayList<Long>();
+		long i,j;
+		
+	    j = range/peerNum;
+	    for ( i=1; i<peerNum; i++ )
+	    	ret.add( j*i );
+	    ret.add(range);
+	    return ret;
+	}
+	
+	public void setDHT( List<PeerModel> peerAddr, long range )
 	{
 		long i,j,slaveId;
 		int  x;
