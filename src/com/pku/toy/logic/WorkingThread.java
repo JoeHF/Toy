@@ -27,7 +27,9 @@ import java.util.PrimitiveIterator.OfDouble;
 
 public class WorkingThread extends Thread {
 	
-	DHTPeer dhtPeer;
+	public DHTPeer dhtPeer;
+	public String  edgeFilePath;
+	public String  degreeFilePath;
 	
 	//-----------------------hf-----------------
 	private int id;

@@ -83,7 +83,14 @@ public class Master {
 	}
 	
 	//---------zzy-----------------------
-	
+	private long range;
+	private void analyzeGraph( String graphFileName )
+	// generate sub-edge-graph and degree graph  
+	// graphFileName+"_edge"+"0/1/2"
+	// graphFileName+"_degree"+"0/1/2"
+	{
+		
+	}
 	
 	//----------jdc-----------------------
 
