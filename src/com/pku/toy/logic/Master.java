@@ -1,8 +1,15 @@
 package com.pku.toy.logic;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
@@ -108,12 +115,52 @@ public class Master {
 	
 	//---------zzy-----------------------
 	private long range;
+	private Map<Long, Long> degrees;
+	
 	private void analyzeGraph( String graphFileName )
 	// generate sub-edge-graph and degree graph  
 	// graphFileName+"_edge"+"0/1/2"
 	// graphFileName+"_degree"+"0/1/2"
 	{
+		generateDegreeFile( graphFileName );
+	}
+	
+	private long generateDegreeFile( String graphFileName )
+	{
+		long fromNode, toNode, nodeDegree;
+		String line;
+		String[] edge;
 		
+		range = 0;
+		degrees = new HashMap<>();
+		try
+		{
+			File file = new File( graphFileName );
+			BufferedReader reader = new BufferedReader( 
+     		       new InputStreamReader( new FileInputStream( file ), "UTF-8") );
+			while ( true )
+			{
+				line = reader.readLine();
+				if ( line==null ) break;
+				edge = line.split( "\t" );
+				fromNode = Long.parseLong( edge[0] );
+				toNode   = Long.parseLong( edge[1] );
+				if ( fromNode > range ) range = fromNode;
+				if ( toNode   > range ) range = toNode;
+				if ( degrees.containsKey( fromNode ) )
+				{
+					nodeDegree = degrees.get( fromNode );
+					degrees.put( fromNode, nodeDegree + 1 );
+				}
+				else
+					degrees.put( fromNode, (long)1 );
+			}
+		}
+		catch ( IOException e) 
+		{
+			// TODO: handle exception
+			e.printStackTrace();
+		}
 	}
 	
 	//----------jdc-----------------------
