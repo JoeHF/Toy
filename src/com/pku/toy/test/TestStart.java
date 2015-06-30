@@ -42,8 +42,8 @@ public class TestStart {
 	private Master master;
 	private Slave slave;
 	private List<String> ipList = new ArrayList<>();
-	private String ip1 = "172.17.2.175";
-	private String ip2 = "172.17.2.175";
+	private String ip1 = "172.17.2.176";
+	private String ip2 = "172.17.2.232";
 	private String fileName;
 
 	public static void main( String[] args ) throws SocketException

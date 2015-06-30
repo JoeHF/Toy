@@ -34,7 +34,7 @@ public class WorkingThread extends Thread {
 	//-----------------------hf-----------------
 	private int id;
 	public String status;
-	public static Object object = new Object();
+	public Object object = new Object();
 	
 	private int calculateStep = 0;
 	private int semephone = 0;
@@ -45,17 +45,22 @@ public class WorkingThread extends Thread {
 	}
 	
 	public void startNewStep(int step) {
-		object.notify();
+		synchronized (object) {
+			object.notify();	
+		}
 	}
 	
 	public void run() {
+		System.out.println("working thread " + id + ": start to run");
 		while(true) {	
 			System.out.println("working thread " + id + ": wait");
-			try {
-				object.wait();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			synchronized (object) {
+				try {
+					object.wait();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}	
 			}
 			
 			System.out.println("working thread " + id + ": done calculation");		

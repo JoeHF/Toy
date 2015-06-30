@@ -31,7 +31,6 @@ public class Slave {
 	public void createWorkingThread(WorkingThreadData workingThreadData) {
 		System.out.println("slave " + getAddress() + " thread num:" + workingThreadData.getId() + " create working thread:" + workingThreadData.getStatus());
 		WorkingThread thread = new WorkingThread(workingThreadData);
-		thread.run();
 		threads.add(thread);
 		threadNum++;
 	}
