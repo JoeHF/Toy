@@ -5,6 +5,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 import org.omg.CORBA.PUBLIC_MEMBER;
 
+import com.pku.toy.Constant;
 import com.pku.toy.dht.DHTPeer;
 import com.pku.toy.model.WorkingThreadData;
 
@@ -25,8 +26,6 @@ import java.util.PrimitiveIterator.OfDouble;
 
 
 public class WorkingThread extends Thread {
-	
-	public static double DampingFactor = 0.85;
 	
 	DHTPeer dhtPeer;
 	
@@ -84,7 +83,8 @@ public class WorkingThread extends Thread {
 						Long key = iter.next();
 						sum += 1.0*neighborPageRank.get(key)/globalDegree.get(key);
 					} 	
-					dhtPeer.put(Long.parseLong(lastKey), sum*DampingFactor+(1-DampingFactor)*1.0/N);
+					dhtPeer.put(Long.parseLong(lastKey), sum*Constant.DampingFactor
+							                            +(1-Constant.DampingFactor)/N );
 					lastKey = s[0];
 				}
 			}

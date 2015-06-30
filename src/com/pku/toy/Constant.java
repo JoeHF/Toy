@@ -8,6 +8,8 @@ public class Constant {
 	
 	public static String IDLE = "idle";
 	public static String WORKING = "working";
+	
+	public static double DampingFactor = 0.85;
 }
 
 
