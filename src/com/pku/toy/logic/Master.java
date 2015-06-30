@@ -82,6 +82,30 @@ public class Master {
 		dht.setDHT(peerModels, 1000);
 	}
 	
+	public void startCalculate(int totalStep) {
+		MyRunnerThread myRunnerThread = new MyRunnerThread(totalStep);
+		myRunnerThread.start();
+	}
+	
+	private class MyRunnerThread extends Thread {
+		private int stepNum;
+		public MyRunnerThread(int _stepNum) {
+			stepNum = _stepNum;
+		}
+		
+		public void run() {
+			for (int i = 0; i < stepNum; i++) {
+				masterActor.notifyWorkingThreadCalculation(i);
+				try {
+					sleep(10000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+	
 	//---------zzy-----------------------
 	private long range;
 	private void analyzeGraph( String graphFileName )

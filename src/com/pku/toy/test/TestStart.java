@@ -85,6 +85,7 @@ public class TestStart {
 		TextField filePath;
 		Label empty;
 		Button readFile;
+		Button startCalculation;
 		
 		public JcheckBox() {
 			super(new BorderLayout());
@@ -107,6 +108,7 @@ public class TestStart {
 			file = new Label("graph file name");
 			filePath = new TextField("graph.txt");
 			readFile = new Button("read graph");
+			startCalculation = new Button("begin to calculate");
 			
 			masterCheckbox.addItemListener(this);
 			slaveCheckbox.addItemListener(this);
@@ -132,6 +134,8 @@ public class TestStart {
 			checkPanel2.add(filePath);
 			checkPanel2.add(readFile);
 			readFile.addActionListener(this);
+			checkPanel2.add(startCalculation);
+			startCalculation.addActionListener(this);
 			
 			add(checkPanel1, BorderLayout.NORTH);
 			add(checkPanel2, BorderLayout.SOUTH);
@@ -177,10 +181,15 @@ public class TestStart {
 			} else if (source == readFile) {
 				fileName = filePath.getText();
 				readFile(filePath.getText());
+			} else if (source == startCalculation) {
+				startCalculation();
 			}
 		}
 	}
 	
+	public void startCalculation() {
+		master.startCalculate(5);
+	}
 	public void startSlaveActor() {
 		slave = new Slave();
 		try {

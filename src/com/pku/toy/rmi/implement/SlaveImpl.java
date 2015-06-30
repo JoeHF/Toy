@@ -39,6 +39,8 @@ public class SlaveImpl extends UnicastRemoteObject implements ISlave{
 		// TODO Auto-generated method stub
 		
 	}
+	
+	
 
 	@Override
 	public void setDHTPeer(DHTPeer peer) throws RemoteException {
@@ -50,6 +52,13 @@ public class SlaveImpl extends UnicastRemoteObject implements ISlave{
 	public void connectToOtherPeers(int threadId) throws RemoteException {
 		// TODO Auto-generated method stub
 		slaveActor.connectToOtherPeers(threadId);
+	}
+
+	@Override
+	public void notifyCalculation(int step) throws RemoteException {
+		// TODO Auto-generated method stub
+		slaveActor.receiveStartCalculation(step);
+		
 	}
 	
 

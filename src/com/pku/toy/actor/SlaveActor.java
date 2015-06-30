@@ -55,6 +55,10 @@ public class SlaveActor extends Thread {
 		context.connectToOtherPeers(threadId);
 	}
 	
+	public void receiveStartCalculation(int step) {
+		context.startCalculation(step);
+	}
+	
 	public void run() {
 		try
 		{

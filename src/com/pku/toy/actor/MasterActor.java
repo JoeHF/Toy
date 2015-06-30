@@ -6,8 +6,10 @@ import java.rmi.Naming;
 import java.rmi.registry.LocateRegistry;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import util.Address;
 
@@ -101,6 +103,19 @@ public class MasterActor extends Thread {
 		}
 		
 		return workingThreadDatas;
+	}
+	
+	public void notifyWorkingThreadCalculation(int step) {
+		try {
+			Set set = slaveServices.entrySet();         
+			Iterator i = set.iterator();         
+			while(i.hasNext()){      
+			     Map.Entry<String, ISlave> entry=(Map.Entry<String, ISlave>)i.next();    
+			     entry.getValue().notifyCalculation(step);   
+			}   
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public String getIpAddress() {

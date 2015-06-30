@@ -31,6 +31,7 @@ public class Slave {
 	public void createWorkingThread(WorkingThreadData workingThreadData) {
 		System.out.println("slave " + getAddress() + " thread num:" + workingThreadData.getId() + " create working thread:" + workingThreadData.getStatus());
 		WorkingThread thread = new WorkingThread(workingThreadData);
+		thread.run();
 		threads.add(thread);
 		threadNum++;
 	}
@@ -64,6 +65,14 @@ public class Slave {
 	public void startReadFile() {
 		System.out.println("Slave: start read file");
 	}	
+	
+	public void startCalculation(int step) {
+		for (int i = 0; i < threadNum; i++) {
+			if (!threads.get(i).status.equals(Constant.IDLE)) {
+				threads.get(i).startNewStep(step);	
+			}
+		}
+	}
 	
 	//---------zzy-----------------------
 	

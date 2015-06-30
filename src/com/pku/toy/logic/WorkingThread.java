@@ -33,11 +33,33 @@ public class WorkingThread extends Thread {
 	
 	//-----------------------hf-----------------
 	private int id;
-	private String status;
+	public String status;
+	public static Object object = new Object();
+	
+	private int calculateStep = 0;
+	private int semephone = 0;
 		
 	public WorkingThread(WorkingThreadData workingThreadData) {
 		 id = workingThreadData.getId();
 		 status = workingThreadData.getStatus();
+	}
+	
+	public void startNewStep(int step) {
+		object.notify();
+	}
+	
+	public void run() {
+		while(true) {	
+			System.out.println("working thread " + id + ": wait");
+			try {
+				object.wait();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			System.out.println("working thread " + id + ": done calculation");		
+		}
 	}
 	
 	//-----------------------zzy------------------
