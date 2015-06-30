@@ -94,19 +94,19 @@ public class TestStart {
 			empty = new Label();
 			masterCheckbox = new Checkbox("Master", false, group);	
 			slaveCheckbox = new Checkbox("Slave", false, group);
-			startActorButton = new Button("启动守护线程");
+			startActorButton = new Button("start deamon thread");
 			
 			slaveIp1 = new TextField(ip1); 
 			slaveIp1.setEditable(true);
 			slaveIp2 = new TextField(ip2); 
 			slaveIp2.setEditable(true);
-			text1 = new Label("第一台主机ip");
-			text2 = new Label("第二台主机ip");
-			settingEnv = new Button("初始化集群环境");
-			createWorkingThread = new Button("创建工作线程");
-			file = new Label("图文件名");
+			text1 = new Label("first node ip");
+			text2 = new Label("second node ip");
+			settingEnv = new Button("initialize cluster");
+			createWorkingThread = new Button("create working thread");
+			file = new Label("graph file name");
 			filePath = new TextField("graph.txt");
-			readFile = new Button("读入图文件");
+			readFile = new Button("read graph");
 			
 			masterCheckbox.addItemListener(this);
 			slaveCheckbox.addItemListener(this);
