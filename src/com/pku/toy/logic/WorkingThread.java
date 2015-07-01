@@ -83,7 +83,7 @@ public class WorkingThread extends Thread {
     private HashMap<Long, Long> globalDegree;
     public void readDegree() {
 		try {
-			BufferedReader reader = new BufferedReader(new FileReader("Degree.txt"));
+			BufferedReader reader = new BufferedReader(new FileReader(degreeFilePath));
 			String line;
 			String[] s;
 			this.globalDegree = new HashMap<Long, Long>();
@@ -93,7 +93,8 @@ public class WorkingThread extends Thread {
 				s = line.split("\t");
 				globalDegree.put(Long.parseLong(s[0]), Long.parseLong(s[1]));
 			}
-		} catch (IOException e) {
+			reader.close();
+		}catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -101,7 +102,7 @@ public class WorkingThread extends Thread {
     //d:damping factor N:point sum
 	public void updatePageRank( Long N ){
 		try {
-			BufferedReader reader = new BufferedReader(new FileReader("Neighbors.txt"));
+			BufferedReader reader = new BufferedReader(new FileReader(edgeFilePath));
 			String line;
 			String[] s;
 			String lastKey = "";
@@ -123,9 +124,13 @@ public class WorkingThread extends Thread {
 					} 	
 					dhtPeer.put(Long.parseLong(lastKey), sum*Constant.DampingFactor
 							                            +(1-Constant.DampingFactor)/N );
+					neighbors.clear();
+					neighbors.add(Long.parseLong(s[1]));
+					sum = 0;
 					lastKey = s[0];
 				}
 			}
+			reader.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

@@ -68,6 +68,12 @@ public class Master {
 				j++;
 			}
 		}
+		
+		for (int i = 0; i < threads.size(); i++) {
+			if (threads.get(i).getStatus().equals(Constant.WORKING)) {
+				masterActor.transferSubgraph(i,threads.get(i).getIp(), threadGraphMap.get(i));
+			}
+		}	
 	}
 	
 	public void createWorkingThread(List<WorkingThreadData> workingThreadDatas) {

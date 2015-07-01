@@ -1,5 +1,8 @@
 package com.pku.toy.actor;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.rmi.Naming;
@@ -125,6 +128,58 @@ public class MasterActor extends Thread {
 	
 	public String getIpAddress() {
 		return this.ip;
+	}
+	
+	public void transferSubgraph(int threadNum, String threadIP, String fileName) {
+		ISlave slaveService = slaveServices.get(threadIP);
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(fileName));
+			String line;
+			String[] s;
+			List<Long> neighbors = new ArrayList<Long>();
+			Map<Long, List<Long>> edges = new HashMap<>();
+			int count = 0;
+			String lastKey = "";
+			
+			slaveService.openWriter(threadNum);
+			
+			while(true) {
+				line = reader.readLine();
+				if (line == null) break;
+				s = line.split("\t");
+				if (lastKey.equals("") || s[0].equals(lastKey)) {
+					neighbors.add(Long.parseLong(s[1]));
+					lastKey = s[0];
+				}
+				else {
+					edges.put(Long.parseLong(lastKey), neighbors);
+					neighbors.clear();
+					neighbors.add(Long.parseLong(s[1]));
+					lastKey = s[0];
+				}
+				count++;
+				if (count == 1000) {
+					edges.put(Long.parseLong(lastKey), neighbors);
+					slaveService.receiveSubgraph(edges);
+					edges.clear();
+					neighbors.clear();
+					lastKey = s[0];
+					count = 0;
+					lastKey = "";
+				}
+			}
+			
+			if (neighbors.size()!=0) {
+				edges.put(Long.parseLong(lastKey), neighbors);
+				slaveService.receiveSubgraph(edges);
+			}
+			
+			slaveService.closeWriter();
+		
+			reader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}	
 	}
 	
 }

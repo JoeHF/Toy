@@ -3,6 +3,7 @@ package com.pku.toy.rmi.implement;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.List;
+import java.util.Map;
 
 import com.pku.toy.actor.SlaveActor;
 import com.pku.toy.dht.DHTPeer;
@@ -66,6 +67,18 @@ public class SlaveImpl extends UnicastRemoteObject implements ISlave{
 		// TODO Auto-generated method stub
 		slaveActor.receiveBindMaster(ip);
 		
+	}
+	
+	public void openWriter(int threadNum) throws RemoteException {
+		slaveActor.openWriter(threadNum);
+	}
+	
+	public void closeWriter() throws RemoteException {
+		slaveActor.closeWriter();
+	}
+	
+	public void receiveSubgraph(Map<Long, List<Long>> edges) throws RemoteException {
+		slaveActor.receiveSubgraph(edges);
 	}
 	
 

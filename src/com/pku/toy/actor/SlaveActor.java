@@ -6,6 +6,8 @@ import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
+import java.util.List;
+import java.util.Map;
 
 import util.Address;
 
@@ -95,5 +97,17 @@ public class SlaveActor extends Thread {
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	public void openWriter(int threadNum) {
+		context.openWriter(threadNum);
+	}
+	
+	public void closeWriter() {
+		context.closeWriter();
+	}
+	
+	public void receiveSubgraph(Map<Long, List<Long>> edges) {
+		 context.receiveSubgraph(edges);
 	}
 }

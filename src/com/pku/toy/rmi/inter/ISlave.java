@@ -3,6 +3,7 @@ package com.pku.toy.rmi.inter;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.List;
+import java.util.Map;
 
 import com.pku.toy.dht.DHTPeer;
 import com.pku.toy.model.PeerModel;
@@ -17,4 +18,7 @@ public interface ISlave extends Remote {
 	public void connectToOtherPeers(int threadId) throws RemoteException;
 	public void notifyCalculation(int step) throws RemoteException;
 	public void notifyBindMaster(String ip) throws RemoteException;
+	public void openWriter(int threadNum) throws RemoteException;
+	public void closeWriter() throws RemoteException;
+	public void receiveSubgraph(Map<Long, List<Long>> edges) throws RemoteException;
 }
