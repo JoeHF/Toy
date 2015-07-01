@@ -33,6 +33,7 @@ public class Master {
 	private Set<Integer> idleThreadNumber = new HashSet<Integer>();
 	private DHT dht;
 	private int workThreadDoneNum = 0;
+	private Map<Integer, String> threadGraphMap = new HashMap<>();
 	
 	public Master() {
 		
@@ -57,8 +58,16 @@ public class Master {
 		return masterActor.getIpAddress();
 	}
 	
-	public void readFile(List<FileModel> fileModels) {
-		masterActor.notifySlaveFetchFile(fileModels);
+	public void readFile(String filePath) {
+		analyzeGraph(filePath);
+		int j = 0;
+		for (int i = 0; i < threads.size(); i++) {
+			WorkingThreadData threadData = threads.get(i);
+			if (threadData.getStatus().equals(Constant.WORKING)) {
+				threadGraphMap.put(threadData.getId(), Constant.Edge_suffixString + j);
+				j++;
+			}
+		}
 	}
 	
 	public void createWorkingThread(List<WorkingThreadData> workingThreadDatas) {
@@ -94,11 +103,12 @@ public class Master {
 	
 	public void receiveOneStepDone(int threadId) {
 		synchronized (object1) {
-			System.out.println("Master receive threadId " + threadId + " done");
 			workThreadDoneNum++;
+			System.out.println("Master receive threadId " + threadId + " done " + workThreadDoneNum + "/3 has done");
 			if (workThreadDoneNum == 3) {
 				synchronized (object2) {
 					object2.notify();
+					workThreadDoneNum = 0;
 				}
 			}
 		}

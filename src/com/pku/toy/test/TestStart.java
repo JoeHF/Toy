@@ -221,7 +221,7 @@ public class TestStart {
 			}
 		}
 		
-		master.readFile(fileModels);
+		master.readFile(filePath);
 	}
 	
 	public void createWorkingThread() {
