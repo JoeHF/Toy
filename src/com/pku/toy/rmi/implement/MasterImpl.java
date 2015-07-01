@@ -12,8 +12,9 @@ import com.pku.toy.rmi.inter.IMaster;
 
 public class MasterImpl extends UnicastRemoteObject implements IMaster {
 	private MasterActor masterActor;
-	public MasterImpl(MasterActor masterActor) throws RemoteException {
+	public MasterImpl(MasterActor _masterActor) throws RemoteException {
 		super();
+		masterActor = _masterActor;
 	}
 	
 	public Map<Integer, Integer> getGraphData(String file) throws RemoteException {
