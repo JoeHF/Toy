@@ -72,6 +72,8 @@ public class Master {
 			}
 		}
 		
+		System.out.println( "\n" + threadGraphMap  + "\n" );
+		
 		for (int i = 0; i < threads.size(); i++) {
 			if (threads.get(i).getStatus().equals(Constant.WORKING)) {
 				masterActor.transferSubgraph( threads.get(i).getId(),threads.get(i).getIp(), 

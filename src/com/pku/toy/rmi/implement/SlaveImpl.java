@@ -73,12 +73,12 @@ public class SlaveImpl extends UnicastRemoteObject implements ISlave{
 		slaveActor.openWriter(threadNum);
 	}
 	
-	public void closeWriter() throws RemoteException {
-		slaveActor.closeWriter();
+	public void closeWriter(int threadNum) throws RemoteException {
+		slaveActor.closeWriter(threadNum);
 	}
 	
-	public void receiveSubgraph(Map<Long, List<Long>> edges) throws RemoteException {
-		slaveActor.receiveSubgraph(edges);
+	public void receiveSubgraph(Map<Long, List<Long>> edges,int threadNum) throws RemoteException {
+		slaveActor.receiveSubgraph(edges,threadNum);
 	}
 	
 

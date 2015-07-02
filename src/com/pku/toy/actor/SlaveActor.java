@@ -103,11 +103,11 @@ public class SlaveActor extends Thread {
 		context.openWriter(threadNum);
 	}
 	
-	public void closeWriter() {
-		context.closeWriter();
+	public void closeWriter(int threadNum) {
+		context.closeWriter(threadNum);
 	}
 	
-	public void receiveSubgraph(Map<Long, List<Long>> edges) {
-		 context.receiveSubgraph(edges);
+	public void receiveSubgraph(Map<Long, List<Long>> edges,int threadNum) {
+		 context.receiveSubgraph(edges,threadNum);
 	}
 }

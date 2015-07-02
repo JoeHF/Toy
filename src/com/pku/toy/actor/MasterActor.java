@@ -160,7 +160,7 @@ public class MasterActor extends Thread {
 				count++;
 				if (count == 1000) {
 					edges.put(Long.parseLong(lastKey), neighbors);
-					slaveService.receiveSubgraph(edges);
+					slaveService.receiveSubgraph(edges,threadNum);
 					edges = new HashMap<>();
 					neighbors = new ArrayList<>();
 					count = 0;
@@ -170,10 +170,10 @@ public class MasterActor extends Thread {
 			
 			if (neighbors.size()!=0) {
 				edges.put(Long.parseLong(lastKey), neighbors);
-				slaveService.receiveSubgraph(edges);
+				slaveService.receiveSubgraph(edges,threadNum);
 			}
 			
-			slaveService.closeWriter();
+			slaveService.closeWriter(threadNum);
 		
 			reader.close();
 		} catch (IOException e) {

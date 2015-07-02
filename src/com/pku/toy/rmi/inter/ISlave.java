@@ -19,6 +19,6 @@ public interface ISlave extends Remote {
 	public void notifyCalculation(int step) throws RemoteException;
 	public void notifyBindMaster(String ip) throws RemoteException;
 	public void openWriter(int threadNum) throws RemoteException;
-	public void closeWriter() throws RemoteException;
-	public void receiveSubgraph(Map<Long, List<Long>> edges) throws RemoteException;
+	public void closeWriter(int threadNum) throws RemoteException;
+	public void receiveSubgraph(Map<Long, List<Long>> edges,int threadNum) throws RemoteException;
 }

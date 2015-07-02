@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +26,7 @@ public class Slave {
 	private SlaveActor slaveActor;
 	private int threadNum;
 	private List<WorkingThread> threads;
-	private PrintWriter writer;
+	private HashMap<Integer, PrintWriter>   writers;
 	
 	public Slave() {
 		threadNum = 0;
@@ -92,29 +93,30 @@ public class Slave {
 		String fileName = "Subgraph for workthread " + Integer.toString(threadNum);
 		threads.get(threadNum).edgeFilePath = fileName;
 		try {
-			writer = new PrintWriter(fileName);
+			PrintWriter writer = new PrintWriter(fileName);
+			writers.put( threadNum, writer);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	public void closeWriter() {
+	public void closeWriter(int threadNum) {
 		try {
-			writer.close();
+			writers.get( threadNum ).close();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 	
-	public void receiveSubgraph(Map<Long, List<Long>> edges) {
+	public void receiveSubgraph(Map<Long, List<Long>> edges, int threadNum ) {
 		Iterator it = edges.entrySet().iterator();
 		while (it.hasNext()) {
 		    Map.Entry entry = (Map.Entry) it.next();
 		    Long toPoint = (Long)entry.getKey();
 		    List<Long> fromPoints = (List<Long>)entry.getValue();
 		    for (int i = 0; i < fromPoints.size(); i++) {
-		    	writer.println(Long.toString(toPoint)+"\t"+fromPoints.get(i));
+		    	writers.get( threadNum ).println(Long.toString(toPoint)+"\t"+fromPoints.get(i));
 		    }
 		}
 	}
