@@ -180,6 +180,11 @@ public class DHTPeer implements IDHTPeer, Serializable
 		if ( this.getPeerIdByKey(key) == this.peerId )
 			this.localHashMap.put( new Long(key), new Double(value) );
 	}
+	
+	public void putLocalHashMap( Long key, Double value )
+	{
+		this.localHashMap.put( new Long(key), new Double(value) );
+	}
 
 
 	@Override

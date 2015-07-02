@@ -11,6 +11,7 @@ import com.pku.toy.model.WorkingThreadData;
 
 import java.io.BufferedReader;
 import java.io.DataInputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -94,6 +95,33 @@ public class WorkingThread extends Thread {
 	{
 		this.totalStep = totalStep;
 		this.display();
+	}
+	
+	public void initialDHTPeerHashmap()
+	{
+		String line;
+		String[] map;
+		HashMap<Long, Long> edgeMap = new HashMap<>();
+		try
+		{
+			File file = new File( edgeFilePath );
+			BufferedReader reader = new BufferedReader( 
+     		       new InputStreamReader( new FileInputStream( file ), "UTF-8") );
+			while ( true )
+			{
+				line = reader.readLine();
+				if ( line==null ) break;
+				map = line.split( "\t" );
+				edgeMap.put( Long.parseLong(map[0]) , (long)1 );
+			}
+		}
+		catch ( IOException e) 
+		{
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		for ( Long key : edgeMap.keySet() )
+			this.dhtPeer.putLocalHashMap( key , 1.0 );
 	}
 	
 	//-----------------------jdc-----------------
