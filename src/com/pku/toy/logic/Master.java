@@ -166,6 +166,7 @@ public class Master {
 		for (int i = 0; i < threads.size(); i++) 
 		{
 			if (threads.get(i).getStatus().equals(Constant.WORKING)) {
+				System.out.println("master initialWorkingThreadIterationNum " + i);
 				masterActor.initialWorkingThreadIterationNum( threads.get(i),totalStep);
 			}
 		}

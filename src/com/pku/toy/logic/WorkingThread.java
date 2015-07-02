@@ -32,7 +32,7 @@ public class WorkingThread extends Thread {
 	public String  degreeFilePath;
 	
 	//-----------------------hf-----------------
-	private int id;
+	public int id;
 	public String status;
 	public Object object = new Object();
 	

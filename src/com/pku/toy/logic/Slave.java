@@ -48,12 +48,15 @@ public class Slave {
 	
 	public void initialWorkingThreadIterationNum( WorkingThreadData workingThreadData, int totalStep )
 	{
+		System.out.println( "slave : initialWorkingThreadIterationNum");
 		for ( int i=0; i<threads.size(); i++ )
-			if ( threads.get(i).getId() == workingThreadData.getId() )
+		{
+			if ( threads.get(i).id == workingThreadData.getId() )
 			{
 				threads.get(i).initialWorkingThreadIterationNum( totalStep );
 				threads.get(i).start();
 			}
+		}
 	}
 	
 	public void notifyCalOneStepDone(int threadId) {
