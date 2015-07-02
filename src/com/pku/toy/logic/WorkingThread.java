@@ -55,6 +55,8 @@ public class WorkingThread extends Thread {
 	
 	public void run() {
 		System.out.println("working thread " + id + ": start to run");
+		this.readDegree();
+		System.out.println("working thread " + id + ": read degree graph");
 		while(true) {	
 			System.out.println("working thread " + id + ": wait");
 			synchronized (object) {
@@ -62,6 +64,7 @@ public class WorkingThread extends Thread {
 					object.wait();
 					calculateStep++;
 					System.out.println("Thread " + id + " : work ite " + calculateStep );
+					this.updatePageRank( (long)this.totalNodes );
 					display();
 					if ( calculateStep == totalStep ) break;
 				} catch (InterruptedException e) {
@@ -85,6 +88,7 @@ public class WorkingThread extends Thread {
 	//-----------------------zzy------------------
 	
 	private int totalStep;
+	private int totalNodes;
 	public void display()
 	{
 		System.out.println("###########################################");
@@ -132,6 +136,7 @@ public class WorkingThread extends Thread {
 	//-----------------------jdc-----------------
     private HashMap<Long, Long> globalDegree;
     public void readDegree() {
+    	this.totalNodes = 0;
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(degreeFilePath));
 			String line;
@@ -142,6 +147,7 @@ public class WorkingThread extends Thread {
 				if(line == null) break;
 				s = line.split("\t");
 				globalDegree.put(Long.parseLong(s[0]), Long.parseLong(s[1]));
+				this.totalNodes++;
 			}
 			reader.close();
 		}catch (IOException e) {
