@@ -27,6 +27,7 @@ public class Slave {
 	private int threadNum;
 	private List<WorkingThread> threads;
 	private HashMap<Integer, PrintWriter>   writers = new HashMap<>();
+	private HashMap<Integer, PrintWriter>   degreeWriters = new HashMap<>();
 	
 	public Slave() {
 		threadNum = 0;
@@ -132,6 +133,40 @@ public class Slave {
 		    List<Long> fromPoints = (List<Long>)entry.getValue();
 		    for (int i = 0; i < fromPoints.size(); i++) {
 		    	writers.get( threadNum ).println(Long.toString(toPoint)+"\t"+fromPoints.get(i));
+		    }
+		}
+	}
+	
+	public void openDegreeWriter(int threadNum) {
+		String fileName = "Degree for " + Integer.toString(threadNum);
+		for ( int i=0; i<threads.size(); i++ )
+			if ( threads.get(i).id == threadNum )
+		        threads.get(i).degreeFilePath = fileName;
+		try {
+			PrintWriter writer = new PrintWriter(fileName);
+			degreeWriters.put( threadNum, writer);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void closeDegreeWriter(int threadNum) {
+		try {
+			degreeWriters.get( threadNum ).close();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public void receiveDegreeFile(Map<Long, Long> edges, int threadNum ) {
+		Iterator it = edges.entrySet().iterator();
+		while (it.hasNext()) {
+		    Map.Entry entry = (Map.Entry) it.next();
+		    Long toPoint = (Long)entry.getKey();
+		    List<Long> fromPoints = (List<Long>)entry.getValue();
+		    for (int i = 0; i < fromPoints.size(); i++) {
+		    	degreeWriters.get( threadNum ).println(Long.toString(toPoint)+"\t"+fromPoints.get(i));
 		    }
 		}
 	}

@@ -190,5 +190,40 @@ public class MasterActor extends Thread {
 			e.printStackTrace();
 		}	
 	}
-	
+	public void transferDegreeFile(int threadNum, String threadIP, String fileName) {
+		ISlave slaveService = slaveServices.get(threadIP);
+		try {
+			BufferedReader reader = new BufferedReader(new FileReader(fileName));
+			String line;
+			String[] s;
+			List<Long> neighbors = new ArrayList<Long>();
+			Map<Long, Long> edges = new HashMap<>();
+			int count = 0;
+			
+			slaveService.openDegreeWriter(threadNum);
+			
+			while(true) {
+				line = reader.readLine();
+				if (line == null) break;
+				s = line.split("\t");
+				edges.put(Long.parseLong(s[0]) , Long.parseLong(s[1]));
+				count++;
+				if (count == 1000) {
+					slaveService.receiveDegreeFile(edges,threadNum);
+					edges = new HashMap<>();
+					count = 0;
+				}
+			}
+			
+			if ( count!=0 ) {
+				slaveService.receiveDegreeFile(edges,threadNum);
+			}
+			
+			slaveService.closeDegreeWriter(threadNum);
+		
+			reader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}	
+	}	
 }

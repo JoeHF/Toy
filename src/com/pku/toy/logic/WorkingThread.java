@@ -60,13 +60,16 @@ public class WorkingThread extends Thread {
 			synchronized (object) {
 				try {
 					object.wait();
+					calculateStep++;
+					System.out.println("Thread " + id + " : work ite " + calculateStep );
+					display();
+					if ( calculateStep == totalStep ) break;
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}	
 			}
 			
-			System.out.println("working thread " + id + ": done calculation");	
 			try {
 				sleep(5000);
 			} catch (InterruptedException e) {
@@ -75,6 +78,8 @@ public class WorkingThread extends Thread {
 			}
 			context.notifyCalOneStepDone(id);
 		}
+		
+		System.out.println("working thread " + id + ": done calculation");	
 	}
 	
 	//-----------------------zzy------------------

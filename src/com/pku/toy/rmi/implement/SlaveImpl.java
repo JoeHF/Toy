@@ -76,17 +76,34 @@ public class SlaveImpl extends UnicastRemoteObject implements ISlave{
 		
 	}
 	
+	@Override
 	public void openWriter(int threadNum) throws RemoteException {
 		slaveActor.openWriter(threadNum);
 	}
 	
+	@Override
 	public void closeWriter(int threadNum) throws RemoteException {
 		slaveActor.closeWriter(threadNum);
 	}
 	
+	@Override
 	public void receiveSubgraph(Map<Long, List<Long>> edges,int threadNum) throws RemoteException {
 		slaveActor.receiveSubgraph(edges,threadNum);
 	}
 	
+	@Override
+	public void openDegreeWriter(int threadNum) throws RemoteException {
+		slaveActor.openDegreeWriter(threadNum);
+	}
+	
+	@Override
+	public void closeDegreeWriter(int threadNum) throws RemoteException {
+		slaveActor.closeDegreeWriter(threadNum);
+	}
+	
+	@Override
+	public void receiveDegreeFile(Map<Long, Long> edges,int threadNum) throws RemoteException {
+		slaveActor.receiveDegreeFile(edges,threadNum);
+	}
 
 }

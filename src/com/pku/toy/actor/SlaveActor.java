@@ -115,4 +115,16 @@ public class SlaveActor extends Thread {
 	public void receiveSubgraph(Map<Long, List<Long>> edges,int threadNum) {
 		 context.receiveSubgraph(edges,threadNum);
 	}
+	
+	public void openDegreeWriter(int threadNum) {
+		context.openDegreeWriter(threadNum);
+	}
+	
+	public void closeDegreeWriter(int threadNum) {
+		context.closeDegreeWriter(threadNum);
+	}
+	
+	public void receiveDegreeFile(Map<Long, Long> edges,int threadNum) {
+		 context.receiveDegreeFile(edges,threadNum);
+	}
 }

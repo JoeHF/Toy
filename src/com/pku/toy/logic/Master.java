@@ -79,6 +79,13 @@ public class Master {
 				masterActor.transferSubgraph( threads.get(i).getId(),threads.get(i).getIp(), 
 						                      threadGraphMap.get( threads.get(i).getId() ));
 			}
+		}
+		
+		for (int i = 0; i < threads.size(); i++) {
+			if (threads.get(i).getStatus().equals(Constant.WORKING)) {
+				masterActor.transferDegreeFile( threads.get(i).getId(),threads.get(i).getIp(), 
+						            filePath + Constant.Degree_suffixString  );
+			}
 		}	
 		
 		createDHTService();   //create dht service
