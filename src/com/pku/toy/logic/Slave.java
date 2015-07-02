@@ -26,7 +26,7 @@ public class Slave {
 	private SlaveActor slaveActor;
 	private int threadNum;
 	private List<WorkingThread> threads;
-	private HashMap<Integer, PrintWriter>   writers;
+	private HashMap<Integer, PrintWriter>   writers = new HashMap<>();
 	
 	public Slave() {
 		threadNum = 0;
