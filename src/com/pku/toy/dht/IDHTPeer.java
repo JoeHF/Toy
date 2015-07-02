@@ -11,7 +11,7 @@ public interface IDHTPeer extends Remote
 
 	public Double get( Long key ) throws RemoteException;
 	
-	public Map<Long,Double> getMaps( List<Long> keys ) throws RemoteException;
+	public Map<Long,Double>  getMaps( List<Long> keys ) throws RemoteException;
 	
 	public Map<Long,Double> getLocalMaps( List<Long> keys ) throws RemoteException;
 

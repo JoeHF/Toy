@@ -47,7 +47,12 @@ public class DHTPeer implements IDHTPeer, Serializable
 			System.out.println("" + key + "-->" + router.get(key) );
 		System.out.print("remoteDHTPeers: ");
 		for( Long key : remoteDHTPeers.keySet() )
-			System.out.println("" + key + "-->" + remoteDHTPeers.get(key) );
+			try {
+				System.out.println("" + key + "-->" + remoteDHTPeers.get(key).getInfo() );
+			} catch (RemoteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		System.out.print("localHashMap: ");
 		for( Long key : localHashMap.keySet() )
 			System.out.println("" + key + "-->" + localHashMap.get(key) );
@@ -130,7 +135,7 @@ public class DHTPeer implements IDHTPeer, Serializable
 
 
 	@Override
-	public Map<Long,Double> getMaps(List<Long> keys) throws RemoteException 
+	public synchronized Map<Long,Double>  getMaps(List<Long> keys) throws RemoteException 
 	{
 		// TODO Auto-generated method stub
 		// Get operation in groups. Return a subMap containing all the keys, regardless of where the keys store.
@@ -163,7 +168,7 @@ public class DHTPeer implements IDHTPeer, Serializable
 	}
 	
 	@Override
-	public Map<Long,Double> getLocalMaps( List<Long> keys ) throws RemoteException
+	public synchronized Map<Long,Double> getLocalMaps( List<Long> keys ) throws RemoteException
 	{
 		// TODO Auto-generated method stub
 		// ensure that keys are all in localHashMap
