@@ -77,6 +77,7 @@ public class Slave {
 		for ( int i = 0 ; i < threadNum ; i++) {
 			if (threads.get(i).id == threadId) {
 				threads.get(i).dhtPeer.connectToOtherPeers();
+				threads.get(i).initialDHTPeerHashmap();
 			}
 		}
 	}
