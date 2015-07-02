@@ -66,7 +66,7 @@ public class Slave {
 	public void setDHTPeer(DHTPeer peer) {
 		System.out.println("Slave create dht peer:" + peer.address);
 		for ( int i = 0 ; i < threadNum ; i++) {
-			if (threads.get(i).getId() == peer.threadId) {
+			if (threads.get(i).id == peer.threadId) {
 				threads.get(i).dhtPeer = new DHTPeer();
 				threads.get(i).dhtPeer.installLocalPeer(peer);
 			}
@@ -104,7 +104,7 @@ public class Slave {
 	public void openWriter(int threadNum) {
 		String fileName = "Subgraph for workthread " + Integer.toString(threadNum);
 		for ( int i=0; i<threads.size(); i++ )
-			if ( threads.get(i).getId() == threadNum )
+			if ( threads.get(i).id == threadNum )
 		        threads.get(i).edgeFilePath = fileName;
 		try {
 			PrintWriter writer = new PrintWriter(fileName);
