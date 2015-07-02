@@ -3,7 +3,10 @@ package com.pku.toy.dht;
 import java.io.*;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
 import java.util.*;
+
+import com.pku.toy.Constant;
 
 
 public class DHTPeer implements IDHTPeer, Serializable
@@ -75,6 +78,8 @@ public class DHTPeer implements IDHTPeer, Serializable
 		
 		try 
 		{
+			System.out.println( "DHTRebind " + this.address );
+			LocateRegistry.createRegistry( Constant.PEER_PORT );
 			Naming.rebind( this.address ,  this );
 		}
 		catch ( Exception e ) 
