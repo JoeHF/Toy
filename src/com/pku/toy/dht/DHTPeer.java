@@ -256,6 +256,12 @@ public class DHTPeer implements IDHTPeer, Serializable
 		}
 	}
 	
+	@Override
+	public String getInfo() throws RemoteException
+	{
+		return this.toString();
+	}
+	
 	//-------------------------------------------------------------------------------------------------------
 	public DHTPeer() 
 	{

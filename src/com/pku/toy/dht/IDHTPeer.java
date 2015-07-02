@@ -27,4 +27,6 @@ public interface IDHTPeer extends Remote
 
 	public void restoreFromCheckPoint( String fileName ) throws RemoteException;
 	
+	public String getInfo() throws RemoteException;
+	
 }
