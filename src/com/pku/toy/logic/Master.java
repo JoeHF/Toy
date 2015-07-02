@@ -102,8 +102,8 @@ public class Master {
 		for (int i = 0; i < threads.size(); i++) {
 			if (threads.get(i).getStatus().equals(Constant.WORKING)) {
 				PeerModel peer = new PeerModel();
-				System.out.println("Master create dht peer service:" + "rmi://" + threads.get(i).getIp() + ":" + Constant.PEER_PORT + "/DHTService" + threads.get(i).getId());
-				peer.peerAddress = "rmi://" + threads.get(i).getIp() + ":" + Constant.PEER_PORT + "/DHTService" + threads.get(i).getId();
+				System.out.println("Master create dht peer service:" + "rmi://" + threads.get(i).getIp() + ":" + (Constant.PEER_PORT +threads.get(i).getId() )  + "/DHTService" + threads.get(i).getId());
+				peer.peerAddress = "rmi://" + threads.get(i).getIp() + ":" + ( Constant.PEER_PORT +threads.get(i).getId() ) + "/DHTService" + threads.get(i).getId();
 				peer.slaveService = "rmi://" + threads.get(i).getIp() + ":" + Constant.SLAVE_PORT + "/Slave";
 				peer.threadId = threads.get(i).getId();
 				peerModels.add(peer);	

@@ -19,6 +19,7 @@ public class DHTPeer implements IDHTPeer, Serializable
 	public String address;
 	public long    peerId;
 	public int threadId;
+	public int port;
 	
 	// DHT chord route table.
 	private TreeMap<Long, String>    router;
@@ -73,13 +74,14 @@ public class DHTPeer implements IDHTPeer, Serializable
 	{
 		this.address = peer.address;
 		this.peerId  = peer.peerId;
+		this.port    = peer.port;
 		this.setRouter( peer.router );
 		localHashMap = new HashMap<Long, Double>();
 		
 		try 
 		{
 			System.out.println( "DHTRebind " + this.address );
-			LocateRegistry.createRegistry( Constant.PEER_PORT );
+			LocateRegistry.createRegistry( this.port );
 			Naming.rebind( this.address ,  this );
 		}
 		catch ( Exception e ) 

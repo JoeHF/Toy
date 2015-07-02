@@ -14,6 +14,7 @@ import java.util.TreeMap;
 
 import javax.management.modelmbean.ModelMBean;
 
+import com.pku.toy.Constant;
 import com.pku.toy.model.PeerModel;
 import com.pku.toy.rmi.inter.ISlave;
 
@@ -75,6 +76,7 @@ public class DHT implements Map<Long, Double>
 	    			}
 	    		
 	    		peer.threadId = targetModel.threadId;
+	    		peer.port     = targetModel.threadId + Constant.PEER_PORT;
 				ISlave slave = (ISlave)Naming.lookup( targetModel.slaveService );
 				slave.setDHTPeer(peer);
 			}
