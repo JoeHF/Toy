@@ -91,7 +91,9 @@ public class Slave {
 	//----------jdc-----------------------
 	public void openWriter(int threadNum) {
 		String fileName = "Subgraph for workthread " + Integer.toString(threadNum);
-		threads.get(threadNum).edgeFilePath = fileName;
+		for ( int i=0; i<threads.size(); i++ )
+			if ( threads.get(i).getId() == threadNum )
+		        threads.get(i).edgeFilePath = fileName;
 		try {
 			PrintWriter writer = new PrintWriter(fileName);
 			writers.put( threadNum, writer);
