@@ -100,6 +100,7 @@ public class DHT implements Map<Long, Double>
 	    				break;
 	    			}
 				ISlave slave = (ISlave)Naming.lookup( targetModel.slaveService );
+				if ( slave != null ) System.out.println( "DHT Order " + targetModel.threadId + " to connect to others.");
 				slave.connectToOtherPeers(targetModel.threadId);
 			}
 	    	catch ( Exception e )

@@ -101,6 +101,7 @@ public class DHTPeer implements IDHTPeer, Serializable
 			try 
 			{
 				IDHTPeer peer = (IDHTPeer)Naming.lookup( lookupString );
+				System.out.println( this.peerId + " ---> " + peer.getInfo() );
 				this.remoteDHTPeers.put( key, peer );
 			}
             catch (Exception e) 

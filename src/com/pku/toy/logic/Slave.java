@@ -75,7 +75,7 @@ public class Slave {
 	
 	public void connectToOtherPeers(int threadId)  {
 		for ( int i = 0 ; i < threadNum ; i++) {
-			if (threads.get(i).getId() == threadId) {
+			if (threads.get(i).id == threadId) {
 				threads.get(i).dhtPeer.connectToOtherPeers();
 			}
 		}
