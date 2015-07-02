@@ -34,7 +34,7 @@ public class DHTPeer implements IDHTPeer, Serializable
 		return -1;
 	}
 	
-	private void displayPeer()
+	public void displayPeer()
 	{
 		System.out.println("=======================================");
 		System.out.println("PeerId: " + peerId +  "\nAddress: " + address + "\nThreadId: " + threadId);

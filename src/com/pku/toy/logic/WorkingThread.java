@@ -78,6 +78,15 @@ public class WorkingThread extends Thread {
 	
 	//-----------------------zzy------------------
 	
+	public void display()
+	{
+		System.out.println("###########################################");
+		System.out.println("WorkingThreadID: " + id + " Status: " + status);
+		System.out.println("edgeFilePath: " + edgeFilePath);
+		System.out.println("degrFilePath: " + degreeFilePath);
+		if ( dhtPeer!=null ) dhtPeer.displayPeer();
+		System.out.println("###########################################\n");
+	}
 	
 	//-----------------------jdc-----------------
     private HashMap<Long, Long> globalDegree;
