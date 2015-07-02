@@ -164,10 +164,8 @@ public class Slave {
 		while (it.hasNext()) {
 		    Map.Entry entry = (Map.Entry) it.next();
 		    Long toPoint = (Long)entry.getKey();
-		    List<Long> fromPoints = (List<Long>)entry.getValue();
-		    for (int i = 0; i < fromPoints.size(); i++) {
-		    	degreeWriters.get( threadNum ).println(Long.toString(toPoint)+"\t"+fromPoints.get(i));
-		    }
+		    Long fromPoint = (Long)entry.getValue();
+		    degreeWriters.get( threadNum ).println(Long.toString(toPoint)+"\t"+Long.toString(fromPoint));
 		}
 	}
 }
