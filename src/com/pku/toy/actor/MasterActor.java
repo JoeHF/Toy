@@ -67,6 +67,16 @@ public class MasterActor extends Thread {
 		}
 	}
 	
+	public void initialWorkingThreadIterationNum( WorkingThreadData workingThreadData, int totalStep ) {
+		try {
+				ISlave slaveService = slaveServices.get( workingThreadData.getIp() );
+				slaveService.initialWorkingThreadIterationNum( workingThreadData, totalStep );
+		
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void notifySlaveFetchFile(List<FileModel> fileModels) {
 		try {
 			for (int i = 0; i < fileModels.size(); i++) {

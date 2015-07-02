@@ -78,14 +78,22 @@ public class WorkingThread extends Thread {
 	
 	//-----------------------zzy------------------
 	
+	private int totalStep;
 	public void display()
 	{
 		System.out.println("###########################################");
 		System.out.println("WorkingThreadID: " + id + " Status: " + status);
 		System.out.println("edgeFilePath: " + edgeFilePath);
 		System.out.println("degrFilePath: " + degreeFilePath);
+		System.out.println("totalStep   : " + totalStep);
 		if ( dhtPeer!=null ) dhtPeer.displayPeer();
 		System.out.println("###########################################\n");
+	}
+	
+	public void initialWorkingThreadIterationNum( int totalStep )
+	{
+		this.totalStep = totalStep;
+		this.display();
 	}
 	
 	//-----------------------jdc-----------------

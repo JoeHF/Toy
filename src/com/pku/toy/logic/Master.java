@@ -128,6 +128,7 @@ public class Master {
 	}
 	
 	public void startCalculate(int totalStep) {
+
 		MyRunnerThread myRunnerThread = new MyRunnerThread(totalStep);
 		myRunnerThread.start();
 	}
@@ -157,6 +158,18 @@ public class Master {
 	//---------zzy-----------------------
 	private long range;
 	private Map<Long, Long> degrees;
+	
+	public void initialWorkingThreadIterationNum( int totalStep )
+	{
+		
+		//  to notify how many times working thread show run;
+		for (int i = 0; i < threads.size(); i++) 
+		{
+			if (threads.get(i).getStatus().equals(Constant.WORKING)) {
+				masterActor.initialWorkingThreadIterationNum( threads.get(i),totalStep);
+			}
+		}
+	}
 	
 	private void analyzeGraph( String graphFileName )
 	// generate sub-edge-graph and degree graph  

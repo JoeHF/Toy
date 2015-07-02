@@ -19,8 +19,15 @@ public class SlaveImpl extends UnicastRemoteObject implements ISlave{
 		// TODO Auto-generated constructor stub
 	}
 
+	@Override
 	public void createWorkingThread(WorkingThreadData workingThreadData) throws RemoteException {
 		slaveActor.createWorkingThread(workingThreadData);
+	}
+	
+	@Override
+	public void initialWorkingThreadIterationNum( WorkingThreadData workingThreadData, int totalStep ) throws RemoteException
+	{
+		slaveActor.initialWorkingThreadIterationNum( workingThreadData, totalStep);
 	}
 	
 	@Override
