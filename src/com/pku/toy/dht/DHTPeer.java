@@ -140,7 +140,9 @@ public class DHTPeer implements IDHTPeer, Serializable
 		for ( long key : keys )
 			if ( this.getPeerIdByKey(key) == this.peerId )
 				keyList.add( key );
+		System.out.println( "DHTPeer : " + this.peerId );
 		HashMap<Long, Double> ret = (HashMap<Long, Double>)this.getLocalMaps( keyList );
+		System.out.println( "LocalKeyList: " + keyList +  "\nLocalMap: " + ret );
 		
 		// get remote maps
 		for ( long routerKey : this.router.keySet() )
@@ -152,8 +154,10 @@ public class DHTPeer implements IDHTPeer, Serializable
 					keyList.add( key );
 			HashMap<Long, Double> remoteMap = 
 					(HashMap<Long, Double>)remoteDHTPeers.get( routerKey ).getLocalMaps( keyList );
+			System.out.println("RomoteKey : " + routerKey + "  ++ " + keyList + " ++ Map " + remoteMap );
 			for ( long key : remoteMap.keySet() )
 				ret.put( key , remoteMap.get(key) );
+			System.out.println( "DHTPeer : " + peerId + " -- " + ret);
 		}
 		return ret;
 	}
@@ -164,6 +168,7 @@ public class DHTPeer implements IDHTPeer, Serializable
 		// TODO Auto-generated method stub
 		// ensure that keys are all in localHashMap
 		HashMap<Long,Double> ret = new HashMap<Long,Double>();
+		System.out.println("GetLocalMaps: " + keys );
 		for ( long key : keys )
 		{
 			if ( localHashMap.containsKey(key) )

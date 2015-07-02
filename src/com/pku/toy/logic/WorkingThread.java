@@ -56,6 +56,7 @@ public class WorkingThread extends Thread {
 	public void run() {
 		System.out.println("working thread " + id + ": start to run");
 		this.readDegree();
+		System.out.println( this.globalDegree );
 		System.out.println("working thread " + id + ": read degree graph");
 		while(true) {	
 			System.out.println("working thread " + id + ": wait");
@@ -173,9 +174,12 @@ public class WorkingThread extends Thread {
 				}
 				else {
 					Map<Long, Double> neighborPageRank = dhtPeer.getMaps(neighbors);
+					System.out.println(  "Key : " + lastKey + "\nnNeighbors:" + neighbors );
+					System.out.println(  "neiborPR: " + neighborPageRank );
 					double sum = 0;
-					for(Iterator<Long> iter = neighbors.iterator(); iter.hasNext();) {
+					for(Iterator<Long> iter = neighbors.iterator(); iter.hasNext() ;) {
 						Long key = iter.next();
+						System.out.println( "&&" + key + neighborPageRank.get(key) + " " + globalDegree.get(key) );
 						sum += 1.0*neighborPageRank.get(key)/globalDegree.get(key);
 					} 	
 					dhtPeer.put(Long.parseLong(lastKey), sum*Constant.DampingFactor
