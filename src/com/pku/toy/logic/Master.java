@@ -78,6 +78,8 @@ public class Master {
 						                      threadGraphMap.get( threads.get(i).getId() ));
 			}
 		}	
+		
+		createDHTService();   //create dht service
 	}
 	
 	public void createWorkingThread(List<WorkingThreadData> workingThreadDatas) {
@@ -91,7 +93,6 @@ public class Master {
 		System.out.println("Master start create working thread");
 		masterActor.createWorkingThread(workingThreadDatas);
 		
-		createDHTService();   //create dht service
 	}
 	
 	private void createDHTService() {
@@ -108,7 +109,7 @@ public class Master {
 		}
 		
 		dht = new DHT();
-		dht.setDHT(peerModels, 1000);
+		dht.setDHT(peerModels, this.range );
 	}
 	
 	public void receiveOneStepDone(int threadId) {
