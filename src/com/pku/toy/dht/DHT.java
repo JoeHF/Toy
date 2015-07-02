@@ -30,7 +30,7 @@ public class DHT implements Map<Long, Double>
 		// TODO Auto-generated constructor stub
 	}
 	
-	public List<Long> separateKeyRange( long range, int peerNum )
+	public static List<Long> separateKeyRange( long range, int peerNum )
 	{
 		List<Long>  ret = new ArrayList<Long>();
 		long i,j;

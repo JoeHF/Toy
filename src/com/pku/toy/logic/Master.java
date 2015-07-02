@@ -1,10 +1,13 @@
 package com.pku.toy.logic;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -64,14 +67,15 @@ public class Master {
 		for (int i = 0; i < threads.size(); i++) {
 			WorkingThreadData threadData = threads.get(i);
 			if (threadData.getStatus().equals(Constant.WORKING)) {
-				threadGraphMap.put(threadData.getId(), Constant.Edge_suffixString + j);
+				threadGraphMap.put(threadData.getId(), filePath + Constant.Edge_suffixString + j);
 				j++;
 			}
 		}
 		
 		for (int i = 0; i < threads.size(); i++) {
 			if (threads.get(i).getStatus().equals(Constant.WORKING)) {
-				masterActor.transferSubgraph(i,threads.get(i).getIp(), threadGraphMap.get(i));
+				masterActor.transferSubgraph( threads.get(i).getId(),threads.get(i).getIp(), 
+						                      threadGraphMap.get( threads.get(i).getId() ));
 			}
 		}	
 	}
@@ -154,12 +158,65 @@ public class Master {
 	private void analyzeGraph( String graphFileName )
 	// generate sub-edge-graph and degree graph  
 	// graphFileName+"_edge"+"0/1/2"
-	// graphFileName+"_degree"+"0/1/2"
+	// graphFileName+"_degree"
 	{
 		generateDegreeFile( graphFileName );
+		
+		List<Long> keyList = DHT.separateKeyRange( range, Constant.PEER_NUM );
+		for ( int ite = 0; ite<keyList.size(); ite++ )
+		{
+			long lowBound, highBound, fromNode, toNode;
+			HashMap< Long, List<Long> > edges = new HashMap<>();
+			String line;
+			String[] edge;
+			
+			if ( ite==0 ) lowBound = -1;
+			else          lowBound = keyList.get(ite-1);
+			highBound = keyList.get(ite);
+			
+			try
+			{
+				File file = new File( graphFileName );
+				BufferedReader reader = new BufferedReader( 
+	     		       new InputStreamReader( new FileInputStream( file ), "UTF-8") );
+				while ( true )
+				{
+					line = reader.readLine();
+					if ( line==null ) break;
+					edge = line.split( "\t" );
+					fromNode = Long.parseLong( edge[0] );
+					toNode   = Long.parseLong( edge[1] );
+					if ( toNode<=lowBound || toNode>highBound ) continue;
+					if ( edges.containsKey( toNode ) )
+						edges.get( toNode ).add( fromNode );
+					else
+					{
+						 edges.put( toNode, new ArrayList<Long>() );
+						 edges.get( toNode ).add( fromNode );
+					}
+				}
+				
+				File fout = new File( graphFileName + Constant.Edge_suffixString + ite );
+				BufferedWriter writer = new BufferedWriter(
+	     		       new OutputStreamWriter( new FileOutputStream( fout ), "UTF-8") );
+				
+	            for ( long node : edges.keySet() )
+	            for ( long from : edges.get(node) )
+	            {
+	            	writer.write( "" + node + "\t" + from + "\n" );
+	            }
+				writer.flush();
+				writer.close();
+			}
+			catch ( IOException e) 
+			{
+				// TODO: handle exception
+				e.printStackTrace();
+			}
+		}
 	}
 	
-	private long generateDegreeFile( String graphFileName )
+	private void generateDegreeFile( String graphFileName )
 	{
 		long fromNode, toNode, nodeDegree;
 		String line;
@@ -189,15 +246,25 @@ public class Master {
 				else
 					degrees.put( fromNode, (long)1 );
 			}
+			
+			File fout = new File( graphFileName + Constant.Degree_suffixString );
+			BufferedWriter writer = new BufferedWriter(
+     		       new OutputStreamWriter( new FileOutputStream( fout ), "UTF-8") );
+			
+            for ( long node : degrees.keySet() )
+            {
+            	writer.write( "" + node + "\t" + degrees.get(node) + "\n" );
+            }
+			writer.flush();
+			writer.close();
 		}
 		catch ( IOException e) 
 		{
 			// TODO: handle exception
 			e.printStackTrace();
 		}
-		
-		return range;
 	}
+	
 	
 	//----------jdc-----------------------
 

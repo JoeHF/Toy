@@ -153,7 +153,7 @@ public class MasterActor extends Thread {
 				}
 				else {
 					edges.put(Long.parseLong(lastKey), neighbors);
-					neighbors.clear();
+					neighbors = new ArrayList<>();
 					neighbors.add(Long.parseLong(s[1]));
 					lastKey = s[0];
 				}
@@ -161,9 +161,8 @@ public class MasterActor extends Thread {
 				if (count == 1000) {
 					edges.put(Long.parseLong(lastKey), neighbors);
 					slaveService.receiveSubgraph(edges);
-					edges.clear();
-					neighbors.clear();
-					lastKey = s[0];
+					edges = new HashMap<>();
+					neighbors = new ArrayList<>();
 					count = 0;
 					lastKey = "";
 				}
