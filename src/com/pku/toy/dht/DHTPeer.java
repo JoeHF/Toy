@@ -135,7 +135,7 @@ public class DHTPeer implements IDHTPeer, Serializable
 
 
 	@Override
-	public synchronized Map<Long,Double>  getMaps(List<Long> keys) throws RemoteException 
+	public Map<Long,Double>  getMaps(List<Long> keys) throws RemoteException 
 	{
 		// TODO Auto-generated method stub
 		// Get operation in groups. Return a subMap containing all the keys, regardless of where the keys store.
@@ -145,34 +145,34 @@ public class DHTPeer implements IDHTPeer, Serializable
 		for ( long key : keys )
 			if ( this.getPeerIdByKey(key) == this.peerId )
 				keyList.add( key );
-		System.out.println( "DHTPeer : " + this.peerId );
 		HashMap<Long, Double> ret = (HashMap<Long, Double>)this.getLocalMaps( keyList );
-		System.out.println( "LocalKeyList: " + keyList +  "\nLocalMap: " + ret );
+		System.out.println( this.getInfo() + "LocalKeyList: " + keyList +  " LocalMap: " + ret );
 		
 		// get remote maps
 		for ( long routerKey : this.router.keySet() )
 		{
 			if ( routerKey == this.peerId ) continue;
-			keyList.clear();
+			keyList = new ArrayList<Long>();
 			for ( long key : keys )
 				if ( this.getPeerIdByKey(key) == routerKey )
 					keyList.add( key );
 			HashMap<Long, Double> remoteMap = 
 					(HashMap<Long, Double>)remoteDHTPeers.get( routerKey ).getLocalMaps( keyList );
-			System.out.println("RomoteKey : " + routerKey + "  ++ " + keyList + " ++ Map " + remoteMap );
+			System.out.println( this.getInfo() + "RomoteKey : " + routerKey + "  keyList: " + keyList + "  Map " + remoteMap );
 			for ( long key : remoteMap.keySet() )
 				ret.put( key , remoteMap.get(key) );
-			System.out.println( "DHTPeer : " + peerId + " -- " + ret);
+			System.out.println( this.getInfo() + "DHTPeer : " + peerId + " -- " + ret);
 		}
 		return ret;
 	}
 	
 	@Override
-	public synchronized Map<Long,Double> getLocalMaps( List<Long> keys ) throws RemoteException
+	public  Map<Long,Double> getLocalMaps( List<Long> keys ) throws RemoteException
 	{
 		// TODO Auto-generated method stub
 		// ensure that keys are all in localHashMap
 		HashMap<Long,Double> ret = new HashMap<Long,Double>();
+		if ( keys.size()==0 ) return ret;
 		System.out.println("GetLocalMaps: " + keys );
 		for ( long key : keys )
 		{
@@ -275,7 +275,7 @@ public class DHTPeer implements IDHTPeer, Serializable
 	@Override
 	public String getInfo() throws RemoteException
 	{
-		return this.toString();
+		return ( this.toString() + " Map: " + localHashMap.size() + " [[ " );
 	}
 	
 	//-------------------------------------------------------------------------------------------------------
