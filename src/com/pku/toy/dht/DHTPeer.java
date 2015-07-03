@@ -277,6 +277,7 @@ public class DHTPeer implements IDHTPeer, Serializable
 	@Override
 	public String getInfo() throws RemoteException
 	{
+		System.out.println( "[" + this.toString() + localHashMap.size() + "]");
 		return ( this.toString() + " Map: " + localHashMap.size() + " @@ " );
 	}
 	
