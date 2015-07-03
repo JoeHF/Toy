@@ -70,6 +70,7 @@ public class Slave {
 			if (threads.get(i).id == peer.threadId) {
 				threads.get(i).dhtPeer = new DHTPeer();
 				threads.get(i).dhtPeer.installLocalPeer(peer);
+				threads.get(i).initialDHTPeerHashmap();
 			}
 		}
 	}
@@ -78,7 +79,6 @@ public class Slave {
 		for ( int i = 0 ; i < threadNum ; i++) {
 			if (threads.get(i).id == threadId) {
 				threads.get(i).dhtPeer.connectToOtherPeers();
-				threads.get(i).initialDHTPeerHashmap();
 			}
 		}
 	}
