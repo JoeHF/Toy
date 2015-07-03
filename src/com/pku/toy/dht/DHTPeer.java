@@ -161,7 +161,7 @@ public class DHTPeer implements IDHTPeer, Serializable
 			System.out.println( this.getInfo() + "RomoteKey : " + routerKey + "  keyList: " + keyList + "  Map " + remoteMap );
 			for ( long key : remoteMap.keySet() )
 				ret.put( key , remoteMap.get(key) );
-			System.out.println( this.getInfo() + "DHTPeer : " + peerId + " -- " + ret);
+			System.out.println( this.getInfo() + "DHTPeer : " + peerId + " -- " + ret );
 		}
 		return ret;
 	}
@@ -275,7 +275,7 @@ public class DHTPeer implements IDHTPeer, Serializable
 	@Override
 	public String getInfo() throws RemoteException
 	{
-		return ( this.toString() + " Map: " + localHashMap.size() + " [[ " );
+		return ( this.toString() + " Map: " + localHashMap.size() + " @@ " );
 	}
 	
 	//-------------------------------------------------------------------------------------------------------
