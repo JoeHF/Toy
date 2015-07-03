@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -118,7 +119,12 @@ public class Master {
 		}
 		
 		dht = new DHT();
-		dht.setDHT(peerModels, this.range );
+		try {
+			dht.setDHT(peerModels, this.range );
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void receiveOneStepDone(int threadId) {

@@ -4,12 +4,13 @@ import java.io.*;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
 import com.pku.toy.Constant;
 
 
-public class DHTPeer implements IDHTPeer, Serializable
+public class DHTPeer extends UnicastRemoteObject implements IDHTPeer, Serializable
 {
 
 	
@@ -282,9 +283,10 @@ public class DHTPeer implements IDHTPeer, Serializable
 	}
 	
 	//-------------------------------------------------------------------------------------------------------
-	public DHTPeer() 
+	public DHTPeer() throws RemoteException 
 	{
 		// TODO Auto-generated constructor stub
+		super();
 	}
 
 	public static void main(String[] args) 

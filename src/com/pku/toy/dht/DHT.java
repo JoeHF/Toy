@@ -43,7 +43,7 @@ public class DHT implements Map<Long, Double>
 	    return ret;
 	}
 	
-	public void setDHT( List<PeerModel> peerAddr, long range )
+	public void setDHT( List<PeerModel> peerAddr, long range ) throws RemoteException
 	{
 		long i,j,slaveId;
 		int  x;

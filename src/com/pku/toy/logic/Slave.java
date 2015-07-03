@@ -5,6 +5,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -68,7 +69,12 @@ public class Slave {
 		System.out.println("Slave create dht peer:" + peer.address);
 		for ( int i = 0 ; i < threadNum ; i++) {
 			if (threads.get(i).id == peer.threadId) {
-				threads.get(i).dhtPeer = new DHTPeer();
+				try {
+					threads.get(i).dhtPeer = new DHTPeer();
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				threads.get(i).dhtPeer.installLocalPeer(peer);
 				threads.get(i).initialDHTPeerHashmap();
 			}
