@@ -74,6 +74,8 @@ public class WorkingThread extends Thread {
 					e.printStackTrace();
 					context.notifyCalOneStepDone(id);
 					this.dhtPeer.unbind();
+					this.dhtPeer = null;
+					this.stop();
 					return;
 				}	
 			}
@@ -84,6 +86,8 @@ public class WorkingThread extends Thread {
 				// TODO Auto-generated catch block
 				context.notifyCalOneStepDone(id);
 				this.dhtPeer.unbind();
+				this.dhtPeer = null;
+				this.stop();
 				e.printStackTrace();
 			}
 			

@@ -318,8 +318,7 @@ public class Master {
 		}
 	}
 	
-	public String killAThread( int threadId )
-	{
+	public String killAThread( int threadId ) {
 		if ( threadId<0 || threadId>=Constant.THREAD_NUM )
 			return new String( "Id is invalid:(0..3)" );
 		if ( isIdleThread(threadId) )

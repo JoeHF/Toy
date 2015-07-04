@@ -66,18 +66,7 @@ public class MasterActor extends Thread {
 			e.printStackTrace();
 		}
 	}
-	
-	public void restartcreateWorkingThread(List<WorkingThreadData> threads, int downThreadID) {
-		try {
-			ISlave slaveService = slaveServices.get(threads.get(downThreadID).getIp());
-			slaveService.restartcreateWorkingThread(threads.get(downThreadID));
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	
-	
+		
 	public void initialWorkingThreadIterationNum( WorkingThreadData workingThreadData, int totalStep ) {
 		try {
 				ISlave slaveService = slaveServices.get( workingThreadData.getIp() );
@@ -149,6 +138,16 @@ public class MasterActor extends Thread {
 	
 	public String getIpAddress() {
 		return this.ip;
+	}
+	
+	//--------------------------------jdc-------------------------------
+	public void restartcreateWorkingThread(List<WorkingThreadData> threads, int downThreadID) {
+		try {
+			ISlave slaveService = slaveServices.get(threads.get(downThreadID).getIp());
+			slaveService.restartcreateWorkingThread(threads.get(downThreadID));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void transferSubgraph(int threadNum, String threadIP, String fileName) {
