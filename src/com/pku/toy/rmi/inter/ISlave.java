@@ -27,4 +27,5 @@ public interface ISlave extends Remote {
 	public void closeDegreeWriter(int threadNum) throws RemoteException;
 	public void receiveDegreeFile(Map<Long, Long> edges,int threadNum) throws RemoteException;
 	public void initialWorkingThreadIterationNum( WorkingThreadData workingThreadData, int totalStep ) throws RemoteException;
+    public void killAThread(WorkingThreadData workingThreadData) throws RemoteException;
 }

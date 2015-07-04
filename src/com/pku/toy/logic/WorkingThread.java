@@ -72,6 +72,7 @@ public class WorkingThread extends Thread {
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					return;
 				}	
 			}
 			
@@ -80,6 +81,7 @@ public class WorkingThread extends Thread {
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				return;
 			}
 			context.notifyCalOneStepDone(id);
 		}
@@ -153,6 +155,8 @@ public class WorkingThread extends Thread {
 		this.run();
 	}
 	
+	
+	
 	//-----------------------jdc-----------------
     private HashMap<Long, Long> globalDegree;
     public void readDegree() {
@@ -176,7 +180,8 @@ public class WorkingThread extends Thread {
 	}
 	
     //d:damping factor N:point sum
-	public void updatePageRank( Long N ){
+	public void updatePageRank( Long N ) throws InterruptedException
+	{
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(edgeFilePath));
 			String line;
@@ -209,6 +214,8 @@ public class WorkingThread extends Thread {
 					lastKey = s[0];
 					if ( line==null ) break;
 				}
+				if ( this.isInterrupted() )
+					throw new InterruptedException();
 			}
 			reader.close();
 		}
