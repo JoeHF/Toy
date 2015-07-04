@@ -1,7 +1,9 @@
 package com.pku.toy.dht;
 
 import java.io.*;
+import java.net.MalformedURLException;
 import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
@@ -88,6 +90,22 @@ public class DHTPeer extends UnicastRemoteObject implements IDHTPeer, Serializab
 		for ( long key : router.keySet() )
 			this.router.put( key , router.get(key) );
 		return;
+	}
+	
+	public void unbind()
+	{
+		try {
+			Naming.unbind( this.address );
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (MalformedURLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NotBoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public void installLocalPeer( DHTPeerData peer )

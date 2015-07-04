@@ -72,6 +72,8 @@ public class WorkingThread extends Thread {
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					context.notifyCalOneStepDone(id);
+					this.dhtPeer.unbind();
 					return;
 				}	
 			}
@@ -80,9 +82,11 @@ public class WorkingThread extends Thread {
 				sleep(5000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
+				context.notifyCalOneStepDone(id);
+				this.dhtPeer.unbind();
 				e.printStackTrace();
-				return;
 			}
+			
 			context.notifyCalOneStepDone(id);
 		}
 		
