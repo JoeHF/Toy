@@ -18,6 +18,7 @@ import com.pku.toy.Constant;
 import com.pku.toy.actor.MasterActor;
 import com.pku.toy.actor.SlaveActor;
 import com.pku.toy.dht.DHTPeer;
+import com.pku.toy.model.DHTPeerData;
 import com.pku.toy.model.PeerModel;
 import com.pku.toy.model.WorkingThreadData;
 
@@ -65,7 +66,7 @@ public class Slave {
 		slaveActor.notifyCalOneStepDone(threadId);
 	}
 	
-	public void setDHTPeer(DHTPeer peer) {
+	public void setDHTPeer( DHTPeerData peer) {
 		System.out.println("Slave create dht peer:" + peer.address);
 		for ( int i = 0 ; i < threadNum ; i++) {
 			if (threads.get(i).id == peer.threadId) {

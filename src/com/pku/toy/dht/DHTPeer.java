@@ -5,9 +5,11 @@ import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.server.UnicastRemoteObject;
+import java.time.Period;
 import java.util.*;
 
 import com.pku.toy.Constant;
+import com.pku.toy.model.DHTPeerData;
 
 
 public class DHTPeer extends UnicastRemoteObject implements IDHTPeer, Serializable
@@ -67,6 +69,19 @@ public class DHTPeer extends UnicastRemoteObject implements IDHTPeer, Serializab
 		return "" + peerId + "---" + address;
 	}
 	
+	public DHTPeerData getDhtPeerData()
+	{
+		DHTPeerData peerData = new DHTPeerData();
+		peerData.address = new String( this.address );
+		peerData.peerId  = this.peerId;
+		peerData.threadId = this.threadId;
+		peerData.port    = this.port;
+		peerData.router = new TreeMap<>();
+		for ( Long key : this.router.keySet() )
+			peerData.router.put( new Long(key) , new String( this.router.get(key)) );
+		return peerData;
+	}
+	
 	public void setRouter(TreeMap<Long, String> router) 
 	{
 		this.router = new TreeMap<>();
@@ -75,12 +90,13 @@ public class DHTPeer extends UnicastRemoteObject implements IDHTPeer, Serializab
 		return;
 	}
 	
-	public void installLocalPeer( DHTPeer peer )
+	public void installLocalPeer( DHTPeerData peer )
 	// install a local DHTPeer, fill RouteTable, create local RMI server.
 	{
 		this.address = peer.address;
 		this.peerId  = peer.peerId;
 		this.port    = peer.port;
+		this.threadId = peer.threadId;
 		this.setRouter( peer.router );
 		localHashMap = new HashMap<Long, Double>();
 		

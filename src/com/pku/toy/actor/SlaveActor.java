@@ -15,6 +15,7 @@ import com.pku.toy.Constant;
 import com.pku.toy.dht.DHTPeer;
 import com.pku.toy.logic.Slave;
 import com.pku.toy.logic.WorkingThread;
+import com.pku.toy.model.DHTPeerData;
 import com.pku.toy.model.PeerModel;
 import com.pku.toy.model.WorkingThreadData;
 import com.pku.toy.rmi.implement.SlaveImpl;
@@ -76,7 +77,7 @@ public class SlaveActor extends Thread {
 		System.out.println("Slave Actor:receive start read file:" + fileName);
 	}
 
-	public void setDHTPeer(DHTPeer peer) {
+	public void setDHTPeer(DHTPeerData peer) {
 		// TODO Auto-generated method stub
 		context.setDHTPeer(peer);
 	}

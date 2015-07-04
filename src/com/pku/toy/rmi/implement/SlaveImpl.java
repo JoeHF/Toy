@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.pku.toy.actor.SlaveActor;
 import com.pku.toy.dht.DHTPeer;
+import com.pku.toy.model.DHTPeerData;
 import com.pku.toy.model.PeerModel;
 import com.pku.toy.model.WorkingThreadData;
 import com.pku.toy.rmi.inter.ISlave;
@@ -51,7 +52,7 @@ public class SlaveImpl extends UnicastRemoteObject implements ISlave{
 	
 
 	@Override
-	public void setDHTPeer(DHTPeer peer) throws RemoteException {
+	public void setDHTPeer(DHTPeerData peer) throws RemoteException {
 		// TODO Auto-generated method stub
 		slaveActor.setDHTPeer(peer);
 	}

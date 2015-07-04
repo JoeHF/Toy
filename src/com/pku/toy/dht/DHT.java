@@ -78,7 +78,7 @@ public class DHT implements Map<Long, Double>
 	    		peer.threadId = targetModel.threadId;
 	    		peer.port     = targetModel.threadId + Constant.PEER_PORT;
 				ISlave slave = (ISlave)Naming.lookup( targetModel.slaveService );
-				slave.setDHTPeer(peer);
+				slave.setDHTPeer( peer.getDhtPeerData()  );
 			}
 	    	catch ( Exception e )
 	    	{
