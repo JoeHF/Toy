@@ -38,6 +38,7 @@ public class Master {
 	private DHT dht;
 	private int workThreadDoneNum = 0;
 	private Map<Integer, String> threadGraphMap = new HashMap<>();
+	private List<PeerModel>  peerModels;
 	
 	private MyRunnerThread myRunnerThread;
 	
@@ -108,7 +109,7 @@ public class Master {
 	}
 	
 	private void createDHTService() {
-		List<PeerModel> peerModels = new ArrayList<>();
+		peerModels = new ArrayList<>();
 		for (int i = 0; i < threads.size(); i++) {
 			if (threads.get(i).getStatus().equals(Constant.WORKING)) {
 				PeerModel peer = new PeerModel();
