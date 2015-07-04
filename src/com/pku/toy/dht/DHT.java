@@ -111,6 +111,15 @@ public class DHT implements Map<Long, Double>
 	    }
 	}
 
+	public void resetDHT( List<PeerModel> peerModels, int downThreadID) throws RemoteException{
+		DHTPeer peer = new DHTPeer();
+	    peer.setRouter( router );
+		
+		
+		
+	}
+	
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
