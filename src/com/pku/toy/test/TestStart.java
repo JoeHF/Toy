@@ -86,6 +86,8 @@ public class TestStart {
 		Label empty;
 		Button readFile;
 		Button startCalculation;
+		TextField downThreadId;
+		Button killThread;
 		
 		public JcheckBox() {
 			super(new BorderLayout());
@@ -109,6 +111,8 @@ public class TestStart {
 			filePath = new TextField("graph.txt");
 			readFile = new Button("read graph");
 			startCalculation = new Button("begin to calculate");
+			downThreadId = new TextField("Thread Id(0..3)");
+			killThread = new Button("kill this thread");
 			
 			masterCheckbox.addItemListener(this);
 			slaveCheckbox.addItemListener(this);
@@ -120,7 +124,7 @@ public class TestStart {
 			checkPanel1.add(startActorButton);
 			startActorButton.addActionListener(this);
 			
-			JPanel checkPanel2 = new JPanel(new GridLayout(6, 2, 10, 10));
+			JPanel checkPanel2 = new JPanel(new GridLayout(7, 2, 10, 10));
 			checkPanel2.add(text1);
 			checkPanel2.add(text2);		
 			checkPanel2.add(slaveIp1);
@@ -136,6 +140,11 @@ public class TestStart {
 			readFile.addActionListener(this);
 			checkPanel2.add(startCalculation);
 			startCalculation.addActionListener(this);
+			checkPanel2.add( new JPanel() );
+			checkPanel2.add(downThreadId);
+			checkPanel2.add(killThread);
+			killThread.addActionListener(this);
+			
 			
 			add(checkPanel1, BorderLayout.NORTH);
 			add(checkPanel2, BorderLayout.SOUTH);
@@ -183,6 +192,9 @@ public class TestStart {
 				readFile(filePath.getText());
 			} else if (source == startCalculation) {
 				startCalculation();
+			} else if (source == killThread){
+				String retString = killAThread( downThreadId.getText() );
+				downThreadId.setText( retString );
 			}
 		}
 	}
@@ -252,6 +264,19 @@ public class TestStart {
 		}
 		
 		master.createWorkingThread(workingThreadDatas);
+	}
+	
+	public String killAThread( String threadId )
+	{
+		try
+		{
+		    int id = Integer.parseInt( threadId );
+			return master.killAThread( id );
+		}
+		catch ( NumberFormatException e )
+		{
+			return "Invalid Input";
+		}
 	}
 	
 }

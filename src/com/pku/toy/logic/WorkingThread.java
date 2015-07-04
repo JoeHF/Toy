@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectOutputStream.PutField;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -90,6 +91,8 @@ public class WorkingThread extends Thread {
 	
 	private int totalStep;
 	private int totalNodes;
+	public Object object_Exception = new Object();
+	
 	public void display()
 	{
 		System.out.println("###############--WorkingThread--###################");
@@ -132,6 +135,22 @@ public class WorkingThread extends Thread {
 		}
 		for ( Long key : edgeMap.keySet() )
 			this.dhtPeer.putLocalHashMap( key , 1.0 );
+	}
+	
+	public void handleRemoteException()
+	{
+		context.reportExceptionToMaster( this.id );
+				
+		synchronized ( object_Exception ) {
+			try {
+				object_Exception.wait();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		this.run();
 	}
 	
 	//-----------------------jdc-----------------
@@ -192,7 +211,17 @@ public class WorkingThread extends Thread {
 				}
 			}
 			reader.close();
-		} catch (IOException e) {
+		}
+		catch ( RemoteException e ) 
+		{
+			// TODO: handle exception
+			System.out.println("working thread " + id + ": Catched Remote Exception!");
+			handleRemoteException();
+		}
+		catch ( IOException e ) 
+		{
+			// TODO: handle exception
+			if ( e.getClass() != RemoteException.class )
 			e.printStackTrace();
 		}
 		

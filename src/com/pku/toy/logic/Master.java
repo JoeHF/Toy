@@ -171,6 +171,8 @@ public class Master {
 	//---------zzy-----------------------
 	private long range;
 	private Map<Long, Long> degrees;
+	private HashSet<Integer> threadsReportingException = new HashSet<>();
+	private Object object3 = new Object();
 	
 	public void initialWorkingThreadIterationNum( int totalStep )
 	{
@@ -295,6 +297,30 @@ public class Master {
 		}
 	}
 	
+	public void reportExceptionToMaster(int threadId) {
+		synchronized ( object3 ) {
+			threadsReportingException.add( threadId );
+			System.out.println("Master receive threadId " + threadId + " reporting Exception! Exception Set: " + threadsReportingException );
+			if ( threadsReportingException.size() == Constant.PEER_NUM-1 ) 
+			{
+				System.out.println( "Master begin to restart a new WorkingThread." );
+				this.restartFromCheckPoint( threadsReportingException );
+				threadsReportingException = new HashSet<>();
+			}
+		}
+	}
+	
+	public String killAThread( int threadId )
+	{
+		if ( threadId<0 || threadId>=Constant.THREAD_NUM )
+			return new String( "Id is invalid:(0..3)" );
+		if ( isIdleThread(threadId) )
+			return new String( "Input Again: idle Thread" );
+		
+		
+		return new String( "Sucessful kill a Thread." );
+	}
+	
 	
 	//----------jdc-----------------------
 	public void restartcreateWorkingThread(List<WorkingThreadData> workingThreadDatas) {
@@ -303,19 +329,19 @@ public class Master {
 		masterActor.restartcreateWorkingThread(workingThreadDatas);
 	}
 	
-	private void restartFromCheckPoint() {
+	private void restartFromCheckPoint( HashSet<Integer> normalThreadId ) {
     	Random random = new Random();
 		int idleNum = Math.abs(random.nextInt()) % 4;
 		System.out.println("Idle thread num:" + idleNum);	
 		List<WorkingThreadData> workingThreadDatas = new ArrayList<>();
         for (int i = 0; i < Constant.THREAD_NUM; i++) {
 			if (i != idleNum) {
-				WorkingThreadData workingThreadData = new WorkingThreadData(ipList.get(i), i, Constant.WORKING);
-				workingThreadDatas.add(workingThreadData);
+				//WorkingThreadData workingThreadData = new WorkingThreadData(ipList.get(i), i, Constant.WORKING);
+				//workingThreadDatas.add(workingThreadData);
 			} else {
 				System.out.println("idle thread number is:" + i);
-				WorkingThreadData workingThreadData = new WorkingThreadData(ipList.get(i), i, Constant.IDLE);
-				workingThreadDatas.add(workingThreadData);
+				//WorkingThreadData workingThreadData = new WorkingThreadData(ipList.get(i), i, Constant.IDLE);
+				//workingThreadDatas.add(workingThreadData);
 			}
 		}
 		

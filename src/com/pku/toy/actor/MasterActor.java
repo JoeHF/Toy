@@ -239,4 +239,10 @@ public class MasterActor extends Thread {
 			e.printStackTrace();
 		}	
 	}	
+	
+	
+	//--------------------------------zzy-------------------------------
+	public void reportExceptionToMaster(int threadId) {
+		context.reportExceptionToMaster(threadId);
+	}
 }

@@ -109,6 +109,8 @@ public class SlaveActor extends Thread {
 		}
 	}
 	
+	//-----------------------jdc---------------------------------
+	
 	public void openWriter(int threadNum) {
 		context.openWriter(threadNum);
 	}
@@ -131,5 +133,15 @@ public class SlaveActor extends Thread {
 	
 	public void receiveDegreeFile(Map<Long, Long> edges,int threadNum) {
 		 context.receiveDegreeFile(edges,threadNum);
+	}
+	
+	//-------------------------zzy------------------------------
+	public void reportExceptionToMaster(int threadId) {
+		try {
+			masterService.reportExceptionToMaster(threadId);
+		} catch (RemoteException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

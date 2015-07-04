@@ -117,6 +117,11 @@ public class Slave {
 	
 	//---------zzy-----------------------
 	
+	public void reportExceptionToMaster(int threadId )
+	{
+		slaveActor.reportExceptionToMaster(threadId);
+	}
+	
 	
 	//----------jdc-----------------------
 	public void openWriter(int threadNum) {

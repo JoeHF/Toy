@@ -27,4 +27,9 @@ public class MasterImpl extends UnicastRemoteObject implements IMaster {
 	public void notifyMasterOneStepDone(int threadId) throws RemoteException {
 		masterActor.receiveCalOneStepDone(threadId);
 	}
+	
+	@Override
+	public void reportExceptionToMaster(int threadId) throws RemoteException {
+		masterActor.reportExceptionToMaster(threadId);
+	}
 }
