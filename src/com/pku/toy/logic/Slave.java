@@ -49,15 +49,6 @@ public class Slave {
 		threadNum++;
 	}
 	
-	public void restartcreateWorkingThread(WorkingThreadData workingThreadData) {
-		System.out.println("slave " + getAddress() + " thread num:" + workingThreadData.getId() + " restart create working thread:" + workingThreadData.getStatus());
-		WorkingThread thread = new WorkingThread(workingThreadData, this);
-		threadNum = 0;
-		threads = new ArrayList<>();
-		threads.add(thread);
-		threadNum++;
-	}
-	
 	public void initialWorkingThreadIterationNum( WorkingThreadData workingThreadData, int totalStep )
 	{
 		System.out.println( "slave : initialWorkingThreadIterationNum");
@@ -200,4 +191,16 @@ public class Slave {
 		    degreeWriters.get( threadNum ).println(Long.toString(toPoint)+"\t"+Long.toString(fromPoint));
 		}
 	}
+	
+	public void restartcreateWorkingThread(WorkingThreadData workingThreadData) {
+		System.out.println("slave " + getAddress() + " thread num:" + workingThreadData.getId() + " restart working thread:" + workingThreadData.getStatus());
+		WorkingThread thread = new WorkingThread(workingThreadData, this);
+		WorkingThread oldThread = threads.get(workingThreadData.getId());
+		thread.degreeFilePath = oldThread.degreeFilePath;
+		thread.edgeFilePath = oldThread.edgeFilePath;
+		//thread.calculateStep & dhtPeer
+		threads.set(workingThreadData.getId(), thread);
+	}
+	
+	
 }
