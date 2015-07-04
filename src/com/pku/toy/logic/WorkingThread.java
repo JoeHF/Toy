@@ -73,7 +73,8 @@ public class WorkingThread extends Thread {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 					context.notifyCalOneStepDone(id);
-					this.dhtPeer.unbind();
+					this.clearData();
+					this.stop();
 					return;
 				}	
 			}
@@ -82,9 +83,10 @@ public class WorkingThread extends Thread {
 				sleep(5000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
-				context.notifyCalOneStepDone(id);
-				this.dhtPeer.unbind();
 				e.printStackTrace();
+				context.notifyCalOneStepDone(id);
+				this.clearData();
+				this.stop();
 			}
 			
 			context.notifyCalOneStepDone(id);
@@ -114,6 +116,11 @@ public class WorkingThread extends Thread {
 	{
 		this.totalStep = totalStep;
 		this.display();
+	}
+	
+	public void clearData()
+	{
+		dhtPeer.clearData();
 	}
 	
 	public void initialDHTPeerHashmap()

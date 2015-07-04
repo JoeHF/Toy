@@ -92,10 +92,11 @@ public class DHTPeer extends UnicastRemoteObject implements IDHTPeer, Serializab
 		return;
 	}
 	
-	public void unbind()
+	public void clearData()
 	{
 		try {
 			Naming.unbind( this.address );
+			UnicastRemoteObject.unexportObject( this , true );
 		} catch (RemoteException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
