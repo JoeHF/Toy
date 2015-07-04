@@ -39,6 +39,8 @@ public class Master {
 	private int workThreadDoneNum = 0;
 	private Map<Integer, String> threadGraphMap = new HashMap<>();
 	
+	private MyRunnerThread myRunnerThread;
+	
 	public Master() {
 		
 	}
@@ -142,7 +144,7 @@ public class Master {
 	
 	public void startCalculate(int totalStep) {
 
-		MyRunnerThread myRunnerThread = new MyRunnerThread(totalStep);
+		myRunnerThread = new MyRunnerThread(totalStep);
 		myRunnerThread.start();
 	}
 	
@@ -163,6 +165,7 @@ public class Master {
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					return;
 				}
 			}
 		}
@@ -299,12 +302,17 @@ public class Master {
 	
 	public void reportExceptionToMaster(int threadId) {
 		synchronized ( object3 ) {
+			if ( myRunnerThread!=null ) 
+			{
+				myRunnerThread.interrupt();
+				myRunnerThread = null;
+			}
 			threadsReportingException.add( threadId );
 			System.out.println("Master receive threadId " + threadId + " reporting Exception! Exception Set: " + threadsReportingException );
 			if ( threadsReportingException.size() == Constant.PEER_NUM-1 ) 
 			{
 				System.out.println( "Master begin to restart a new WorkingThread." );
-				this.restartFromCheckPoint( threadsReportingException );
+				//this.restartFromCheckPoint( threadsReportingException );
 				threadsReportingException = new HashSet<>();
 			}
 		}

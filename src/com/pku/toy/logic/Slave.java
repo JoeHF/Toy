@@ -129,6 +129,7 @@ public class Slave {
 			{
 				System.out.println("Slave begin to interrupt WorkingThread " + workingThreadData.getId() );
 				threads.get(i).interrupt();
+				threads.set( i , null);
 			}
 	}
 	
