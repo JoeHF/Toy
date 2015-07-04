@@ -330,28 +330,13 @@ public class Master {
 	}
 	
 	private void restartFromCheckPoint( HashSet<Integer> normalThreadId ) {
-    	Random random = new Random();
-		int idleNum = Math.abs(random.nextInt()) % 4;
-		System.out.println("Idle thread num:" + idleNum);	
-		List<WorkingThreadData> workingThreadDatas = new ArrayList<>();
-        for (int i = 0; i < Constant.THREAD_NUM; i++) {
-			if (i != idleNum) {
-				//WorkingThreadData workingThreadData = new WorkingThreadData(ipList.get(i), i, Constant.WORKING);
-				//workingThreadDatas.add(workingThreadData);
-			} else {
-				System.out.println("idle thread number is:" + i);
-				//WorkingThreadData workingThreadData = new WorkingThreadData(ipList.get(i), i, Constant.IDLE);
-				//workingThreadDatas.add(workingThreadData);
-			}
-		}
-		
+        List<Boolean> exist = new ArrayList<>();
+        for (int i = 0; i < Constant.THREAD_NUM; i++) 
+        	exist.add(false);
+		for (int i = 0; i < )
+        
         //keep identical with old workingthreadid
-        for (int i = 0; i < Constant.THREAD_NUM; i++) {
-        	if (isIdleThread(workingThreadDatas.get(i).getId()))
-        		workingThreadDatas.get(i).setStatus(Constant.IDLE);
-        	else 
-        		workingThreadDatas.get(i).setStatus(Constant.WORKING);
-        }
+
         
 		this.restartcreateWorkingThread(workingThreadDatas);
     	
