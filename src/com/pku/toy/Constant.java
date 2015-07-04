@@ -14,6 +14,9 @@ public class Constant {
 	
 	public static String Edge_suffixString = "_edge";
 	public static String Degree_suffixString = "_degree";
+	
+	public static int PEER_ALIVE = -5;
+	public static int PEER_DOWN  = -10;
 }
 
 

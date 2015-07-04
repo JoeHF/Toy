@@ -25,6 +25,7 @@ public class DHTPeer extends UnicastRemoteObject implements IDHTPeer, Serializab
 	public long    peerId;
 	public int threadId;
 	public int port;
+	public int tag;
 	
 	// DHT chord route table.
 	private TreeMap<Long, String>    router;
@@ -95,6 +96,7 @@ public class DHTPeer extends UnicastRemoteObject implements IDHTPeer, Serializab
 	public void clearData()
 	{
 		try {
+			this.tag = Constant.PEER_DOWN;
 			Naming.unbind( this.address );
 			UnicastRemoteObject.unexportObject( this , true );
 		} catch (RemoteException e) {
@@ -197,6 +199,8 @@ public class DHTPeer extends UnicastRemoteObject implements IDHTPeer, Serializab
 			HashMap<Long, Double> remoteMap = 
 					(HashMap<Long, Double>)remoteDHTPeers.get( routerKey ).getLocalMaps( keyList );
 			//System.out.println( this.getInfo() + "RomoteKey : " + routerKey + "  keyList: " + keyList + "  Map " + remoteMap );
+			if ( remoteMap.containsKey( (long)Constant.PEER_DOWN ) )
+				throw new RemoteException();
 			for ( long key : remoteMap.keySet() )
 				ret.put( key , remoteMap.get(key) );
 			//System.out.println( this.getInfo() + "DHTPeer : " + peerId + " -- " + ret );
@@ -217,6 +221,7 @@ public class DHTPeer extends UnicastRemoteObject implements IDHTPeer, Serializab
 			if ( localHashMap.containsKey(key) )
 				ret.put(key, localHashMap.get(key) );
 		}
+		if ( this.tag == Constant.PEER_DOWN )  ret.put( (long)Constant.PEER_DOWN, (double)Constant.PEER_DOWN);
 		return ret;
 	}
 
@@ -322,6 +327,7 @@ public class DHTPeer extends UnicastRemoteObject implements IDHTPeer, Serializab
 	{
 		// TODO Auto-generated constructor stub
 		super();
+		this.tag = Constant.PEER_ALIVE;
 	}
 
 	public static void main(String[] args) 
