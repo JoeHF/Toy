@@ -47,6 +47,10 @@ public class SlaveActor extends Thread {
 		context.createWorkingThread(workingThreadData);
 	}
 	
+	public void restartcreateWorkingThread(WorkingThreadData workingThreadData) {
+		context.restartcreateWorkingThread(workingThreadData);
+	}
+	
 	public void initialWorkingThreadIterationNum( WorkingThreadData workingThreadData, int totalStep )
 	{
 		context.initialWorkingThreadIterationNum(workingThreadData, totalStep);

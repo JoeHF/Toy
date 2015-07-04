@@ -25,4 +25,8 @@ public class WorkingThreadData implements Serializable {
 	public String getIp() {
 		return this.ip;
 	}
+	
+	public void setStatus(String _status) {
+		status = _status;
+	}
 }

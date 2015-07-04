@@ -297,5 +297,38 @@ public class Master {
 	
 	
 	//----------jdc-----------------------
-
+	public void restartcreateWorkingThread(List<WorkingThreadData> workingThreadDatas) {
+		threads = workingThreadDatas;
+		System.out.println("Master restart create working thread");
+		masterActor.restartcreateWorkingThread(workingThreadDatas);
+	}
+	
+	private void restartFromCheckPoint() {
+    	Random random = new Random();
+		int idleNum = Math.abs(random.nextInt()) % 4;
+		System.out.println("Idle thread num:" + idleNum);	
+		List<WorkingThreadData> workingThreadDatas = new ArrayList<>();
+        for (int i = 0; i < Constant.THREAD_NUM; i++) {
+			if (i != idleNum) {
+				WorkingThreadData workingThreadData = new WorkingThreadData(ipList.get(i), i, Constant.WORKING);
+				workingThreadDatas.add(workingThreadData);
+			} else {
+				System.out.println("idle thread number is:" + i);
+				WorkingThreadData workingThreadData = new WorkingThreadData(ipList.get(i), i, Constant.IDLE);
+				workingThreadDatas.add(workingThreadData);
+			}
+		}
+		
+        //keep identical with old workingthreadid
+        for (int i = 0; i < Constant.THREAD_NUM; i++) {
+        	if (isIdleThread(workingThreadDatas.get(i).getId()))
+        		workingThreadDatas.get(i).setStatus(Constant.IDLE);
+        	else 
+        		workingThreadDatas.get(i).setStatus(Constant.WORKING);
+        }
+        
+		this.restartcreateWorkingThread(workingThreadDatas);
+    	
+    }
+    
 }

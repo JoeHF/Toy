@@ -49,6 +49,15 @@ public class Slave {
 		threadNum++;
 	}
 	
+	public void restartcreateWorkingThread(WorkingThreadData workingThreadData) {
+		System.out.println("slave " + getAddress() + " thread num:" + workingThreadData.getId() + " restart create working thread:" + workingThreadData.getStatus());
+		WorkingThread thread = new WorkingThread(workingThreadData, this);
+		threadNum = 0;
+		threads = new ArrayList<>();
+		threads.add(thread);
+		threadNum++;
+	}
+	
 	public void initialWorkingThreadIterationNum( WorkingThreadData workingThreadData, int totalStep )
 	{
 		System.out.println( "slave : initialWorkingThreadIterationNum");
