@@ -122,6 +122,16 @@ public class Slave {
 		slaveActor.reportExceptionToMaster(threadId);
 	}
 	
+	public void killAThread( WorkingThreadData workingThreadData )
+	{
+		for ( int i=0; i<threads.size(); i++ )
+			if ( threads.get(i).id == workingThreadData.getId() )
+			{
+				System.out.println("Slave begin to interrupt WorkingThread " + workingThreadData.getId() );
+				threads.get(i).interrupt();
+			}
+	}
+	
 	
 	//----------jdc-----------------------
 	public void openWriter(int threadNum) {

@@ -245,4 +245,13 @@ public class MasterActor extends Thread {
 	public void reportExceptionToMaster(int threadId) {
 		context.reportExceptionToMaster(threadId);
 	}
+	
+	public void killAThread( WorkingThreadData  workingThreadData ) {
+		try {
+			ISlave slaveService = slaveServices.get( workingThreadData.getIp() );
+			slaveService.killAThread( workingThreadData );
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

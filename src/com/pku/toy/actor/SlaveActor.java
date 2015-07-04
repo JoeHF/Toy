@@ -144,4 +144,9 @@ public class SlaveActor extends Thread {
 			e.printStackTrace();
 		}
 	}
+	
+	public void killAThread( WorkingThreadData workingThreadData )  {
+		// TODO Auto-generated method stub
+		context.killAThread( workingThreadData );
+	}
 }

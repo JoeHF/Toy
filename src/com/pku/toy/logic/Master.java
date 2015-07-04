@@ -317,7 +317,10 @@ public class Master {
 		if ( isIdleThread(threadId) )
 			return new String( "Input Again: idle Thread" );
 		
-		
+		System.out.println("Master begin to kill thread " + threadId);
+		for ( WorkingThreadData data : threads )
+			if ( data.getId() == threadId )
+				masterActor.killAThread( data );
 		return new String( "Sucessful kill a Thread." );
 	}
 	

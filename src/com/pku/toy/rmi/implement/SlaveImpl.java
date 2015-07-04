@@ -111,5 +111,10 @@ public class SlaveImpl extends UnicastRemoteObject implements ISlave{
 	public void receiveDegreeFile(Map<Long, Long> edges,int threadNum) throws RemoteException {
 		slaveActor.receiveDegreeFile(edges,threadNum);
 	}
+	
+	@Override
+	public void killAThread(WorkingThreadData workingThreadData) throws RemoteException{
+		slaveActor.killAThread( workingThreadData );
+	}
 
 }
