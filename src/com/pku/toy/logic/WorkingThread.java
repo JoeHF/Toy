@@ -166,15 +166,15 @@ public class WorkingThread extends Thread {
 		    List<Long> neighbors = new ArrayList<Long>(); 
 			while(true) {
 				line = reader.readLine();
-				if(line == null) break;
-				s = line.split("\t");
+				if(line == null) s= new String("-10\t-20").split("\t");
+				else             s = line.split("\t");
 				if (lastKey.equals("") || s[0].equals(lastKey)) {
 					neighbors.add(Long.parseLong(s[1]));
 					lastKey = s[0];
 				}
 				else {
 					Map<Long, Double> neighborPageRank = dhtPeer.getMaps(neighbors);
-					System.out.println(  "Key : " + lastKey + "\nnNeighbors:" + neighbors );
+					System.out.println(  "Key : " + lastKey + "\tnNeighbors:" + neighbors );
 					System.out.println(  "neiborPR: " + neighborPageRank );
 					double sum = 0;
 					for(Iterator<Long> iter = neighbors.iterator(); iter.hasNext() ;) {
@@ -188,6 +188,7 @@ public class WorkingThread extends Thread {
 					neighbors.add(Long.parseLong(s[1]));
 					sum = 0;
 					lastKey = s[0];
+					if ( line==null ) break;
 				}
 			}
 			reader.close();
