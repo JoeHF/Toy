@@ -67,12 +67,10 @@ public class MasterActor extends Thread {
 		}
 	}
 	
-	public void restartcreateWorkingThread(List<WorkingThreadData> workingThreadDatas) {
+	public void restartcreateWorkingThread(List<WorkingThreadData> threads, int downThreadID) {
 		try {
-			for (int i = 0; i < workingThreadDatas.size(); i++) {
-				ISlave slaveService = slaveServices.get(workingThreadDatas.get(i).getIp());
-				slaveService.restartcreateWorkingThread(workingThreadDatas.get(i));
-			}
+			ISlave slaveService = slaveServices.get(threads.get(downThreadID).getIp());
+			slaveService.restartcreateWorkingThread(threads.get(downThreadID));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -74,7 +74,7 @@ public class Master {
 		}
 		
 		System.out.println( "\n" + threadGraphMap  + "\n" );
-		
+		//----------jdc-----------------------
 		for (int i = 0; i < threads.size(); i++) {
 			if (threads.get(i).getStatus().equals(Constant.WORKING)) {
 				masterActor.transferSubgraph( threads.get(i).getId(),threads.get(i).getIp(), 
@@ -304,7 +304,7 @@ public class Master {
 			if ( threadsReportingException.size() == Constant.PEER_NUM-1 ) 
 			{
 				System.out.println( "Master begin to restart a new WorkingThread." );
-				this.restartFromCheckPoint( threadsReportingException );
+				//this.restartFromCheckPoint( threadsReportingException );
 				threadsReportingException = new HashSet<>();
 			}
 		}
@@ -326,22 +326,16 @@ public class Master {
 	
 	
 	//----------jdc-----------------------
-	public void restartcreateWorkingThread(List<WorkingThreadData> workingThreadDatas) {
-		threads = workingThreadDatas;
-		System.out.println("Master restart create working thread");
-		masterActor.restartcreateWorkingThread(workingThreadDatas);
-	}
-	
 	private void restartFromCheckPoint( HashSet<Integer> normalThreadId ) {
-        List<Boolean> exist = new ArrayList<>();
-        for (int i = 0; i < Constant.THREAD_NUM; i++) 
-        	exist.add(false);
-		for (int i = 0; i < )
+		int downThreadID = 0;
+		for (int i = 0; i < Constant.THREAD_NUM; i++) {
+			if (!(normalThreadId.contains(i) || idleThreadNumber.contains(i))) 
+				downThreadID = i;		
+		}
+	    masterActor.restartcreateWorkingThread(threads, downThreadID);
+	    
         
-        //keep identical with old workingthreadid
-
-        
-		this.restartcreateWorkingThread(workingThreadDatas);
+	//	this.restartcreateWorkingThread(workingThreadDatas);
     	
     }
     
