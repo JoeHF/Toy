@@ -92,13 +92,13 @@ public class WorkingThread extends Thread {
 	private int totalNodes;
 	public void display()
 	{
-		System.out.println("###########################################");
+		System.out.println("###############--WorkingThread--###################");
 		System.out.println("WorkingThreadID: " + id + " Status: " + status);
 		System.out.println("edgeFilePath: " + edgeFilePath);
 		System.out.println("degrFilePath: " + degreeFilePath);
 		System.out.println("totalStep   : " + totalStep);
 		if ( dhtPeer!=null ) dhtPeer.displayPeer();
-		System.out.println("###########################################\n");
+		System.out.println("###############--WorkingThread--###################\n");
 	}
 	
 	public void initialWorkingThreadIterationNum( int totalStep )
@@ -174,12 +174,12 @@ public class WorkingThread extends Thread {
 				}
 				else {
 					Map<Long, Double> neighborPageRank = dhtPeer.getMaps(neighbors);
-					System.out.println(  "Key : " + lastKey + "\tnNeighbors:" + neighbors );
-					System.out.println(  "neiborPR: " + neighborPageRank );
+					//System.out.println(  "Key : " + lastKey + "\tnNeighbors:" + neighbors );
+					//System.out.println(  "neiborPR: " + neighborPageRank );
 					double sum = 0;
 					for(Iterator<Long> iter = neighbors.iterator(); iter.hasNext() ;) {
 						Long key = iter.next();
-						System.out.println( "&&" + key + neighborPageRank.get(key) + " " + globalDegree.get(key) );
+						//System.out.println( "&&" + key + neighborPageRank.get(key) + " " + globalDegree.get(key) );
 						sum += 1.0*neighborPageRank.get(key)/globalDegree.get(key);
 					} 	
 					dhtPeer.put(Long.parseLong(lastKey), sum*Constant.DampingFactor

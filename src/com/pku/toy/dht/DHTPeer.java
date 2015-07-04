@@ -43,12 +43,12 @@ public class DHTPeer extends UnicastRemoteObject implements IDHTPeer, Serializab
 	
 	public void displayPeer()
 	{
-		System.out.println("=======================================");
+		System.out.println("===================**DHTPeer**====================");
 		System.out.println("PeerId: " + peerId +  "\nAddress: " + address + "\nThreadId: " + threadId);
-		System.out.print("Router: ");
+		System.out.print("Router: \n");
 		for( Long key : router.keySet() )
 			System.out.println("" + key + "-->" + router.get(key) );
-		System.out.print("remoteDHTPeers: ");
+		System.out.print("remoteDHTPeers: \n");
 		for( Long key : remoteDHTPeers.keySet() )
 			try {
 				System.out.println("" + key + "-->" + remoteDHTPeers.get(key).getInfo() );
@@ -56,17 +56,17 @@ public class DHTPeer extends UnicastRemoteObject implements IDHTPeer, Serializab
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		System.out.print("localHashMap: ");
+		System.out.print("localHashMap: \n");
 		for( Long key : localHashMap.keySet() )
 			System.out.println("" + key + "-->" + localHashMap.get(key) );
-		System.out.println("=======================================\n");
+		System.out.println("====================**DHTPeer**===================");
 	}
 	
 	//--------------------------------zzy--------------
 	@Override
 	public String toString()
 	{
-		return "" + peerId + "---" + address;
+		return "[PeerId=" + peerId + " , Address=" + address +"]";
 	}
 	
 	public DHTPeerData getDhtPeerData()
@@ -102,7 +102,7 @@ public class DHTPeer extends UnicastRemoteObject implements IDHTPeer, Serializab
 		
 		try 
 		{
-			System.out.println( "DHTRebind " + this.address );
+			System.out.println( this.getInfo() + " rebind: " + this.address );
 			LocateRegistry.createRegistry( this.port );
 			Naming.rebind( this.address ,  this );
 		}
@@ -123,7 +123,7 @@ public class DHTPeer extends UnicastRemoteObject implements IDHTPeer, Serializab
 			try 
 			{
 				IDHTPeer peer = (IDHTPeer)Naming.lookup( lookupString );
-				System.out.println( this.peerId + " ---> " + peer.getInfo() );
+				System.out.println( this.getInfo() + " ---connect to---> " + peer.getInfo() );
 				this.remoteDHTPeers.put( key, peer );
 			}
             catch (Exception e) 
@@ -163,7 +163,7 @@ public class DHTPeer extends UnicastRemoteObject implements IDHTPeer, Serializab
 			if ( this.getPeerIdByKey(key) == this.peerId )
 				keyList.add( key );
 		HashMap<Long, Double> ret = (HashMap<Long, Double>)this.getLocalMaps( keyList );
-		System.out.println( this.getInfo() + "LocalKeyList: " + keyList +  " LocalMap: " + ret );
+		//System.out.println( this.getInfo() + "LocalKeyList: " + keyList +  " LocalMap: " + ret );
 		
 		// get remote maps
 		for ( long routerKey : this.router.keySet() )
@@ -174,13 +174,13 @@ public class DHTPeer extends UnicastRemoteObject implements IDHTPeer, Serializab
 				if ( this.getPeerIdByKey(key) == routerKey )
 					keyList.add( key );
 			if ( keyList.size()==0 ) continue;
-			System.out.println( this.getInfo() + remoteDHTPeers.get( routerKey ).getInfo() );
+			//System.out.println( this.getInfo() + remoteDHTPeers.get( routerKey ).getInfo() );
 			HashMap<Long, Double> remoteMap = 
 					(HashMap<Long, Double>)remoteDHTPeers.get( routerKey ).getLocalMaps( keyList );
-			System.out.println( this.getInfo() + "RomoteKey : " + routerKey + "  keyList: " + keyList + "  Map " + remoteMap );
+			//System.out.println( this.getInfo() + "RomoteKey : " + routerKey + "  keyList: " + keyList + "  Map " + remoteMap );
 			for ( long key : remoteMap.keySet() )
 				ret.put( key , remoteMap.get(key) );
-			System.out.println( this.getInfo() + "DHTPeer : " + peerId + " -- " + ret );
+			//System.out.println( this.getInfo() + "DHTPeer : " + peerId + " -- " + ret );
 		}
 		return ret;
 	}
@@ -192,7 +192,7 @@ public class DHTPeer extends UnicastRemoteObject implements IDHTPeer, Serializab
 		// ensure that keys are all in localHashMap
 		HashMap<Long,Double> ret = new HashMap<Long,Double>();
 		if ( keys.size()==0 ) return ret;
-		System.out.println(this.getInfo() + "GetLocalMaps: " + keys );
+		//System.out.println(this.getInfo() + "GetLocalMaps: " + keys );
 		for ( long key : keys )
 		{
 			if ( localHashMap.containsKey(key) )
@@ -294,8 +294,8 @@ public class DHTPeer extends UnicastRemoteObject implements IDHTPeer, Serializab
 	@Override
 	public String getInfo() throws RemoteException
 	{
-		System.out.println( "[" + this.toString() + localHashMap.size() + "]");
-		return ( this.toString() + " Map: " + localHashMap.size() + " @@ " );
+		//System.out.println( "[" + this.toString() + localHashMap.size() + "]");
+		return this.toString();
 	}
 	
 	//-------------------------------------------------------------------------------------------------------
