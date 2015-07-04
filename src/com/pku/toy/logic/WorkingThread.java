@@ -121,6 +121,7 @@ public class WorkingThread extends Thread {
 	public void clearData()
 	{
 		dhtPeer.clearData();
+		System.out.println("WorkingThread " + id + " stoped.");
 	}
 	
 	public void initialDHTPeerHashmap()

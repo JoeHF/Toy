@@ -302,15 +302,15 @@ public class Master {
 	
 	public void reportExceptionToMaster(int threadId) {
 		synchronized ( object3 ) {
-			if ( myRunnerThread!=null ) 
-			{
-				myRunnerThread.interrupt();
-				myRunnerThread = null;
-			}
 			threadsReportingException.add( threadId );
 			System.out.println("Master receive threadId " + threadId + " reporting Exception! Exception Set: " + threadsReportingException );
 			if ( threadsReportingException.size() == Constant.PEER_NUM-1 ) 
 			{
+				if ( myRunnerThread!=null ) 
+				{
+					myRunnerThread.interrupt();
+					myRunnerThread = null;
+				}
 				System.out.println( "Master begin to restart a new WorkingThread." );
 				//this.restartFromCheckPoint( threadsReportingException );
 				threadsReportingException = new HashSet<>();
