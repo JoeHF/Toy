@@ -50,14 +50,14 @@ public class DHTPeer extends UnicastRemoteObject implements IDHTPeer, Serializab
 		System.out.print("Router: \n");
 		for( Long key : router.keySet() )
 			System.out.println("" + key + "-->" + router.get(key) );
-		System.out.print("remoteDHTPeers: \n");
-		for( Long key : remoteDHTPeers.keySet() )
-			try {
-				System.out.println("" + key + "-->" + remoteDHTPeers.get(key).getInfo() );
-			} catch (RemoteException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+//		System.out.print("remoteDHTPeers: \n");
+//		for( Long key : remoteDHTPeers.keySet() )
+//			try {
+//				System.out.println("" + key + "-->" + remoteDHTPeers.get(key).getInfo() );
+//			} catch (RemoteException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
 		System.out.print("localHashMap: \n");
 		for( Long key : localHashMap.keySet() )
 			System.out.println("" + key + "-->" + localHashMap.get(key) );
