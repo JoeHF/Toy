@@ -204,7 +204,7 @@ public class Slave {
 				break;
 			}
 		WorkingThread thread = new WorkingThread(workingThreadData, this);
-		WorkingThread oldThread = threads.get(workingThreadData.getId());
+		WorkingThread oldThread = threads.get(downIndex);
 		thread.degreeFilePath = oldThread.degreeFilePath;
 		thread.edgeFilePath = oldThread.edgeFilePath;
 		thread.readDegree();
