@@ -167,6 +167,7 @@ public class Master {
 					}
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
+					System.out.println("MyRunner Dectected Interrupt: ");
 					e.printStackTrace();
 					return;
 				}
@@ -347,6 +348,7 @@ public class Master {
 			if (!(normalThreadId.contains(i) || idleThreadNumber.contains(i))) 
 				downThreadID = i;		
 		}
+		System.out.println("Nor: " + normalThreadId + " Idle: " + idleThreadNumber + " Down: " + downThreadID);
 	    masterActor.restartcreateWorkingThread(threads, downThreadID);
 	    dht.resetDHT(peerModels, downThreadID);
         
