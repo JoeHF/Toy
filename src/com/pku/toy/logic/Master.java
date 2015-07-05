@@ -36,7 +36,7 @@ public class Master {
 	private List<SlaveModel> slaveModels;
 	private Set<Integer> idleThreadNumber = new HashSet<Integer>();
 	private DHT dht;
-	private int workThreadDoneNum = 0;
+	private HashSet<Integer> doneThreadSet;
 	private Map<Integer, String> threadGraphMap = new HashMap<>();
 	private List<PeerModel>  peerModels;
 	
@@ -136,12 +136,12 @@ public class Master {
 	
 	public void receiveOneStepDone(int threadId) {
 		synchronized (object1) {
-			workThreadDoneNum++;
-			System.out.println("Master receive threadId " + threadId + " done " + workThreadDoneNum + "/3 has done");
-			if (workThreadDoneNum == 3) {
+			doneThreadSet.add(threadId);
+			System.out.println("Master receive threadId " + threadId + " done " + doneThreadSet.size() + "/3 has done");
+			if ( doneThreadSet.size() == 3 ) {
 				synchronized (object2) {
 					object2.notify();
-					workThreadDoneNum = 0;
+					doneThreadSet.clear();
 					current_Step++;
 				}
 			}
@@ -150,6 +150,7 @@ public class Master {
 	
 	public void startCalculate(int curStep, int totalStep) {
 
+		doneThreadSet = new HashSet<>();
 		myRunnerThread = new MyRunnerThread(curStep,totalStep);
 		myRunnerThread.start();
 	}
@@ -164,7 +165,9 @@ public class Master {
 		
 		public void run() {
 			for (int i = curIte; i < stepNum; i++) {
+				
 				masterActor.notifyWorkingThreadCalculation(i);
+				
 				try {
 					synchronized (object2) {
 						object2.wait();
@@ -366,8 +369,7 @@ public class Master {
 		}
 	    
 	    this.initialWorkingThreadIterationNum(current_Step, total_Step, false);
-		myRunnerThread = new MyRunnerThread(current_Step,total_Step);
-		myRunnerThread.start();
+	    this.startCalculate(current_Step, total_Step);
 	//	this.restartcreateWorkingThread(workingThreadDatas);
     	
     }
