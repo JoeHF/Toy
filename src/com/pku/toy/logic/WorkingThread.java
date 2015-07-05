@@ -74,7 +74,7 @@ public class WorkingThread extends Thread {
 					object.wait();
 					calculateStep++;
 					System.out.println("Thread " + id + " : work ite " + calculateStep );
-					if ( totalNodes!=-1 ) this.readDegree();
+					if ( totalNodes==-1 ) this.readDegree();
 					this.updatePageRank( (long)this.totalNodes );
 					if ( calculateStep<=2 || calculateStep%10==0 )
 						this.dhtPeer.writeCheckPoint();
