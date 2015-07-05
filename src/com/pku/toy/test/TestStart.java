@@ -201,7 +201,7 @@ public class TestStart {
 	
 	public void startCalculation() {
 		
-		master.initialWorkingThreadIterationNum( 5 );
+		master.initialWorkingThreadIterationNum( 50 );
 		
 		try {
 			Thread.sleep(200);
