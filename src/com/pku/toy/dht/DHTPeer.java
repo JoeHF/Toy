@@ -290,11 +290,18 @@ public class DHTPeer extends UnicastRemoteObject implements IDHTPeer, Serializab
 	public void writeCheckPoint()
 	{
 		// TODO Auto-generated method stub
+		// 0.create Directory
 		// 1.delete oldFile
 		// 2.rename newFile to oldFile
 		// 3.write newFile
 		try 
 		{
+			// 0.create Directory
+			File dirFile = new File( Constant.CHECKPOINT_DIR );
+			if ( !dirFile.isDirectory() )
+			{
+				dirFile.mkdir();
+			}
 			//1.delete oldFile
 		    File oldFile = new File( Constant.CHECKPOINT_PREFIX + this.peerId + Constant.CHECKPOINT_OLD_SUFFIX );
 		    if ( oldFile.exists() )  oldFile.delete();
