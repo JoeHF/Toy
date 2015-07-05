@@ -17,6 +17,7 @@ public interface ISlave extends Remote {
 	public void createWorkingThread(WorkingThreadData workingThreadData) throws RemoteException;
 	public void restartcreateWorkingThread(WorkingThreadData workingThreadData) throws RemoteException;
 	public void setDHTPeer(DHTPeerData peer) throws RemoteException;
+	public void resetDHTPeer(DHTPeerData peer) throws RemoteException;
 	public void connectToOtherPeers(int threadId) throws RemoteException;
 	public void notifyCalculation(int step) throws RemoteException;
 	public void notifyBindMaster(String ip) throws RemoteException;

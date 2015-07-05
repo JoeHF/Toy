@@ -85,6 +85,11 @@ public class SlaveActor extends Thread {
 		// TODO Auto-generated method stub
 		context.setDHTPeer(peer);
 	}
+	
+	public void resetDHTPeer(DHTPeerData peer) {
+		// TODO Auto-generated method stub
+		context.resetDHTPeer(peer);
+	}
 
 	public void connectToOtherPeers(int threadId)  {
 		// TODO Auto-generated method stub

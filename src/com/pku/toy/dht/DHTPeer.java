@@ -134,6 +134,30 @@ public class DHTPeer extends UnicastRemoteObject implements IDHTPeer, Serializab
 		}
 	}
 	
+	//--------------------------------jdc--------------
+	public void reinstallLocalPeer( DHTPeerData peer )
+	// install a local DHTPeer, fill RouteTable, create local RMI server.
+	{
+		this.address = peer.address;
+		this.peerId  = peer.peerId;
+		this.port    = peer.port;
+		this.threadId = peer.threadId;
+		this.setRouter( peer.router );
+		localHashMap = new HashMap<Long, Double>();
+		
+		try 
+		{
+			System.out.println( this.getInfo() + " rebind: " + this.address );
+			LocateRegistry.createRegistry( this.port );
+			Naming.rebind( this.address ,  this );
+		}
+		catch ( Exception e ) 
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public void connectToOtherPeers()
 	// After all the peers are installed, DHT notice all peers to create RMI client object.
 	{
