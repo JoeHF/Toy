@@ -139,6 +139,30 @@ public class DHT implements Map<Long, Double>
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+	    for ( long key : router.keySet() )
+	    {
+	    	String val = router.get( key );
+	    	peer.address = val;
+	    	peer.peerId  = key;
+	    	try {
+	    		targetModel = null;
+	    		for ( PeerModel model : peerModels )
+	    			if ( model.peerAddress.equals( val ) )
+	    			{
+	    				targetModel = model;
+	    				break;
+	    			}
+				ISlave slave = (ISlave)Naming.lookup( targetModel.slaveService );
+				if ( slave != null ) System.out.println( "DHT Order " + targetModel.threadId + " to reConnect to others.");
+				slave.connectToOtherPeers(targetModel.threadId);
+			}
+	    	catch ( Exception e )
+	    	{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	    }
 	}
 	
 	

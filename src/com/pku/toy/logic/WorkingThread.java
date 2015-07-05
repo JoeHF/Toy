@@ -115,6 +115,7 @@ public class WorkingThread extends Thread {
 		System.out.println("WorkingThreadID: " + id + " Status: " + status);
 		System.out.println("edgeFilePath: " + edgeFilePath);
 		System.out.println("degrFilePath: " + degreeFilePath);
+		System.out.println("currentStep: " + calculateStep );
 		System.out.println("totalStep   : " + totalStep);
 		if ( dhtPeer!=null ) dhtPeer.displayPeer();
 		System.out.println("###############--WorkingThread--###################\n");
