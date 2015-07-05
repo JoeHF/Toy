@@ -82,6 +82,7 @@ public class Master {
 			if (threads.get(i).getStatus().equals(Constant.WORKING)) {
 				masterActor.transferSubgraph( threads.get(i).getId(),threads.get(i).getIp(), 
 						                      threadGraphMap.get( threads.get(i).getId() ));
+				System.out.println("Master Transfer " + threadGraphMap.get( threads.get(i).getId() ) + " to thread" + threads.get(i) );
 			}
 		}
 		
@@ -89,6 +90,7 @@ public class Master {
 			if (threads.get(i).getStatus().equals(Constant.WORKING)) {
 				masterActor.transferDegreeFile( threads.get(i).getId(),threads.get(i).getIp(), 
 						            filePath + Constant.Degree_suffixString  );
+				System.out.println("Master Transfer " + filePath + Constant.Degree_suffixString + " to thread" + threads.get(i) );
 			}
 		}	
 		

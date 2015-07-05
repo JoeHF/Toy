@@ -142,6 +142,7 @@ public class Slave {
 	public void closeWriter(int threadNum) {
 		try {
 			writers.get( threadNum ).close();
+			System.out.println( "Thread " + threadNum + " finished receive Edge File" );
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -176,6 +177,7 @@ public class Slave {
 	public void closeDegreeWriter(int threadNum) {
 		try {
 			degreeWriters.get( threadNum ).close();
+			System.out.println( "Thread " + threadNum + " finished receive Degree File.");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
