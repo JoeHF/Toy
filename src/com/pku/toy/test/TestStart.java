@@ -210,7 +210,7 @@ public class TestStart {
 			e.printStackTrace();
 		}
 		
-		master.startCalculate(5);
+		master.startCalculate(50);
 	}
 	public void startSlaveActor() {
 		slave = new Slave();
