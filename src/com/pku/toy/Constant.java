@@ -15,6 +15,11 @@ public class Constant {
 	public static String Edge_suffixString = "_edge";
 	public static String Degree_suffixString = "_degree";
 	
+	// peer checkpoint file name : CHECKPOINT_PREFIX + Peer.peerId + CHECKPOINT_OLD_SUFFIX
+	public static String CHECKPOINT_PREFIX = "./CheckPoint/Peer";  
+	public static String CHECKPOINT_OLD_SUFFIX = "_old";
+	public static String CHECKPOINT_NEW_SUFFIX = "_new";
+	
 	public static int PEER_ALIVE = -5;
 	public static int PEER_DOWN  = -10;
 }

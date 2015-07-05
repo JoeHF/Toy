@@ -287,21 +287,32 @@ public class DHTPeer extends UnicastRemoteObject implements IDHTPeer, Serializab
 	}
 
 
-	@Override
-	public void writeCheckPoint( String filePath ) throws RemoteException 
+	public void writeCheckPoint()
 	{
 		// TODO Auto-generated method stub
+		// 1.delete oldFile
+		// 2.rename newFile to oldFile
+		// 3.write newFile
 		try 
 		{
-			File file = new File( filePath );
+			//1.delete oldFile
+		    File oldFile = new File( Constant.CHECKPOINT_PREFIX + this.peerId + Constant.CHECKPOINT_OLD_SUFFIX );
+		    if ( oldFile.exists() )  oldFile.delete();
+		    
+			// 2.rename newFile to oldFile
+		    File newFile = new File( Constant.CHECKPOINT_PREFIX + this.peerId + Constant.CHECKPOINT_NEW_SUFFIX );
+		    if ( newFile.exists() ) newFile.renameTo( oldFile );
+		    
+			// 3.write newFile
+		    newFile = new File( Constant.CHECKPOINT_PREFIX + this.peerId + Constant.CHECKPOINT_NEW_SUFFIX );
 			BufferedWriter writer = new BufferedWriter( 
-     		       new OutputStreamWriter( new FileOutputStream( file ), "UTF-8") );
+     		       new OutputStreamWriter( new FileOutputStream( newFile ), "UTF-8") );
 			writer.write( "" + this.peerId + "\n");
 			for ( long key : localHashMap.keySet() )
 				writer.write( "" + key + "\t" + localHashMap.get(key) + "\n" );
 			writer.flush();
 			writer.close();
-		} 
+		}
 		catch ( IOException e) 
 		{
 			// TODO: handle exception
@@ -310,19 +321,30 @@ public class DHTPeer extends UnicastRemoteObject implements IDHTPeer, Serializab
 	}
 
 
-	@Override
-	public void restoreFromCheckPoint(String filePath) throws RemoteException 
+	public void restoreFromCheckPoint()
 	{
 		// TODO Auto-generated method stub
+		// 1.find oldFile
+		// 2.find newFile
 		String line;
 		String[] map;
 		try
 		{
-			File file = new File( filePath );
+			// 1.find oldFile
+			File file = new File( Constant.CHECKPOINT_PREFIX + this.peerId + Constant.CHECKPOINT_OLD_SUFFIX );
+			if( !file.exists() )
+			{
+				file = new File( Constant.CHECKPOINT_PREFIX + this.peerId + Constant.CHECKPOINT_NEW_SUFFIX );
+				if ( !file.exists() )  
+					{
+					    System.err.println("Peer " + this.peerId + " does not have CheckPoint!");
+					    return;
+					}
+			}
 			BufferedReader reader = new BufferedReader( 
      		       new InputStreamReader( new FileInputStream( file ), "UTF-8") );
 			line = reader.readLine();
-			this.peerId = Long.parseLong( line );
+			//this.peerId = Long.parseLong( line );
 			this.localHashMap = new HashMap<>();
 			while ( true )
 			{
@@ -331,6 +353,7 @@ public class DHTPeer extends UnicastRemoteObject implements IDHTPeer, Serializab
 				map = line.split( "\t" );
 				localHashMap.put( Long.parseLong(map[0]), Double.parseDouble(map[1]) );
 			}
+			System.out.println("Peer " + this.peerId + " restore Values from " + file.getAbsolutePath() );
 		}
 		catch ( IOException e) 
 		{
