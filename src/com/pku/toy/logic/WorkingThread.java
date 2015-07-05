@@ -46,6 +46,7 @@ public class WorkingThread extends Thread {
 		 id = workingThreadData.getId();
 		 status = workingThreadData.getStatus();
 		 context = _context;
+		 totalNodes = -1;
 	}
 	
 	public void startNewStep(int step) {
@@ -56,7 +57,6 @@ public class WorkingThread extends Thread {
 	
 	public void run() {
 		System.out.println("working thread " + id + ": start to run");
-		this.readDegree();
 		//System.out.println( this.globalDegree );
 		System.out.println("working thread " + id + ": read degree graph");
 
@@ -74,6 +74,7 @@ public class WorkingThread extends Thread {
 					object.wait();
 					calculateStep++;
 					System.out.println("Thread " + id + " : work ite " + calculateStep );
+					if ( totalNodes!=-1 ) this.readDegree();
 					this.updatePageRank( (long)this.totalNodes );
 					if ( calculateStep<=2 || calculateStep%10==0 )
 						this.dhtPeer.writeCheckPoint();
