@@ -89,15 +89,16 @@ public class WorkingThread extends Thread {
 				}	
 			}
 			
-			try {
-				sleep(5000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-				context.notifyCalOneStepDone(id);
-				this.clearData();
-				this.stop();
-			}
+//			try {
+//				sleep(5000);
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//				context.notifyCalOneStepDone(id);
+//				this.clearData();
+//				this.stop();
+//				return;
+//			}
 			
 			context.notifyCalOneStepDone(id);
 		}		
@@ -113,11 +114,11 @@ public class WorkingThread extends Thread {
 	{
 		System.out.println("###############--WorkingThread--###################");
 		System.out.println("WorkingThreadID: " + id + " Status: " + status);
-		System.out.println("edgeFilePath: " + edgeFilePath);
-		System.out.println("degrFilePath: " + degreeFilePath);
+		//System.out.println("edgeFilePath: " + edgeFilePath);
+		//System.out.println("degrFilePath: " + degreeFilePath);
 		System.out.println("currentStep: " + calculateStep );
 		System.out.println("totalStep   : " + totalStep);
-		if ( dhtPeer!=null ) dhtPeer.displayPeer();
+		//if ( dhtPeer!=null ) dhtPeer.displayPeer();
 		System.out.println("###############--WorkingThread--###################\n");
 	}
 	
