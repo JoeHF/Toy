@@ -59,6 +59,14 @@ public class WorkingThread extends Thread {
 		this.readDegree();
 		System.out.println( this.globalDegree );
 		System.out.println("working thread " + id + ": read degree graph");
+
+		this.calculate();
+		
+		System.out.println("working thread " + id + ": done calculation");	
+	}
+	
+	public void calculate()
+	{
 		while(true) {	
 			System.out.println("working thread " + id + ": wait");
 			synchronized (object) {
@@ -92,9 +100,7 @@ public class WorkingThread extends Thread {
 			}
 			
 			context.notifyCalOneStepDone(id);
-		}
-		
-		System.out.println("working thread " + id + ": done calculation");	
+		}		
 	}
 	
 	//-----------------------zzy------------------
@@ -114,9 +120,10 @@ public class WorkingThread extends Thread {
 		System.out.println("###############--WorkingThread--###################\n");
 	}
 	
-	public void initialWorkingThreadIterationNum( int totalStep )
+	public void initialWorkingThreadIterationNum( int totalStep, int currentStep )
 	{
 		this.totalStep = totalStep;
+		this.calculateStep = currentStep;
 		this.display();
 	}
 	
@@ -157,16 +164,16 @@ public class WorkingThread extends Thread {
 	{
 		context.reportExceptionToMaster( this.id );
 				
-		synchronized ( object_Exception ) {
-			try {
-				object_Exception.wait();
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+//		synchronized ( object_Exception ) {
+//			try {
+//				object_Exception.wait();
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		}
 		
-		this.run();
+		this.calculate();
 	}
 	
 	

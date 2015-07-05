@@ -23,6 +23,8 @@ public class Constant {
 	
 	public static int PEER_ALIVE = -5;
 	public static int PEER_DOWN  = -10;
+	
+	public static long RESTART_TIME = 2000;
 }
 
 

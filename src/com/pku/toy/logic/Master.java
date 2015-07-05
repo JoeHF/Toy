@@ -41,6 +41,8 @@ public class Master {
 	private List<PeerModel>  peerModels;
 	
 	private MyRunnerThread myRunnerThread;
+	private int current_Step;
+	private int total_Step;
 	
 	public Master() {
 		
@@ -140,25 +142,28 @@ public class Master {
 				synchronized (object2) {
 					object2.notify();
 					workThreadDoneNum = 0;
+					current_Step++;
 				}
 			}
 		}
 	}
 	
-	public void startCalculate(int totalStep) {
+	public void startCalculate(int curStep, int totalStep) {
 
-		myRunnerThread = new MyRunnerThread(totalStep);
+		myRunnerThread = new MyRunnerThread(curStep,totalStep);
 		myRunnerThread.start();
 	}
 	
 	private class MyRunnerThread extends Thread {
 		private int stepNum;
-		public MyRunnerThread(int _stepNum) {
+		private int curIte;
+		public MyRunnerThread(int _curIte, int _stepNum) {
+			curIte = _curIte;
 			stepNum = _stepNum;
 		}
 		
 		public void run() {
-			for (int i = 0; i < stepNum; i++) {
+			for (int i = curIte; i < stepNum; i++) {
 				masterActor.notifyWorkingThreadCalculation(i);
 				try {
 					synchronized (object2) {
@@ -181,15 +186,16 @@ public class Master {
 	private HashSet<Integer> threadsReportingException = new HashSet<>();
 	private Object object3 = new Object();
 	
-	public void initialWorkingThreadIterationNum( int totalStep )
+	public void initialWorkingThreadIterationNum( int currentStep, int totalStep, boolean restart )
 	{
-		
+		this.current_Step = currentStep;
+		this.total_Step = totalStep;
 		//  to notify how many times working thread show run;
 		for (int i = 0; i < threads.size(); i++) 
 		{
 			if (threads.get(i).getStatus().equals(Constant.WORKING)) {
 				System.out.println("master initialWorkingThreadIterationNum " + i);
-				masterActor.initialWorkingThreadIterationNum( threads.get(i),totalStep);
+				masterActor.initialWorkingThreadIterationNum( threads.get(i),totalStep,currentStep,restart);
 			}
 		}
 	}
@@ -352,6 +358,14 @@ public class Master {
 	    masterActor.restartcreateWorkingThread(threads, downThreadID);
 	    dht.resetDHT(peerModels, downThreadID);
         
+	    try {
+			Thread.sleep( Constant.RESTART_TIME );
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	    
+	    this.initialWorkingThreadIterationNum(current_Step, total_Step, false);
 	//	this.restartcreateWorkingThread(workingThreadDatas);
     	
     }

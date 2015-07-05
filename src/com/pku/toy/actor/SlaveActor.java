@@ -51,9 +51,9 @@ public class SlaveActor extends Thread {
 		context.restartcreateWorkingThread(workingThreadData);
 	}
 	
-	public void initialWorkingThreadIterationNum( WorkingThreadData workingThreadData, int totalStep )
+	public void initialWorkingThreadIterationNum( WorkingThreadData workingThreadData, int totalStep, int currentStep, boolean restart )
 	{
-		context.initialWorkingThreadIterationNum(workingThreadData, totalStep);
+		context.initialWorkingThreadIterationNum(workingThreadData, totalStep, currentStep, restart);
 	}
 	
 	public void receiveBindMaster(String ip) {

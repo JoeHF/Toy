@@ -125,7 +125,7 @@ public class DHT implements Map<Long, Double>
 		peer.port = targetModel.threadId +Constant.PEER_PORT;
 		peer.address = targetModel.peerAddress;
 		for ( long key : router.keySet()) {
-			if(router.get(key)==peer.address){
+			if( router.get(key).equals( peer.address ) ){
 				peer.peerId  = key;
 				break;
 			}			

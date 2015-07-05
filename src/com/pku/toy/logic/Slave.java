@@ -49,15 +49,15 @@ public class Slave {
 		threadNum++;
 	}
 	
-	public void initialWorkingThreadIterationNum( WorkingThreadData workingThreadData, int totalStep )
+	public void initialWorkingThreadIterationNum( WorkingThreadData workingThreadData, int totalStep, int currentStep, boolean restart )
 	{
 		System.out.println( "slave : initialWorkingThreadIterationNum");
 		for ( int i=0; i<threads.size(); i++ )
 		{
 			if ( threads.get(i).id == workingThreadData.getId() )
 			{
-				threads.get(i).initialWorkingThreadIterationNum( totalStep );
-				threads.get(i).start();
+				threads.get(i).initialWorkingThreadIterationNum( totalStep, currentStep );
+				if ( restart==true ) threads.get(i).start();
 			}
 		}
 	}
@@ -196,12 +196,20 @@ public class Slave {
 	
 	public void restartcreateWorkingThread(WorkingThreadData workingThreadData) {
 		System.out.println("slave " + getAddress() + " thread num:" + workingThreadData.getId() + " restart working thread:" + workingThreadData.getStatus());
+		int downIndex = -1;
+		for ( int i=0; i<threads.size(); i++ )
+			if ( threads.get(i).id == workingThreadData.getId() )
+			{
+				downIndex = i;
+				break;
+			}
 		WorkingThread thread = new WorkingThread(workingThreadData, this);
 		WorkingThread oldThread = threads.get(workingThreadData.getId());
 		thread.degreeFilePath = oldThread.degreeFilePath;
 		thread.edgeFilePath = oldThread.edgeFilePath;
+		thread.readDegree();
 		//thread.calculateStep & dhtPeer
-		threads.set(workingThreadData.getId(), thread);
+		threads.set( downIndex, thread);
 	}
 	
 	public void resetDHTPeer( DHTPeerData peer) {

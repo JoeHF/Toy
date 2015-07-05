@@ -67,10 +67,10 @@ public class MasterActor extends Thread {
 		}
 	}
 		
-	public void initialWorkingThreadIterationNum( WorkingThreadData workingThreadData, int totalStep ) {
+	public void initialWorkingThreadIterationNum( WorkingThreadData workingThreadData, int totalStep, int currentStep, boolean restart) {
 		try {
 				ISlave slaveService = slaveServices.get( workingThreadData.getIp() );
-				slaveService.initialWorkingThreadIterationNum( workingThreadData, totalStep );
+				slaveService.initialWorkingThreadIterationNum( workingThreadData, totalStep, currentStep, restart );
 		
 		} catch (Exception e) {
 			e.printStackTrace();

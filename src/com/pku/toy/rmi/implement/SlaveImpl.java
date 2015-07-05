@@ -31,9 +31,9 @@ public class SlaveImpl extends UnicastRemoteObject implements ISlave{
 	}
 	
 	@Override
-	public void initialWorkingThreadIterationNum( WorkingThreadData workingThreadData, int totalStep ) throws RemoteException
+	public void initialWorkingThreadIterationNum( WorkingThreadData workingThreadData, int totalStep, int currentStep, boolean restart ) throws RemoteException
 	{
-		slaveActor.initialWorkingThreadIterationNum( workingThreadData, totalStep);
+		slaveActor.initialWorkingThreadIterationNum( workingThreadData, totalStep, currentStep, restart);
 	}
 	
 	@Override
