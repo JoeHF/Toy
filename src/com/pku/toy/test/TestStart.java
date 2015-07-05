@@ -201,7 +201,7 @@ public class TestStart {
 	
 	public void startCalculation() {
 		
-		master.initialWorkingThreadIterationNum( 5 );
+		master.initialWorkingThreadIterationNum( 50 );
 		
 		try {
 			Thread.sleep(200);
@@ -210,7 +210,7 @@ public class TestStart {
 			e.printStackTrace();
 		}
 		
-		master.startCalculate(5);
+		master.startCalculate(50);
 	}
 	public void startSlaveActor() {
 		slave = new Slave();

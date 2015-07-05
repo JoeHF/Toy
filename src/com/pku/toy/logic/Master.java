@@ -315,7 +315,12 @@ public class Master {
 					myRunnerThread = null;
 				}
 				System.out.println( "Master begin to restart a new WorkingThread." );
-				//this.restartFromCheckPoint( threadsReportingException );
+				try {
+					this.restartFromCheckPoint( threadsReportingException );
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				threadsReportingException = new HashSet<>();
 			}
 		}
