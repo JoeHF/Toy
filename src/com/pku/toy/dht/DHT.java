@@ -101,6 +101,7 @@ public class DHT implements Map<Long, Double>
 	    			}
 				ISlave slave = (ISlave)Naming.lookup( targetModel.slaveService );
 				if ( slave != null ) System.out.println( "DHT Order " + targetModel.threadId + " to connect to others.");
+				//====================前面这部分感觉和上面的for循环完全是重复的啊啊啊啊啊==================
 				slave.connectToOtherPeers(targetModel.threadId);
 			}
 	    	catch ( Exception e )
@@ -111,6 +112,36 @@ public class DHT implements Map<Long, Double>
 	    }
 	}
 
+	public void resetDHT( List<PeerModel> peerModels, int downThreadID) throws RemoteException {
+		DHTPeer peer = new DHTPeer();
+	    peer.setRouter( router );
+	    PeerModel targetModel = null;
+	    for (PeerModel model : peerModels)
+	    	if (model.threadId == downThreadID) {
+	    		targetModel = model;
+	    		break;
+	    	}
+		peer.threadId = targetModel.threadId;
+		peer.port = targetModel.threadId +Constant.PEER_PORT;
+		peer.address = targetModel.peerAddress;
+		for ( long key : router.keySet()) {
+			if(router.get(key)==peer.address){
+				peer.peerId  = key;
+				break;
+			}			
+		}
+		try {
+			ISlave slave = (ISlave)Naming.lookup(targetModel.slaveService);
+			slave.resetDHTPeer(peer.getDhtPeerData());
+		}
+    	catch ( Exception e )
+    	{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 

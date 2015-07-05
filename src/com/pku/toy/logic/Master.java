@@ -336,14 +336,14 @@ public class Master {
 	
 	
 	//----------jdc-----------------------
-	private void restartFromCheckPoint( HashSet<Integer> normalThreadId ) {
+	private void restartFromCheckPoint( HashSet<Integer> normalThreadId ) throws RemoteException {
 		int downThreadID = 0;
 		for (int i = 0; i < Constant.THREAD_NUM; i++) {
 			if (!(normalThreadId.contains(i) || idleThreadNumber.contains(i))) 
 				downThreadID = i;		
 		}
 	    masterActor.restartcreateWorkingThread(threads, downThreadID);
-	    
+	    dht.resetDHT(peerModels, downThreadID);
         
 	//	this.restartcreateWorkingThread(workingThreadDatas);
     	

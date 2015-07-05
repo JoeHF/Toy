@@ -204,5 +204,24 @@ public class Slave {
 		threads.set(workingThreadData.getId(), thread);
 	}
 	
+	public void resetDHTPeer( DHTPeerData peer) {
+		System.out.println("Slave reset dht peer:" + peer.address);
+		for ( int i = 0 ; i < threadNum ; i++) {
+			if (threads.get(i).id == peer.threadId) {
+				try {
+					threads.get(i).dhtPeer = new DHTPeer();
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				threads.get(i).dhtPeer.reinstallLocalPeer(peer);
+				threads.get(i).dhtPeer.restoreFromCheckPoint();
+				threads.get(i).dhtPeer.connectToOtherPeers();
+				break;
+			}
+		}
+	}
+	
+	
 	
 }
