@@ -217,9 +217,12 @@ public class Slave {
 				threads.get(i).dhtPeer.reinstallLocalPeer(peer);
 				threads.get(i).dhtPeer.restoreFromCheckPoint();
 				threads.get(i).dhtPeer.connectToOtherPeers();
+				System.out.println( "ThreadID: " +threads.get(i).id + " has restarted and resetDHTPeer.");
+				threads.get(i).display();
 				break;
 			}
 		}
+		
 	}
 	
 	
