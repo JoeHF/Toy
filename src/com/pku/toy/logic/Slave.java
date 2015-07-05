@@ -207,9 +207,9 @@ public class Slave {
 		WorkingThread oldThread = threads.get(downIndex);
 		thread.degreeFilePath = oldThread.degreeFilePath;
 		thread.edgeFilePath = oldThread.edgeFilePath;
-		thread.readDegree();
 		//thread.calculateStep & dhtPeer
 		threads.set( downIndex, thread);
+		threads.get(downIndex).start();
 	}
 	
 	public void resetDHTPeer( DHTPeerData peer) {
