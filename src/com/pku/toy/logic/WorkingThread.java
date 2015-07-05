@@ -57,7 +57,7 @@ public class WorkingThread extends Thread {
 	public void run() {
 		System.out.println("working thread " + id + ": start to run");
 		this.readDegree();
-		System.out.println( this.globalDegree );
+		//System.out.println( this.globalDegree );
 		System.out.println("working thread " + id + ": read degree graph");
 
 		this.calculate();
@@ -126,7 +126,7 @@ public class WorkingThread extends Thread {
 	{
 		this.totalStep = totalStep;
 		this.calculateStep = currentStep;
-		this.display();
+		//this.display();
 	}
 	
 	public void clearData()
