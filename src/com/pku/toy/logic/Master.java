@@ -366,6 +366,8 @@ public class Master {
 		}
 	    
 	    this.initialWorkingThreadIterationNum(current_Step, total_Step, false);
+		myRunnerThread = new MyRunnerThread(current_Step,total_Step);
+		myRunnerThread.start();
 	//	this.restartcreateWorkingThread(workingThreadDatas);
     	
     }
