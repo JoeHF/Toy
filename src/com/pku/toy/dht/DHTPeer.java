@@ -148,7 +148,7 @@ public class DHTPeer extends UnicastRemoteObject implements IDHTPeer, Serializab
 		try 
 		{
 			System.out.println( this.getInfo() + " rebind: " + this.address );
-			LocateRegistry.createRegistry( this.port );
+			//LocateRegistry.createRegistry( this.port );
 			Naming.rebind( this.address ,  this );
 		}
 		catch ( Exception e ) 
