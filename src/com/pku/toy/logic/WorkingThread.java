@@ -217,7 +217,7 @@ public class WorkingThread extends Thread {
 				if(line == null) s= new String("-10\t-20").split("\t");
 				else             s = line.split("\t");
 				if (lastKey.equals("") || s[0].equals(lastKey)) {
-					neighbors.add(Long.parseLong(s[1]));
+					if ( Long.parseLong(s[1])!=Constant.NON_FROMNODE ) neighbors.add(Long.parseLong(s[1]));
 					lastKey = s[0];
 				}
 				else {
@@ -228,12 +228,19 @@ public class WorkingThread extends Thread {
 					for(Iterator<Long> iter = neighbors.iterator(); iter.hasNext() ;) {
 						Long key = iter.next();
 						//System.out.println( "&&" + key + neighborPageRank.get(key) + " " + globalDegree.get(key) );
+						try{
 						sum += 1.0*neighborPageRank.get(key)/globalDegree.get(key);
+						}
+						catch( NullPointerException e )
+						{
+							System.out.println( "++++++++++++++++key : " + key );
+							System.out.println(globalDegree.size());
+						} 
 					} 	
 					dhtPeer.put(Long.parseLong(lastKey), sum*Constant.DampingFactor
 							                            +(1-Constant.DampingFactor)/N );
 					neighbors.clear();
-					neighbors.add(Long.parseLong(s[1]));
+					if ( Long.parseLong(s[1])!=Constant.NON_FROMNODE ) neighbors.add(Long.parseLong(s[1]));
 					sum = 0;
 					lastKey = s[0];
 					if ( line==null ) break;
