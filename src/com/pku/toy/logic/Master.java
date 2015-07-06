@@ -234,6 +234,12 @@ public class Master {
 					edge = line.split( "\t" );
 					fromNode = Long.parseLong( edge[0] );
 					toNode   = Long.parseLong( edge[1] );
+					if ( fromNode>lowBound && fromNode<=highBound && !edges.containsKey(fromNode) )
+					// To handle nodes with no LinkIn
+					{
+						edges.put( fromNode, new ArrayList<>() );
+						edges.get(fromNode).add( Constant.NON_FROMNODE );
+					}
 					if ( toNode<=lowBound || toNode>highBound ) continue;
 					if ( edges.containsKey( toNode ) )
 						edges.get( toNode ).add( fromNode );
@@ -249,9 +255,18 @@ public class Master {
 	     		       new OutputStreamWriter( new FileOutputStream( fout ), "UTF-8") );
 				
 	            for ( long node : edges.keySet() )
-	            for ( long from : edges.get(node) )
 	            {
-	            	writer.write( "" + node + "\t" + from + "\n" );
+	            	List<Long> fromList = edges.get(node);
+	            	if ( fromList.size()==1 && fromList.get(0)==Constant.NON_FROMNODE )
+	            	{
+	            		writer.write("" + node + "\t" + Constant.NON_FROMNODE + "\n");
+	            		continue;
+	            	}
+	            	for ( long from : fromList )
+	            	{
+	            		if ( from!=Constant.NON_FROMNODE )
+	            			writer.write( "" + node + "\t" + from + "\n" );
+	            	}
 	            }
 				writer.flush();
 				writer.close();
