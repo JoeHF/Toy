@@ -332,7 +332,7 @@ public class Master {
 		synchronized ( object3 ) {
 			threadsReportingException.add( threadId );
 			System.out.println("Master receive threadId " + threadId + " reporting Exception! Exception Set: " + threadsReportingException );
-			if ( threadsReportingException.size() == Constant.PEER_NUM-1 ) 
+			//if ( threadsReportingException.size() == Constant.PEER_NUM-1 ) 
 			{
 				if ( myRunnerThread!=null ) 
 				{
