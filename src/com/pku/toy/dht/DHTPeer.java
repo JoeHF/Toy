@@ -294,6 +294,7 @@ public class DHTPeer extends UnicastRemoteObject implements IDHTPeer, Serializab
 		// 1.delete oldFile
 		// 2.rename newFile to oldFile
 		// 3.write newFile
+		System.out.println("Peer " + this.peerId + " begin to write CheckPoint.");
 		try 
 		{
 			// 0.create Directory
