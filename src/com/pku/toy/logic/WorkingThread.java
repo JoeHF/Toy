@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 import java.util.PrimitiveIterator.OfDouble;
 
 
@@ -212,6 +213,10 @@ public class WorkingThread extends Thread {
 			String[] s;
 			String lastKey = "";
 		    List<Long> neighbors = new ArrayList<Long>(); 
+		    
+		    List<String> nLastKey = new ArrayList<>();
+		    Vector<List<Long>> vnNeighbors = new Vector<>();  //????需要new vector>>>
+		    
 			while(true) {
 				line = reader.readLine();
 				if(line == null) s= new String("-10\t-20").split("\t");
@@ -221,27 +226,46 @@ public class WorkingThread extends Thread {
 					lastKey = s[0];
 				}
 				else {
-					Map<Long, Double> neighborPageRank = dhtPeer.getMaps(neighbors);
-					//System.out.println(  "Key : " + lastKey + "\tnNeighbors:" + neighbors );
-					//System.out.println(  "neiborPR: " + neighborPageRank );
-					double sum = 0;
-					for(Iterator<Long> iter = neighbors.iterator(); iter.hasNext() ;) {
-						Long key = iter.next();
-						//System.out.println( "&&" + key + neighborPageRank.get(key) + " " + globalDegree.get(key) );
-						try{
-						sum += 1.0*neighborPageRank.get(key)/globalDegree.get(key);
-						}
-						catch( NullPointerException e )
-						{
-							System.out.println( "++++++++++++++++key : " + key );
-							System.out.println(globalDegree.size());
-						} 
-					} 	
-					dhtPeer.put(Long.parseLong(lastKey), sum*Constant.DampingFactor
-							                            +(1-Constant.DampingFactor)/N );
+					if (vnNeighbors.size() != 100) {
+						vnNeighbors.add(neighbors);   //???????????new?? clear that.
+						nLastKey.add(lastKey);
+					}
+					else {
+						HashMap<Long, Boolean> members = new HashMap<>();
+						List<Long> tNeighbors = new ArrayList<>();
+						for (int i = 0; i < vnNeighbors.size(); i++) {
+							List<Long> temp = vnNeighbors.get(i);
+							for (int j = 0; j < temp.size(); j++) {
+							    if (!members.containsKey(temp.get(j))) {
+							    	members.put(temp.get(j), true);	
+							    	tNeighbors.add(temp.get(j));
+							    }
+							}
+						}	
+						Map<Long, Double> neighborPageRank = dhtPeer.getMaps(tNeighbors);
+							//System.out.println(  "Key : " + lastKey + "\tnNeighbors:" + neighbors );
+							//System.out.println(  "neiborPR: " + neighborPageRank );
+					    for (int i = 0; i < vnNeighbors.size(); i++) {
+					    	List<Long> temp = vnNeighbors.get(i);
+						    double sum = 0;
+							for(Iterator<Long> iter = temp.iterator(); iter.hasNext() ;) {
+								Long key = iter.next();
+								//System.out.println( "&&" + key + neighborPageRank.get(key) + " " + globalDegree.get(key) );
+								try{
+								sum += 1.0*neighborPageRank.get(key)/globalDegree.get(key);
+								}
+								catch( NullPointerException e )
+								{
+									System.out.println( "++++++++++++++++key : " + key );
+									System.out.println(globalDegree.size());
+								} 
+							} 	
+							dhtPeer.put(Long.parseLong(nLastKey.get(i)), sum*Constant.DampingFactor
+									                            +(1-Constant.DampingFactor)/N );
+					    }
+					}
 					neighbors.clear();
 					if ( Long.parseLong(s[1])!=Constant.NON_FROMNODE ) neighbors.add(Long.parseLong(s[1]));
-					sum = 0;
 					lastKey = s[0];
 					if ( line==null ) break;
 				}
