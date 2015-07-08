@@ -188,6 +188,7 @@ public class Master {
 	private Map<Long, Long> degrees;
 	private HashSet<Integer> threadsReportingException = new HashSet<>();
 	private Object object3 = new Object();
+	public  int killThreadId;
 	
 	public void initialWorkingThreadIterationNum( int currentStep, int totalStep, boolean restart )
 	{
@@ -334,6 +335,9 @@ public class Master {
 			System.out.println("Master receive threadId " + threadId + " reporting Exception! Exception Set: " + threadsReportingException );
 			//if ( threadsReportingException.size() == Constant.PEER_NUM-1 ) 
 			{
+				for ( int i=0; i<Constant.THREAD_NUM; i++ )
+					if ( i!=this.killThreadId && !isIdleThread(i) )
+					threadsReportingException.add( i );
 				if ( myRunnerThread!=null ) 
 				{
 					myRunnerThread.interrupt();

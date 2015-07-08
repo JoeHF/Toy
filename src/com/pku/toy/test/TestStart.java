@@ -271,6 +271,7 @@ public class TestStart {
 		try
 		{
 		    int id = Integer.parseInt( threadId );
+		    master.killThreadId = id;
 			return master.killAThread( id );
 		}
 		catch ( NumberFormatException e )
