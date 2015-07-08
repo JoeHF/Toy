@@ -24,7 +24,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 import java.util.PrimitiveIterator.OfDouble;
 
 
@@ -215,7 +214,7 @@ public class WorkingThread extends Thread {
 		    List<Long> neighbors = new ArrayList<Long>(); 
 		    
 		    List<String> nLastKey = new ArrayList<>();
-		    Vector<List<Long>> vnNeighbors = new Vector<>();  //????需要new vector>>>
+		    List<List<Long>> vnNeighbors = new ArrayList<>();
 		    
 			while(true) {
 				line = reader.readLine();
@@ -227,7 +226,7 @@ public class WorkingThread extends Thread {
 				}
 				else {
 					if (vnNeighbors.size() != 100) {
-						vnNeighbors.add(neighbors);   //???????????new?? clear that.
+						vnNeighbors.add(neighbors); 
 						nLastKey.add(lastKey);
 					}
 					else {
@@ -251,20 +250,14 @@ public class WorkingThread extends Thread {
 							for(Iterator<Long> iter = temp.iterator(); iter.hasNext() ;) {
 								Long key = iter.next();
 								//System.out.println( "&&" + key + neighborPageRank.get(key) + " " + globalDegree.get(key) );
-								try{
 								sum += 1.0*neighborPageRank.get(key)/globalDegree.get(key);
-								}
-								catch( NullPointerException e )
-								{
-									System.out.println( "++++++++++++++++key : " + key );
-									System.out.println(globalDegree.size());
-								} 
+								
 							} 	
 							dhtPeer.put(Long.parseLong(nLastKey.get(i)), sum*Constant.DampingFactor
 									                            +(1-Constant.DampingFactor)/N );
 					    }
 					}
-					neighbors.clear();
+					neighbors = new ArrayList<>();
 					if ( Long.parseLong(s[1])!=Constant.NON_FROMNODE ) neighbors.add(Long.parseLong(s[1]));
 					lastKey = s[0];
 					if ( line==null ) break;
