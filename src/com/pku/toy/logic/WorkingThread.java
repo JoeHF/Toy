@@ -261,6 +261,7 @@ public class WorkingThread extends Thread {
 									                            +(1-Constant.DampingFactor)/N );
 					    }
 					    vnNeighbors = new ArrayList<>();
+					    nLastKey    = new ArrayList<>();
 					}
 					neighbors = new ArrayList<>();
 					if ( Long.parseLong(s[1])!=Constant.NON_FROMNODE ) neighbors.add(Long.parseLong(s[1]));
