@@ -229,7 +229,7 @@ public class WorkingThread extends Thread {
 					lastKey = s[0];
 				}
 				else {
-					if (vnNeighbors.size() != 100) {
+					if (vnNeighbors.size() <= 100 && !s[0].equals("-10")) {
 						vnNeighbors.add(neighbors); 
 						nLastKey.add(lastKey);
 					}
@@ -260,6 +260,7 @@ public class WorkingThread extends Thread {
 							dhtPeer.put(Long.parseLong(nLastKey.get(i)), sum*Constant.DampingFactor
 									                            +(1-Constant.DampingFactor)/N );
 					    }
+					    vnNeighbors = new ArrayList<>();
 					}
 					neighbors = new ArrayList<>();
 					if ( Long.parseLong(s[1])!=Constant.NON_FROMNODE ) neighbors.add(Long.parseLong(s[1]));
