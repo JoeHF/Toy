@@ -201,6 +201,9 @@ public class WorkingThread extends Thread {
 		}catch (IOException e) {
 			e.printStackTrace();
 		}
+		double ave = 1.0/this.totalNodes;
+		for ( Long key : dhtPeer.localHashMap.keySet() )
+			dhtPeer.localHashMap.put(key, ave);
 	}
 	
     //d:damping factor N:point sum

@@ -34,7 +34,7 @@ public class DHTPeer extends UnicastRemoteObject implements IDHTPeer, Serializab
 	private HashMap<Long, IDHTPeer>  remoteDHTPeers;
 	
 	// Local HashMap.
-	private HashMap<Long, Double> localHashMap;
+	public HashMap<Long, Double> localHashMap;
 	
 	private  long getPeerIdByKey( Long key )
 	// Get the peerId that contain the key.

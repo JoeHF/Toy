@@ -28,7 +28,7 @@ public class Constant {
 	
 	public static long NON_FROMNODE = -100;
 	
-	public static int  DISPLAY_ITE  =  2000000;
+	public static int  DISPLAY_ITE  =  200000;
 }
 
 
