@@ -221,7 +221,7 @@ public class WorkingThread extends Thread {
 			while(true) {
 				line = reader.readLine();
 				lineCount ++ ;
-				if ( lineCount % 20000 == 0 ) System.out.println("Thread " + this.id + " reads " + lineCount + " lines in EdgeGraph.");
+				if ( lineCount % Constant.DISPLAY_ITE == 0 ) System.out.println("Thread " + this.id + " reads " + lineCount + " lines in EdgeGraph.");
 				if(line == null) s= new String("-10\t-20").split("\t");
 				else             s = line.split("\t");
 				if (lastKey.equals("") || s[0].equals(lastKey)) {
